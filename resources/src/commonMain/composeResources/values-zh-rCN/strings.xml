@@ -38,6 +38,12 @@
     <string name="task_add_save">添加</string>
     <string name="task_add_label">任务</string>
 
+    <string name="task_priority_none">无</string>
+    <string name="task_priority_low">低</string>
+    <string name="task_priority_medium">中</string>
+    <string name="task_priority_high">高</string>
+    <string name="task_detail_cd_icon_priority">优先级</string>
+
     <string name="task_snackbar_message_complete">任务已完成</string>
     <string name="task_snackbar_button_undo">撤销</string>
 

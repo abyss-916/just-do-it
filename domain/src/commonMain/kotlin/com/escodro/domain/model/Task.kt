@@ -15,6 +15,7 @@ import kotlinx.datetime.LocalDateTime
  * @property completedDate the date of completion of the task
  * @property isRepeating indicates if the task is repeating
  * @property alarmInterval the interval between the repeating
+ * @property priority the priority of the task
  */
 data class Task(
     val id: Long = 0,
@@ -27,4 +28,5 @@ data class Task(
     val completedDate: LocalDateTime? = null,
     val isRepeating: Boolean = false,
     val alarmInterval: AlarmInterval? = null,
+    val priority: TaskPriority? = null,
 )

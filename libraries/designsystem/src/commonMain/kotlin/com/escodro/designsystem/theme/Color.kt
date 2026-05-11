@@ -109,3 +109,11 @@ val md_theme_dark_outline = Color(0xFF2B4A6E)
 // Inverse  (light surface for snackbars / tooltips on dark theme)
 val md_theme_dark_inverseOnSurface = Color(0xFF0F1B2D)
 val md_theme_dark_inverseSurface = Color(0xFFE8F1FF)
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Priority colors
+// High = red, Medium = purple/tertiary, Low = orange
+// ─────────────────────────────────────────────────────────────────────────────
+val priority_high = Color(0xFFD93025)
+val priority_medium = Color(0xFF7C52D4)
+val priority_low = Color(0xFFF98847)

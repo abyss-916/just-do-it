@@ -6,7 +6,10 @@ import com.escodro.repository.model.Task as RepoTask
 /**
  * Maps Tasks between Repository and Domain.
  */
-internal class TaskMapper(private val alarmIntervalMapper: AlarmIntervalMapper) {
+internal class TaskMapper(
+    private val alarmIntervalMapper: AlarmIntervalMapper,
+    private val taskPriorityMapper: TaskPriorityMapper,
+) {
 
     /**
      * Maps Task from Repo to Domain.
@@ -27,7 +30,18 @@ internal class TaskMapper(private val alarmIntervalMapper: AlarmIntervalMapper) 
             completedDate = repoTask.completedDate,
             isRepeating = repoTask.isRepeating,
             alarmInterval = repoTask.alarmInterval?.let { alarmIntervalMapper.toDomain(it) },
+            priority = repoTask.priority?.let { taskPriorityMapper.toDomain(it) },
         )
+
+    /**
+     * Maps Task from Repo to Domain.
+     *
+     * @param repoTaskList the list of Task to be converted.
+     *
+     * @return the converted list of Task
+     */
+    fun toDomain(repoTaskList: List<RepoTask>): List<DomainTask> =
+        repoTaskList.map { toDomain(it) }
 
     /**
      * Maps Task from Domain to Repo.
@@ -58,5 +72,6 @@ internal class TaskMapper(private val alarmIntervalMapper: AlarmIntervalMapper) 
             completedDate = domainTask.completedDate,
             isRepeating = domainTask.isRepeating,
             alarmInterval = domainTask.alarmInterval?.let { alarmIntervalMapper.toRepo(it) },
+            priority = domainTask.priority?.let { taskPriorityMapper.toRepo(it) },
         )
 }

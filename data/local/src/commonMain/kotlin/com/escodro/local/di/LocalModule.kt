@@ -14,6 +14,7 @@ import com.escodro.local.mapper.AlarmIntervalMapper
 import com.escodro.local.mapper.CategoryMapper
 import com.escodro.local.mapper.SelectMapper
 import com.escodro.local.mapper.TaskMapper
+import com.escodro.local.mapper.TaskPriorityMapper
 import com.escodro.local.mapper.TaskWithCategoryMapper
 import com.escodro.local.provider.DatabaseProvider
 import com.escodro.repository.datasource.CategoryDataSource
@@ -39,6 +40,7 @@ val localModule = module {
 
     // Mappers
     factoryOf(::AlarmIntervalMapper)
+    factoryOf(::TaskPriorityMapper)
     factoryOf(::TaskMapper)
     factoryOf(::CategoryMapper)
     factoryOf(::TaskWithCategoryMapper)

@@ -17,6 +17,7 @@ import com.escodro.repository.mapper.AppThemeOptionsMapper
 import com.escodro.repository.mapper.CategoryMapper
 import com.escodro.repository.mapper.LanguageOptionsMapper
 import com.escodro.repository.mapper.TaskMapper
+import com.escodro.repository.mapper.TaskPriorityMapper
 import com.escodro.repository.mapper.TaskWithCategoryMapper
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -37,6 +38,7 @@ val repositoryModule = module {
 
     // Mappers
     factoryOf(::AlarmIntervalMapper)
+    factoryOf(::TaskPriorityMapper)
     factoryOf(::TaskMapper)
     factoryOf(::CategoryMapper)
     factoryOf(::TaskWithCategoryMapper)

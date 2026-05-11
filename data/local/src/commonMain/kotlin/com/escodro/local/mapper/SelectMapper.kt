@@ -20,6 +20,7 @@ internal class SelectMapper {
                     task_completed_date = result.task_completed_date,
                     task_is_repeating = result.task_is_repeating,
                     task_alarm_interval = result.task_alarm_interval,
+                    task_priority = result.task_priority,
                 ),
                 category = if (result.category_id != null &&
                     result.category_name != null &&

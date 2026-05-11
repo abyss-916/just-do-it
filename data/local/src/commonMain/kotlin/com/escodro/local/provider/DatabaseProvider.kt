@@ -6,6 +6,7 @@ import com.escodro.local.Category
 import com.escodro.local.Task
 import com.escodro.local.converter.alarmIntervalAdapter
 import com.escodro.local.converter.dateTimeAdapter
+import com.escodro.local.converter.taskPriorityAdapter
 
 /**
  * Repository with the local database.
@@ -35,6 +36,7 @@ internal class DatabaseProvider(
                 task_creation_dateAdapter = dateTimeAdapter,
                 task_completed_dateAdapter = dateTimeAdapter,
                 task_alarm_intervalAdapter = alarmIntervalAdapter,
+                task_priorityAdapter = taskPriorityAdapter,
             ),
         )
 

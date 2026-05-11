@@ -7,8 +7,10 @@ import com.escodro.coroutines.CoroutineDebouncer
 import com.escodro.domain.usecase.task.LoadTask
 import com.escodro.domain.usecase.task.UpdateTaskCategory
 import com.escodro.domain.usecase.task.UpdateTaskDescription
+import com.escodro.domain.usecase.task.UpdateTaskPriority
 import com.escodro.domain.usecase.task.UpdateTaskTitle
 import com.escodro.task.mapper.TaskMapper
+import com.escodro.task.model.TaskPriority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -18,6 +20,7 @@ internal class TaskDetailViewModel(
     private val updateTaskTitle: UpdateTaskTitle,
     private val updateTaskDescription: UpdateTaskDescription,
     private val updateTaskCategory: UpdateTaskCategory,
+    private val updateTaskPriority: UpdateTaskPriority,
     private val coroutineDebouncer: CoroutineDebouncer,
     private val applicationScope: AppCoroutineScope,
     private val taskMapper: TaskMapper,
@@ -49,5 +52,10 @@ internal class TaskDetailViewModel(
     fun updateCategory(taskId: TaskId, categoryId: CategoryId) =
         applicationScope.launch {
             updateTaskCategory(taskId = taskId.value, categoryId = categoryId.value)
+        }
+
+    fun updatePriority(taskId: TaskId, priority: TaskPriority) =
+        applicationScope.launch {
+            updateTaskPriority(taskId = taskId.value, priority = priority)
         }
 }

@@ -6,7 +6,10 @@ import com.escodro.task.model.Task as ViewTask
 /**
  * Maps Tasks between Domain and View.
  */
-internal class TaskMapper(private val alarmIntervalMapper: AlarmIntervalMapper) {
+internal class TaskMapper(
+    private val alarmIntervalMapper: AlarmIntervalMapper,
+    private val taskPriorityMapper: TaskPriorityMapper,
+) {
 
     /**
      * Maps Task from Domain to View.
@@ -27,5 +30,6 @@ internal class TaskMapper(private val alarmIntervalMapper: AlarmIntervalMapper) 
             completedDate = domainTask.completedDate,
             isRepeating = domainTask.isRepeating,
             alarmInterval = alarmIntervalMapper.toViewData(domainTask.alarmInterval),
+            priority = taskPriorityMapper.toViewData(domainTask.priority),
         )
 }

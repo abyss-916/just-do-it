@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.MaterialTheme
@@ -41,13 +42,16 @@ import com.escodro.resources.Res
 import com.escodro.resources.task_detail_cd_error
 import com.escodro.resources.task_detail_cd_icon_category
 import com.escodro.resources.task_detail_cd_icon_description
+import com.escodro.resources.task_detail_cd_icon_priority
 import com.escodro.resources.task_detail_header_error
 import com.escodro.task.model.Task
+import com.escodro.task.model.TaskPriority
 import com.escodro.task.presentation.category.CategorySelection
 import com.escodro.task.presentation.detail.TaskDetailActions
 import com.escodro.task.presentation.detail.TaskDetailSectionContent
 import com.escodro.task.presentation.detail.alarm.AlarmSelection
 import com.escodro.task.presentation.detail.alarm.TaskAlarmViewModel
+import com.escodro.task.presentation.detail.priority.PrioritySelection
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import kotlin.jvm.JvmInline
@@ -78,6 +82,7 @@ internal fun TaskDetailScreen(
         onTitleChange = { title -> detailViewModel.updateTitle(id, title) },
         onDescriptionChange = { desc -> detailViewModel.updateDescription(id, desc) },
         onCategoryChange = { categoryId -> detailViewModel.updateCategory(id, categoryId) },
+        onPriorityChange = { priority -> detailViewModel.updatePriority(id, priority) },
         onAlarmChange = { calendar -> alarmViewModel.updateAlarm(id, calendar) },
         onIntervalChange = { interval -> alarmViewModel.setRepeating(id, interval) },
         hasExactAlarmPermission = { alarmPermission.hasExactAlarmPermission() },
@@ -149,6 +154,16 @@ private fun TaskDetailContent(
                     state = categoryViewState,
                     currentCategory = task.categoryId,
                     onCategoryChange = actions.onCategoryChange,
+                    contentPadding = PaddingValues(horizontal = 8.dp),
+                )
+            }
+            TaskDetailSectionContent(
+                imageVector = Icons.Default.ExpandLess,
+                contentDescription = stringResource(Res.string.task_detail_cd_icon_priority),
+            ) {
+                PrioritySelection(
+                    currentPriority = task.priority ?: TaskPriority.NONE,
+                    onPriorityChange = actions.onPriorityChange,
                     contentPadding = PaddingValues(horizontal = 8.dp),
                 )
             }

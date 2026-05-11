@@ -4,6 +4,7 @@ import com.escodro.navigationapi.provider.NavGraph
 import com.escodro.task.mapper.AlarmIntervalMapper
 import com.escodro.task.mapper.CategoryMapper
 import com.escodro.task.mapper.TaskMapper
+import com.escodro.task.mapper.TaskPriorityMapper
 import com.escodro.task.mapper.TaskWithCategoryMapper
 import com.escodro.task.navigation.TaskNavGraph
 import com.escodro.task.presentation.add.AddTaskViewModel
@@ -37,6 +38,7 @@ val taskModule = module {
 
     // Mappers
     factoryOf(::AlarmIntervalMapper)
+    factoryOf(::TaskPriorityMapper)
     factoryOf(::TaskMapper)
     factoryOf(::TaskWithCategoryMapper)
     factoryOf(::CategoryMapper)

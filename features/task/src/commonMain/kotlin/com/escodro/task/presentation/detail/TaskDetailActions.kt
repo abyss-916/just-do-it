@@ -1,6 +1,7 @@
 package com.escodro.task.presentation.detail
 
 import com.escodro.task.model.AlarmInterval
+import com.escodro.task.model.TaskPriority
 import com.escodro.task.presentation.detail.main.CategoryId
 import kotlinx.datetime.LocalDateTime
 
@@ -11,6 +12,7 @@ internal data class TaskDetailActions(
     val onTitleChange: (String) -> Unit = {},
     val onDescriptionChange: (String) -> Unit = {},
     val onCategoryChange: (CategoryId) -> Unit = {},
+    val onPriorityChange: (TaskPriority) -> Unit = {},
     val onAlarmChange: (LocalDateTime?) -> Unit = {},
     val onIntervalChange: (AlarmInterval) -> Unit = {},
     val hasExactAlarmPermission: () -> Boolean = { false },

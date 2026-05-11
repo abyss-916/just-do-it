@@ -2,6 +2,7 @@ package com.escodro.local.converter
 
 import app.cash.sqldelight.ColumnAdapter
 import com.escodro.local.model.AlarmInterval
+import com.escodro.local.model.TaskPriority
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -32,5 +33,17 @@ val alarmIntervalAdapter = object : ColumnAdapter<AlarmInterval, Long> {
         AlarmInterval.entries.find { it.id == databaseValue.toInt() }!!
 
     override fun encode(value: AlarmInterval): Long =
+        value.id.toLong()
+}
+
+/**
+ * Converts between [TaskPriority] and [Long] to be stored in the database.
+ */
+@Suppress("UnsafeCallOnNullableType")
+val taskPriorityAdapter = object : ColumnAdapter<TaskPriority, Long> {
+    override fun decode(databaseValue: Long): TaskPriority =
+        TaskPriority.entries.find { it.id == databaseValue.toInt() }!!
+
+    override fun encode(value: TaskPriority): Long =
         value.id.toLong()
 }

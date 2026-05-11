@@ -34,9 +34,11 @@ import com.escodro.resources.Res
 import com.escodro.resources.task_add_label
 import com.escodro.resources.task_add_save
 import com.escodro.task.model.AlarmInterval
+import com.escodro.task.model.TaskPriority
 import com.escodro.task.presentation.category.CategorySelection
 import com.escodro.task.presentation.detail.alarm.AlarmSelection
 import com.escodro.task.presentation.detail.main.CategoryId
+import com.escodro.task.presentation.detail.priority.PrioritySelection
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
@@ -88,6 +90,7 @@ internal fun AddTaskBottomSheetContent(
         var taskDescription: String by rememberSaveable { mutableStateOf("") }
         var taskDueDate: Long? by rememberSaveable { mutableStateOf(null) }
         var alarmInterval: AlarmInterval by rememberSaveable { mutableStateOf(AlarmInterval.NEVER) }
+        var taskPriority: TaskPriority by rememberSaveable { mutableStateOf(TaskPriority.NONE) }
         val categoryState by remember(categoryViewModel) {
             categoryViewModel
         }.loadCategories().collectAsState(initial = CategoryState.Empty)
@@ -122,6 +125,12 @@ internal fun AddTaskBottomSheetContent(
             contentPadding = PaddingValues(horizontal = 8.dp),
         )
 
+        PrioritySelection(
+            currentPriority = taskPriority,
+            onPriorityChange = { taskPriority = it },
+            contentPadding = PaddingValues(horizontal = 8.dp),
+        )
+
         AlarmSelection(
             calendar = getLocalDateTimeFromEpoch(taskDueDate),
             interval = alarmInterval,
@@ -144,9 +153,11 @@ internal fun AddTaskBottomSheetContent(
                     categoryId = currentCategory,
                     dueDate = getLocalDateTimeFromEpoch(taskDueDate),
                     alarmInterval = alarmInterval,
+                    priority = taskPriority,
                 )
                 taskInputText = ""
                 taskDescription = ""
+                taskPriority = TaskPriority.NONE
                 onHideBottomSheet()
             },
         ) {

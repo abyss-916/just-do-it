@@ -31,6 +31,7 @@ internal class TaskDaoImpl(
                 task_completed_date = task.task_completed_date,
                 task_is_repeating = task.task_is_repeating,
                 task_alarm_interval = task.task_alarm_interval,
+                task_priority = task.task_priority,
             )
             taskQueries.lastInsertedId().executeAsOne()
         }
@@ -48,6 +49,7 @@ internal class TaskDaoImpl(
                 task_completed_date = task_completed_date,
                 task_is_repeating = task_is_repeating,
                 task_alarm_interval = task_alarm_interval,
+                task_priority = task_priority,
                 task_id = task_id,
             )
         }

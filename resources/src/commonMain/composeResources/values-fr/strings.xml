@@ -38,6 +38,12 @@
     <string name="task_add_save">Ajouter</string>
     <string name="task_add_label">Tâche</string>
 
+    <string name="task_priority_none">Aucune</string>
+    <string name="task_priority_low">Basse</string>
+    <string name="task_priority_medium">Moyenne</string>
+    <string name="task_priority_high">Haute</string>
+    <string name="task_detail_cd_icon_priority">Priorité</string>
+
     <string name="task_snackbar_message_complete">Tâche terminée</string>
     <string name="task_snackbar_button_undo">Annuler</string>
 

@@ -3,6 +3,7 @@ package com.escodro.task.presentation.list
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +27,10 @@ import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.escodro.designsystem.theme.priority_high
+import com.escodro.designsystem.theme.priority_low
+import com.escodro.designsystem.theme.priority_medium
+import com.escodro.task.model.TaskPriority
 import com.escodro.task.model.TaskWithCategory
 import com.escodro.task.provider.RelativeDateTimeProvider
 import kotlinx.datetime.LocalDateTime
@@ -54,6 +61,9 @@ internal fun TaskItem(
     ) {
         Row {
             CardRibbon(colorInt = task.category?.color)
+            task.task.priority?.takeIf { it != TaskPriority.NONE }?.let { priority ->
+                PriorityDot(priority = priority)
+            }
             RadioButton(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -112,3 +122,20 @@ internal fun RelativeDateText(
  */
 val CheckboxNameKey = SemanticsPropertyKey<String>("Checkbox")
 private var SemanticsPropertyReceiver.checkboxName by CheckboxNameKey
+
+@Composable
+private fun PriorityDot(priority: TaskPriority) {
+    val dotColor = when (priority) {
+        TaskPriority.HIGH -> priority_high
+        TaskPriority.MEDIUM -> priority_medium
+        TaskPriority.LOW -> priority_low
+        TaskPriority.NONE -> Color.Unspecified
+    }
+    Box(
+        modifier = Modifier
+            .size(8.dp)
+            .alignBy { it.height / 2 }
+            .padding(horizontal = 4.dp)
+            .background(dotColor, CircleShape),
+    )
+}

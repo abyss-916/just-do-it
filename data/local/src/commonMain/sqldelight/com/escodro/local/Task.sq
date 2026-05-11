@@ -1,4 +1,5 @@
 import com.escodro.local.model.AlarmInterval;
+import com.escodro.local.model.TaskPriority;
 import kotlin.Boolean;
 import kotlinx.datetime.LocalDateTime;
 
@@ -13,6 +14,7 @@ CREATE TABLE IF NOT EXISTS Task (
 `task_completed_date` INTEGER AS LocalDateTime,
 `task_is_repeating` INTEGER AS Boolean NOT NULL,
 `task_alarm_interval` INTEGER AS AlarmInterval,
+`task_priority` INTEGER AS TaskPriority,
 FOREIGN KEY(`task_category_id`) REFERENCES `Category`(`category_id`) ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
@@ -29,8 +31,9 @@ task_due_date,
 task_creation_date,
 task_completed_date,
 task_is_repeating,
-task_alarm_interval
-) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?);
+task_alarm_interval,
+task_priority
+) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 update:
 UPDATE Task
@@ -42,7 +45,8 @@ task_due_date = ?,
 task_creation_date = ?,
 task_completed_date = ?,
 task_is_repeating = ?,
-task_alarm_interval = ?
+task_alarm_interval = ?,
+task_priority = ?
 WHERE task_id = ?;
 
 delete:

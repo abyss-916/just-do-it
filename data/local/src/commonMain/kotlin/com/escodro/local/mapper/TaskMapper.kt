@@ -6,7 +6,10 @@ import com.escodro.repository.model.Task as RepoTask
 /**
  * Maps Tasks between Repository and Local.
  */
-internal class TaskMapper(private val alarmIntervalMapper: AlarmIntervalMapper) {
+internal class TaskMapper(
+    private val alarmIntervalMapper: AlarmIntervalMapper,
+    private val taskPriorityMapper: TaskPriorityMapper,
+) {
 
     /**
      * Maps Task from Repo to Local.
@@ -27,6 +30,7 @@ internal class TaskMapper(private val alarmIntervalMapper: AlarmIntervalMapper) 
             task_completed_date = repoTask.completedDate,
             task_is_repeating = repoTask.isRepeating,
             task_alarm_interval = repoTask.alarmInterval?.let { alarmIntervalMapper.toLocal(it) },
+            task_priority = repoTask.priority?.let { taskPriorityMapper.toLocal(it) },
         )
 
     /**
@@ -48,5 +52,6 @@ internal class TaskMapper(private val alarmIntervalMapper: AlarmIntervalMapper) 
             completedDate = localTask.task_completed_date,
             isRepeating = localTask.task_is_repeating,
             alarmInterval = localTask.task_alarm_interval?.let { alarmIntervalMapper.toRepo(it) },
+            priority = localTask.task_priority?.let { taskPriorityMapper.toRepo(it) },
         )
 }

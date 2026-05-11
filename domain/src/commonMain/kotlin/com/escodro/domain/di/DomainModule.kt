@@ -38,6 +38,7 @@ import com.escodro.domain.usecase.task.UncompleteTask
 import com.escodro.domain.usecase.task.UpdateTask
 import com.escodro.domain.usecase.task.UpdateTaskCategory
 import com.escodro.domain.usecase.task.UpdateTaskDescription
+import com.escodro.domain.usecase.task.UpdateTaskPriority
 import com.escodro.domain.usecase.task.UpdateTaskStatus
 import com.escodro.domain.usecase.task.UpdateTaskTitle
 import com.escodro.domain.usecase.task.implementation.AddTaskImpl
@@ -45,6 +46,7 @@ import com.escodro.domain.usecase.task.implementation.LoadTaskImpl
 import com.escodro.domain.usecase.task.implementation.UpdateTaskCategoryImpl
 import com.escodro.domain.usecase.task.implementation.UpdateTaskDescriptionImpl
 import com.escodro.domain.usecase.task.implementation.UpdateTaskImpl
+import com.escodro.domain.usecase.task.implementation.UpdateTaskPriorityImpl
 import com.escodro.domain.usecase.task.implementation.UpdateTaskStatusImpl
 import com.escodro.domain.usecase.task.implementation.UpdateTaskTitleImpl
 import com.escodro.domain.usecase.taskwithcategory.LoadCompletedTasks
@@ -92,6 +94,7 @@ val domainModule = module {
     }
     factoryOf(::UpdateTaskDescriptionImpl) bind UpdateTaskDescription::class
     factoryOf(::UpdateTaskCategoryImpl) bind UpdateTaskCategory::class
+    factoryOf(::UpdateTaskPriorityImpl) bind UpdateTaskPriority::class
 
     // Category Use Cases
     factoryOf(::DeleteCategoryImpl) bind DeleteCategory::class
