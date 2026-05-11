@@ -79,7 +79,7 @@ val domainModule = module {
             uncompleteTask = get(),
         )
     }
-    factory { DeleteTask(taskRepository = get(), alarmInteractor = getOrNull()) }
+    factory { DeleteTask(taskRepository = get(), alarmInteractor = get()) }
     factoryOf(::LoadTaskImpl) bind LoadTask::class
     factory<UpdateTask> { UpdateTaskImpl(taskRepository = get(), glanceInteractor = getOrNull()) }
     factory<UpdateTaskTitle> {

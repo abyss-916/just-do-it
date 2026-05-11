@@ -12,7 +12,7 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.ExperimentalTime
 
 /**
- * Use case to get completed tasks in Tracker format for the last month from the database.
+ * Use case to get completed tasks in Tracker format for the last 30 days from the database.
  */
 @OptIn(ExperimentalTime::class)
 internal class LoadCompletedTasksByPeriodImpl(
@@ -20,7 +20,7 @@ internal class LoadCompletedTasksByPeriodImpl(
 ) : LoadCompletedTasksByPeriod {
 
     /**
-     * Gets completed tasks in Tracker format for the last month.
+     * Gets completed tasks in Tracker format for the last 30 days.
      */
     override operator fun invoke(): Flow<List<TaskWithCategory>> =
         repository

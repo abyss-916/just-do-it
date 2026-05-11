@@ -130,7 +130,7 @@ internal class CategoryFlowTest : AlkaaTest(), KoinTest {
     }
 
     private fun ComposeUiTest.navigateToCategory() {
-        onNodeWithContentDescription(label = "Categories", useUnmergedTree = true).performClick()
+        onNodeWithContentDescription(label = "Labels", useUnmergedTree = true).performClick()
     }
 
     private fun ComposeUiTest.onCategoryColorItem(color: Color) = onNode(

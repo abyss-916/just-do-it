@@ -6,12 +6,12 @@ internal class DesktopPermissionController : PermissionController {
     override val controller: Any = Any()
 
     override suspend fun requestPermission(permission: Permission) {
-        // TODO: Implement requestPermission
+        // Desktop has no runtime permissions; this is a no-op
     }
 
     @Suppress("ExpressionBodySyntax")
     override suspend fun isPermissionGranted(permission: Permission): Boolean {
-        // TODO: Implement isPermissionGranted
-        return false
+        // Desktop has no runtime permissions; all permissions are granted
+        return true
     }
 }

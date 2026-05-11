@@ -4,7 +4,7 @@
     <!-- Home -->
     <string name="home_title_tasks">Tarefas</string>
     <string name="home_title_search">Pesquisar</string>
-    <string name="home_title_categories">Categorias</string>
+    <string name="home_title_categories">Etiquetas</string>
     <string name="home_title_settings">Mais</string>
 
     <!-- Tasks -->

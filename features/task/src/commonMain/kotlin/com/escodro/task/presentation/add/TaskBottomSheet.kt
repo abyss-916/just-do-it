@@ -85,6 +85,7 @@ internal fun AddTaskBottomSheetContent(
         verticalArrangement = Arrangement.SpaceAround,
     ) {
         var taskInputText: String by rememberSaveable { mutableStateOf("") }
+        var taskDescription: String by rememberSaveable { mutableStateOf("") }
         var taskDueDate: Long? by rememberSaveable { mutableStateOf(null) }
         var alarmInterval: AlarmInterval by rememberSaveable { mutableStateOf(AlarmInterval.NEVER) }
         val categoryState by remember(categoryViewModel) {
@@ -105,6 +106,13 @@ internal fun AddTaskBottomSheetContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
+        )
+
+        AlkaaInputTextField(
+            label = stringResource(Res.string.task_detail_cd_icon_description),
+            text = taskDescription,
+            onTextChange = { text -> taskDescription = text },
+            modifier = Modifier.fillMaxWidth(),
         )
 
         CategorySelection(
@@ -132,11 +140,13 @@ internal fun AddTaskBottomSheetContent(
             onClick = {
                 addTaskViewModel.addTask(
                     title = taskInputText,
+                    description = taskDescription.takeIf { it.isNotBlank() },
                     categoryId = currentCategory,
                     dueDate = getLocalDateTimeFromEpoch(taskDueDate),
                     alarmInterval = alarmInterval,
                 )
                 taskInputText = ""
+                taskDescription = ""
                 onHideBottomSheet()
             },
         ) {

@@ -7,15 +7,15 @@ internal class DesktopAlarmPermission : AlarmPermission {
 
     @Suppress("ExpressionBodySyntax")
     override fun hasExactAlarmPermission(): Boolean {
-        // TODO: Implement hasExactAlarmPermission
+        // Desktop has no exact alarm restrictions
         return true
     }
 
     override fun openExactAlarmPermissionScreen() {
-        // TODO: Implement openExactAlarmPermissionScreen
+        // Desktop has no exact alarm restrictions; no-op
     }
 
     override fun openAppSettings() {
-        // TODO: Implement openAppSettings
+        // Desktop has no app settings screen; no-op
     }
 }

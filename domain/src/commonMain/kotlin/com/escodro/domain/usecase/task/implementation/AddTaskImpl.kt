@@ -21,7 +21,10 @@ internal class AddTaskImpl(
             return
         }
 
-        val taskId = taskRepository.insertTask(task)
+        val taskToInsert = task.copy(
+            description = task.description?.takeIf { it.isNotBlank() },
+        )
+        val taskId = taskRepository.insertTask(taskToInsert)
         val insertedTask = taskRepository.findTaskById(taskId)
 
         if (insertedTask?.dueDate != null) {

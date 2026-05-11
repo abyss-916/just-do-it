@@ -95,7 +95,8 @@ private fun CategoryNewSheetLoader(
             category = updatedCategory
         },
         onCategorySave = { newCategory ->
-            addViewModel.addCategory(newCategory)
+            val storedCategory = newCategory.copy(name = toStoredCategoryName(newCategory.name))
+            addViewModel.addCategory(storedCategory)
         },
     )
 }
@@ -121,7 +122,8 @@ private fun CategoryEditSheetLoader(
             category = updatedCategory
         },
         onCategorySave = { updateCategory ->
-            editViewModel.updateCategory(updateCategory)
+            val storedCategory = updateCategory.copy(name = toStoredCategoryName(updateCategory.name))
+            editViewModel.updateCategory(storedCategory)
         },
         onCategoryRemove = { categoryToRemove ->
             editViewModel.deleteCategory(categoryToRemove)
@@ -314,4 +316,17 @@ private fun localizedCategoryName(storedName: String): String =
         "Work" -> stringResource(Res.string.category_default_work)
         "Shopping List" -> stringResource(Res.string.category_default_shopping)
         else -> storedName
+    }
+
+/**
+ * Reverses localized display names back to their English database keys.
+ * Custom names that don't match any known localization are returned as-is.
+ */
+@Composable
+private fun toStoredCategoryName(displayName: String): String =
+    when (displayName) {
+        stringResource(Res.string.category_default_personal) -> "Personal"
+        stringResource(Res.string.category_default_work) -> "Work"
+        stringResource(Res.string.category_default_shopping) -> "Shopping List"
+        else -> displayName
     }

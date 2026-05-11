@@ -17,6 +17,7 @@ internal class AddTaskViewModel(
 
     fun addTask(
         title: String,
+        description: String? = null,
         categoryId: CategoryId?,
         dueDate: LocalDateTime?,
         alarmInterval: AlarmInterval = AlarmInterval.NEVER,
@@ -27,6 +28,7 @@ internal class AddTaskViewModel(
         applicationScope.launch {
             val task = Task(
                 title = title,
+                description = description?.takeIf { it.isNotBlank() },
                 dueDate = dueDate,
                 categoryId = categoryId?.value,
                 alarmInterval = interval,
