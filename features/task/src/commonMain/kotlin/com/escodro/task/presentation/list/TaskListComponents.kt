@@ -134,7 +134,6 @@ private fun PriorityDot(priority: TaskPriority) {
     Box(
         modifier = Modifier
             .size(8.dp)
-            .alignBy { it.height / 2 }
             .padding(horizontal = 4.dp)
             .background(dotColor, CircleShape),
     )

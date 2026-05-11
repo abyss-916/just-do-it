@@ -10,6 +10,7 @@ import com.escodro.domain.usecase.task.UpdateTaskDescription
 import com.escodro.domain.usecase.task.UpdateTaskPriority
 import com.escodro.domain.usecase.task.UpdateTaskTitle
 import com.escodro.task.mapper.TaskMapper
+import com.escodro.task.mapper.TaskPriorityMapper
 import com.escodro.task.model.TaskPriority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -24,6 +25,7 @@ internal class TaskDetailViewModel(
     private val coroutineDebouncer: CoroutineDebouncer,
     private val applicationScope: AppCoroutineScope,
     private val taskMapper: TaskMapper,
+    private val taskPriorityMapper: TaskPriorityMapper,
 ) : ViewModel() {
 
     fun loadTaskInfo(taskId: TaskId): Flow<TaskDetailState> = flow {
@@ -56,6 +58,6 @@ internal class TaskDetailViewModel(
 
     fun updatePriority(taskId: TaskId, priority: TaskPriority) =
         applicationScope.launch {
-            updateTaskPriority(taskId = taskId.value, priority = priority)
+            updateTaskPriority(taskId = taskId.value, priority = taskPriorityMapper.toDomain(priority))
         }
 }

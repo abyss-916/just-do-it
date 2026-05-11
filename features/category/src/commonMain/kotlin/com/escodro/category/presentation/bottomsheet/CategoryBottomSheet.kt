@@ -322,11 +322,10 @@ private fun localizedCategoryName(storedName: String): String =
  * Reverses localized display names back to their English database keys.
  * Custom names that don't match any known localization are returned as-is.
  */
-@Composable
 private fun toStoredCategoryName(displayName: String): String =
     when (displayName) {
-        stringResource(Res.string.category_default_personal) -> "Personal"
-        stringResource(Res.string.category_default_work) -> "Work"
-        stringResource(Res.string.category_default_shopping) -> "Shopping List"
+        "个人", "Personal", "Personnel", "Personal", "个人" -> "Personal"
+        "工作", "Work", "Trabajo", "Travail" -> "Work"
+        "购物清单", "Shopping List", "Lista de compras", "Shopping List", "购物清单" -> "Shopping List"
         else -> displayName
     }

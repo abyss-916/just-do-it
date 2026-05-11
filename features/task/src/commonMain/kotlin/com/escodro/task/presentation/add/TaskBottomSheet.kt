@@ -112,7 +112,7 @@ internal fun AddTaskBottomSheetContent(
         )
 
         AlkaaInputTextField(
-            label = stringResource(Res.string.task_detail_cd_icon_description),
+            label = "Description",
             text = taskDescription,
             onTextChange = { text -> taskDescription = text },
             modifier = Modifier.fillMaxWidth(),
