@@ -17,4 +17,7 @@ internal class TaskWithCategoryRepositoryImpl(
 
     override fun findAllTasksWithCategoryId(categoryId: Long): Flow<List<TaskWithCategory>> =
         dataSource.findAllTasksWithCategoryId(categoryId).map { mapper.toDomain(it) }
+
+    override suspend fun findLongTermTask(): TaskWithCategory? =
+        dataSource.findLongTermTask()?.let { mapper.toDomain(listOf(it)).firstOrNull() }
 }

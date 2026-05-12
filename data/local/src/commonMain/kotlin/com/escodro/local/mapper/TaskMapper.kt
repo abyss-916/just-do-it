@@ -30,7 +30,9 @@ internal class TaskMapper(
             task_completed_date = repoTask.completedDate,
             task_is_repeating = repoTask.isRepeating,
             task_alarm_interval = repoTask.alarmInterval?.let { alarmIntervalMapper.toLocal(it) },
-            task_priority = repoTask.priority?.let { taskPriorityMapper.toLocal(it) },
+            task_priority = repoTask.priority?.let { taskPriorityMapper.toLocal(it) }
+                ?: com.escodro.local.model.TaskPriority.NONE,
+            task_is_long_term = repoTask.isLongTerm,
         )
 
     /**
@@ -52,6 +54,8 @@ internal class TaskMapper(
             completedDate = localTask.task_completed_date,
             isRepeating = localTask.task_is_repeating,
             alarmInterval = localTask.task_alarm_interval?.let { alarmIntervalMapper.toRepo(it) },
-            priority = localTask.task_priority?.let { taskPriorityMapper.toRepo(it) },
+            priority = localTask.task_priority?.let { taskPriorityMapper.toRepo(it) }
+                ?: com.escodro.repository.model.TaskPriority.NONE,
+            isLongTerm = localTask.task_is_long_term,
         )
 }

@@ -23,4 +23,11 @@ interface TaskWithCategoryDataSource {
      * @return all inserted tasks with category
      */
     fun findAllTasksWithCategoryId(categoryId: Long): Flow<List<TaskWithCategory>>
+
+    /**
+     * Get the long-term task with category (if any).
+     *
+     * @return the long-term task or null
+     */
+    suspend fun findLongTermTask(): TaskWithCategory?
 }

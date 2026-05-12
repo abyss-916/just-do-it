@@ -3,6 +3,7 @@ package com.escodro.task.presentation.list
 import androidx.lifecycle.ViewModel
 import com.escodro.coroutines.AppCoroutineScope
 import com.escodro.domain.usecase.task.UpdateTaskStatus
+import com.escodro.domain.usecase.taskwithcategory.LoadLongTermTask
 import com.escodro.domain.usecase.taskwithcategory.LoadUncompletedTasks
 import com.escodro.task.mapper.TaskWithCategoryMapper
 import com.escodro.task.model.TaskWithCategory
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.map
  */
 internal class TaskListViewModel(
     private val loadAllTasksUseCase: LoadUncompletedTasks,
+    private val loadLongTermTaskUseCase: LoadLongTermTask,
     private val updateTaskStatusUseCase: UpdateTaskStatus,
     private val applicationScope: AppCoroutineScope,
     private val taskWithCategoryMapper: TaskWithCategoryMapper,
@@ -34,6 +36,16 @@ internal class TaskListViewModel(
                 }
                 emit(state)
             }
+    }
+
+    fun loadLongTermTask(): Flow<TaskWithCategory?> = flow {
+        val task = loadLongTermTaskUseCase()
+        val result = if (task != null) {
+            taskWithCategoryMapper.toView(listOf(task)).firstOrNull()
+        } else {
+            null
+        }
+        emit(result)
     }
 
     fun updateTaskStatus(item: TaskWithCategory) = applicationScope.launch {

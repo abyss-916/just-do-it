@@ -14,8 +14,16 @@ internal class LoadUncompletedTasksImpl(
         if (categoryId == null) {
             repository
                 .findAllTasksWithCategory()
-                .map { list -> list.filterNot { item -> item.task.isCompleted } }
+                .map { list ->
+                    list.filterNot { item ->
+                        item.task.isCompleted || item.task.isLongTerm
+                    }
+                }
         } else {
             repository.findAllTasksWithCategoryId(categoryId)
-        }.map { list -> list.filterNot { item -> item.task.isCompleted } }
+        }.map { list ->
+            list.filterNot { item ->
+                item.task.isCompleted || item.task.isLongTerm
+            }
+        }
 }

@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.SemanticsPropertyKey
@@ -59,11 +60,10 @@ internal fun TaskItem(
             .height(74.dp)
             .clickable { onItemClick(task.task.id) },
     ) {
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             CardRibbon(colorInt = task.category?.color)
-            task.task.priority?.takeIf { it != TaskPriority.NONE }?.let { priority ->
-                PriorityDot(priority = priority)
-            }
             RadioButton(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -72,7 +72,12 @@ internal fun TaskItem(
                 onClick = { onCheckedChange(task) },
             )
             Spacer(Modifier.width(8.dp))
-            Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
+                verticalArrangement = Arrangement.Center,
+            ) {
                 Text(
                     text = task.task.title,
                     style = MaterialTheme.typography.bodyLarge,
@@ -83,6 +88,10 @@ internal fun TaskItem(
                     RelativeDateText(calendar = calendar)
                 }
             }
+            task.task.priority?.takeIf { it != TaskPriority.NONE }?.let { priority ->
+                PriorityDot(priority = priority)
+            }
+            Spacer(Modifier.width(16.dp))
         }
     }
 }
@@ -133,8 +142,7 @@ private fun PriorityDot(priority: TaskPriority) {
     }
     Box(
         modifier = Modifier
-            .size(8.dp)
-            .padding(horizontal = 4.dp)
+            .size(12.dp)
             .background(dotColor, CircleShape),
     )
 }

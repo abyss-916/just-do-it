@@ -21,6 +21,7 @@ internal class SelectMapper {
                     task_is_repeating = result.task_is_repeating,
                     task_alarm_interval = result.task_alarm_interval,
                     task_priority = result.task_priority,
+                    task_is_long_term = result.task_is_long_term,
                 ),
                 category = if (result.category_id != null &&
                     result.category_name != null &&

@@ -37,6 +37,10 @@
 
     <string name="task_add_save">Add</string>
     <string name="task_add_label">Task</string>
+    <string name="task_add_description">Description</string>
+    <string name="task_add_set_due_date">Set due date</string>
+    <string name="task_add_due_date">Due date</string>
+    <string name="task_add_long_term">Daily focus task</string>
 
     <string name="task_priority_none">None</string>
     <string name="task_priority_low">Low</string>
@@ -44,8 +48,15 @@
     <string name="task_priority_high">High</string>
     <string name="task_detail_cd_icon_priority">Priority</string>
 
+    <string name="task_long_term_label">Long-term task</string>
+    <string name="task_long_term_set_as">Set as long-term</string>
+    <string name="task_list_header_long_term">Daily focus</string>
+
     <string name="task_snackbar_message_complete">Task completed</string>
     <string name="task_snackbar_button_undo">Undo</string>
+
+    <string name="task_limit_reached">Maximum of 100 tasks reached</string>
+    <string name="task_long_term_exists">A daily focus task already exists</string>
 
     <string name="task_alarm_permission_dialog_title">Alarms and reminders</string>
     <string name="task_alarm_permission_dialog_text">For alarms to work, just do it needs permission to set alarms and reminders. If this permission is not granted, existing alarms will not work either.</string>

@@ -324,8 +324,8 @@ private fun localizedCategoryName(storedName: String): String =
  */
 private fun toStoredCategoryName(displayName: String): String =
     when (displayName) {
-        "个人", "Personal", "Personnel", "Personal", "个人" -> "Personal"
+        "个人", "Personal", "Personnel" -> "Personal"
         "工作", "Work", "Trabajo", "Travail" -> "Work"
-        "购物清单", "Shopping List", "Lista de compras", "Shopping List", "购物清单" -> "Shopping List"
+        "购物清单", "Shopping List", "Lista de compras" -> "Shopping List"
         else -> displayName
     }

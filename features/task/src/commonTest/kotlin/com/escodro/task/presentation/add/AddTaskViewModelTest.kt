@@ -1,7 +1,9 @@
 package com.escodro.task.presentation.add
 
 import com.escodro.coroutines.AppCoroutineScope
+import com.escodro.domain.model.TaskWithCategory
 import com.escodro.task.mapper.AlarmIntervalMapper
+import com.escodro.task.mapper.TaskPriorityMapper
 import com.escodro.task.model.AlarmInterval
 import com.escodro.task.presentation.detail.main.CategoryId
 import com.escodro.task.presentation.fake.AddTaskFake
@@ -22,7 +24,10 @@ internal class AddTaskViewModelTest : CoroutinesTestDispatcher by CoroutinesTest
     private val viewModel = AddTaskViewModel(
         addTaskUseCase = addTask,
         alarmIntervalMapper = alarmIntervalMapper,
+        taskPriorityMapper = TaskPriorityMapper(),
         applicationScope = AppCoroutineScope(context = testDispatcher()),
+        countUncompletedTasks = { 0 },
+        loadLongTermTask = { null },
     )
 
     @BeforeTest

@@ -1,6 +1,7 @@
 package com.escodro.local.dao.impl
 
 import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToOneOrNull
 import app.cash.sqldelight.coroutines.mapToList
 import com.escodro.coroutines.CoroutineDispatcherProvider
 import com.escodro.local.SelectAllTasksWithCategory
@@ -49,4 +50,11 @@ internal class TaskWithCategoryDaoImpl(
             .asFlow()
             .mapToList(dispatcherProvider.io)
             .map(selectMapper::toTaskWithCategory)
+
+    override fun findLongTermTask(): Flow<TaskWithCategory?> =
+        taskWithCategoryQueries
+            .selectLongTermTask(mapper = ::SelectAllTasksWithCategory)
+            .asFlow()
+            .mapToOneOrNull(dispatcherProvider.io)
+            .map { result -> result?.let { selectMapper.toTaskWithCategory(listOf(it)).firstOrNull() } }
 }

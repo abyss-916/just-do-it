@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS Task (
 `task_is_repeating` INTEGER AS Boolean NOT NULL,
 `task_alarm_interval` INTEGER AS AlarmInterval,
 `task_priority` INTEGER AS TaskPriority,
+`task_is_long_term` INTEGER AS Boolean NOT NULL DEFAULT 0,
 FOREIGN KEY(`task_category_id`) REFERENCES `Category`(`category_id`) ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
@@ -32,8 +33,9 @@ task_creation_date,
 task_completed_date,
 task_is_repeating,
 task_alarm_interval,
-task_priority
-) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+task_priority,
+task_is_long_term
+) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 update:
 UPDATE Task
@@ -46,8 +48,12 @@ task_creation_date = ?,
 task_completed_date = ?,
 task_is_repeating = ?,
 task_alarm_interval = ?,
-task_priority = ?
+task_priority = ?,
+task_is_long_term = ?
 WHERE task_id = ?;
+
+selectLongTermTask:
+SELECT * FROM Task WHERE task_is_long_term = 1;
 
 delete:
 DELETE FROM Task WHERE task_id = ?;

@@ -78,6 +78,7 @@ internal class TaskListTest : AlkaaTest() {
             AlkaaThemePreview {
                 TaskListScaffold(
                     taskViewState = state,
+                    longTermTask = null,
                     categoryViewState = CategoryState.Loaded(persistentListOf()),
                     onFabClick = {},
                     onTaskCheckedChange = {},

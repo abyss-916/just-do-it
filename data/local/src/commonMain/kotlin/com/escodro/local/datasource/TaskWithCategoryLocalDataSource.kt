@@ -5,6 +5,7 @@ import com.escodro.local.mapper.TaskWithCategoryMapper
 import com.escodro.repository.datasource.TaskWithCategoryDataSource
 import com.escodro.repository.model.TaskWithCategory
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 /**
@@ -20,4 +21,8 @@ internal class TaskWithCategoryLocalDataSource(
 
     override fun findAllTasksWithCategoryId(categoryId: Long): Flow<List<TaskWithCategory>> =
         taskWithCategoryDao.findAllTasksWithCategoryId(categoryId).map { mapper.toRepo(it) }
+
+    override suspend fun findLongTermTask(): TaskWithCategory? =
+        taskWithCategoryDao.findLongTermTask().first()
+            ?.let { mapper.toRepo(listOf(it)).firstOrNull() }
 }

@@ -32,6 +32,7 @@ internal class TaskDaoImpl(
                 task_is_repeating = task.task_is_repeating,
                 task_alarm_interval = task.task_alarm_interval,
                 task_priority = task.task_priority,
+                task_is_long_term = task.task_is_long_term,
             )
             taskQueries.lastInsertedId().executeAsOne()
         }
@@ -50,10 +51,14 @@ internal class TaskDaoImpl(
                 task_is_repeating = task_is_repeating,
                 task_alarm_interval = task_alarm_interval,
                 task_priority = task_priority,
+                task_is_long_term = task_is_long_term,
                 task_id = task_id,
             )
         }
     }
+
+    override suspend fun findLongTermTask(): Task? =
+        taskQueries.selectLongTermTask().executeAsOneOrNull()
 
     override suspend fun deleteTask(task: Task) {
         taskQueries.delete(task.task_id)

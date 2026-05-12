@@ -2,18 +2,33 @@ selectAllTasksWithCategory:
 SELECT task.*, category.* FROM Task task
 LEFT JOIN Category category
 ON task_category_id = category_id
-ORDER BY task.task_priority DESC, task.task_creation_date ASC, task.task_is_completed;
+ORDER BY task.task_priority DESC,
+    CASE WHEN task_due_date IS NULL THEN 1 ELSE 0 END,
+    task_due_date ASC,
+    task.task_is_completed;
 
 selectAllTasksWithCategoryId:
 SELECT task.*, category.* FROM Task task
 LEFT JOIN Category category
 ON task_category_id = category_id
 WHERE task_category_id = ?
-ORDER BY task.task_priority DESC, task.task_creation_date ASC, task.task_is_completed;
+ORDER BY task.task_priority DESC,
+    CASE WHEN task_due_date IS NULL THEN 1 ELSE 0 END,
+    task_due_date ASC,
+    task.task_is_completed;
+
+selectLongTermTask:
+SELECT task.*, category.* FROM Task task
+LEFT JOIN Category category
+ON task_category_id = category_id
+WHERE task_is_long_term = 1;
 
 selectTaskByName:
 SELECT * FROM Task task
 LEFT JOIN Category category
 ON task_category_id = category_id
 WHERE task_title LIKE :query
-ORDER BY task.task_priority DESC, task.task_creation_date ASC, task_is_completed;
+ORDER BY task.task_priority DESC,
+    CASE WHEN task_due_date IS NULL THEN 1 ELSE 0 END,
+    task_due_date ASC,
+    task_is_completed;

@@ -50,4 +50,11 @@ interface TaskDao {
      * @return selected task
      */
     suspend fun getTaskById(taskId: Long): Task?
+
+    /**
+     * Get the long-term task (if any).
+     *
+     * @return the long-term task or null
+     */
+    suspend fun findLongTermTask(): Task?
 }

@@ -1,17 +1,33 @@
 package com.escodro.task.presentation.add
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material3.Button
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -31,8 +48,16 @@ import com.escodro.categoryapi.presentation.CategoryListViewModel
 import com.escodro.categoryapi.presentation.CategoryState
 import com.escodro.designsystem.components.textfield.AlkaaInputTextField
 import com.escodro.resources.Res
+import com.escodro.resources.default_ok
+import com.escodro.resources.dialog_picker_next
+import com.escodro.resources.task_add_description
+import com.escodro.resources.task_add_due_date
 import com.escodro.resources.task_add_label
+import com.escodro.resources.task_add_long_term
 import com.escodro.resources.task_add_save
+import com.escodro.resources.task_add_set_due_date
+import com.escodro.resources.task_limit_reached
+import com.escodro.resources.task_long_term_exists
 import com.escodro.task.model.AlarmInterval
 import com.escodro.task.model.TaskPriority
 import com.escodro.task.presentation.category.CategorySelection
@@ -41,14 +66,16 @@ import com.escodro.task.presentation.detail.main.CategoryId
 import com.escodro.task.presentation.detail.priority.PrioritySelection
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,7 +93,13 @@ internal fun AddTaskBottomSheet(
             onHideBottomSheet()
         },
     ) {
-        AddTaskBottomSheetContent(onHideBottomSheet = onHideBottomSheet)
+        AddTaskBottomSheetContent(
+            onHideBottomSheet = onHideBottomSheet,
+            onStateConsumed = {
+                scope.launch { sheetState.hide() }
+                onHideBottomSheet()
+            },
+        )
     }
 }
 
@@ -77,9 +110,52 @@ internal fun AddTaskBottomSheetContent(
     categoryViewModel: CategoryListViewModel = koinInject(),
     alarmPermission: AlarmPermission = koinInject(),
     onHideBottomSheet: () -> Unit,
+    onStateConsumed: () -> Unit = onHideBottomSheet,
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    val snackbarMessage = when (addTaskViewModel.state) {
+        is AddTaskState.TaskLimitReached -> stringResource(Res.string.task_limit_reached)
+        is AddTaskState.LongTermTaskExists -> stringResource(Res.string.task_long_term_exists)
+        else -> null
+    }
+
+    LaunchedEffect(snackbarMessage) {
+        snackbarMessage?.let { message ->
+            snackbarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short,
+            )
+            addTaskViewModel.consumeState()
+        }
+    }
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+    ) { paddingValues ->
+        AddTaskBottomSheetInnerContent(
+            addTaskViewModel = addTaskViewModel,
+            categoryViewModel = categoryViewModel,
+            alarmPermission = alarmPermission,
+            onHideBottomSheet = onHideBottomSheet,
+            onStateConsumed = onStateConsumed,
+            modifier = Modifier.padding(paddingValues),
+        )
+    }
+}
+
+@Suppress("LongMethod")
+@Composable
+private fun AddTaskBottomSheetInnerContent(
+    addTaskViewModel: AddTaskViewModel,
+    categoryViewModel: CategoryListViewModel,
+    alarmPermission: AlarmPermission,
+    onHideBottomSheet: () -> Unit,
+    onStateConsumed: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .fillMaxWidth(0.5f)
             .background(MaterialTheme.colorScheme.surface)
@@ -89,8 +165,10 @@ internal fun AddTaskBottomSheetContent(
         var taskInputText: String by rememberSaveable { mutableStateOf("") }
         var taskDescription: String by rememberSaveable { mutableStateOf("") }
         var taskDueDate: Long? by rememberSaveable { mutableStateOf(null) }
+        var showDueDatePicker: Boolean by rememberSaveable { mutableStateOf(false) }
         var alarmInterval: AlarmInterval by rememberSaveable { mutableStateOf(AlarmInterval.NEVER) }
         var taskPriority: TaskPriority by rememberSaveable { mutableStateOf(TaskPriority.NONE) }
+        var isLongTerm: Boolean by rememberSaveable { mutableStateOf(false) }
         val categoryState by remember(categoryViewModel) {
             categoryViewModel
         }.loadCategories().collectAsState(initial = CategoryState.Empty)
@@ -112,7 +190,7 @@ internal fun AddTaskBottomSheetContent(
         )
 
         AlkaaInputTextField(
-            label = "Description",
+            label = stringResource(Res.string.task_add_description),
             text = taskDescription,
             onTextChange = { text -> taskDescription = text },
             modifier = Modifier.fillMaxWidth(),
@@ -129,6 +207,17 @@ internal fun AddTaskBottomSheetContent(
             currentPriority = taskPriority,
             onPriorityChange = { taskPriority = it },
             contentPadding = PaddingValues(horizontal = 8.dp),
+        )
+
+        DueDateSelectionRow(
+            dueDateMillis = taskDueDate,
+            onDueDateClick = { showDueDatePicker = true },
+            onDueDateRemove = { taskDueDate = null },
+        )
+
+        LongTermToggle(
+            isLongTerm = isLongTerm,
+            onLongTermChange = { isLongTerm = it },
         )
 
         AlarmSelection(
@@ -154,10 +243,13 @@ internal fun AddTaskBottomSheetContent(
                     dueDate = getLocalDateTimeFromEpoch(taskDueDate),
                     alarmInterval = alarmInterval,
                     priority = taskPriority,
+                    isLongTerm = isLongTerm,
                 )
                 taskInputText = ""
                 taskDescription = ""
                 taskPriority = TaskPriority.NONE
+                taskDueDate = null
+                isLongTerm = false
                 onHideBottomSheet()
             },
         ) {
@@ -166,12 +258,130 @@ internal fun AddTaskBottomSheetContent(
                 style = MaterialTheme.typography.bodyLarge,
             )
         }
+
+        if (showDueDatePicker) {
+            DueDatePickerDialog(
+                onDismiss = { showDueDatePicker = false },
+                onDateSelected = { millis ->
+                    taskDueDate = millis
+                    showDueDatePicker = false
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun DueDateSelectionRow(
+    dueDateMillis: Long?,
+    onDueDateClick: () -> Unit,
+    onDueDateRemove: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
+            .clickable(onClick = onDueDateClick)
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.CalendarMonth,
+            contentDescription = stringResource(Res.string.task_add_set_due_date),
+            modifier = Modifier.width(24.dp),
+        )
+        Text(
+            text = if (dueDateMillis != null) {
+                epochToLocalDate(dueDateMillis).toString()
+            } else {
+                stringResource(Res.string.task_add_set_due_date)
+            },
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 8.dp),
+        )
+        if (dueDateMillis != null) {
+            TextButton(onClick = onDueDateRemove) {
+                Text(text = stringResource(Res.string.default_ok))
+            }
+        }
+    }
+}
+
+@Composable
+private fun LongTermToggle(
+    isLongTerm: Boolean,
+    onLongTermChange: (Boolean) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Flag,
+                contentDescription = null,
+                modifier = Modifier.width(24.dp),
+            )
+            Text(
+                text = stringResource(Res.string.task_add_long_term),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(start = 8.dp),
+            )
+        }
+        Switch(
+            checked = isLongTerm,
+            onCheckedChange = onLongTermChange,
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DueDatePickerDialog(
+    onDismiss: () -> Unit,
+    onDateSelected: (Long?) -> Unit,
+) {
+    val datePickerState = rememberDatePickerState()
+    DatePickerDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = {
+                onDateSelected(datePickerState.selectedDateMillis)
+            }) {
+                Text(text = stringResource(Res.string.dialog_picker_next))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(Res.string.default_ok))
+            }
+        },
+    ) {
+        DatePicker(state = datePickerState)
     }
 }
 
 @OptIn(ExperimentalTime::class)
+private fun epochToLocalDate(epoch: Long): LocalDate =
+    Instant.fromEpochMilliseconds(epoch).toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+@OptIn(ExperimentalTime::class)
 private fun getLocalDateTimeFromEpoch(epoch: Long?): LocalDateTime? = epoch?.let {
-    Instant.fromEpochMilliseconds(it).toLocalDateTime(TimeZone.currentSystemDefault())
+    val localDate = Instant.fromEpochMilliseconds(it).toLocalDateTime(TimeZone.currentSystemDefault())
+    LocalDateTime(
+        year = localDate.year,
+        month = localDate.month,
+        day = localDate.day,
+        hour = 23,
+        minute = 59,
+    )
 }
 
 @OptIn(ExperimentalTime::class)

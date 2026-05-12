@@ -37,6 +37,10 @@
 
     <string name="task_add_save">添加</string>
     <string name="task_add_label">任务</string>
+    <string name="task_add_description">描述</string>
+    <string name="task_add_set_due_date">设置截止日期</string>
+    <string name="task_add_due_date">截止日期</string>
+    <string name="task_add_long_term">每日专注任务</string>
 
     <string name="task_priority_none">无</string>
     <string name="task_priority_low">低</string>
@@ -44,8 +48,15 @@
     <string name="task_priority_high">高</string>
     <string name="task_detail_cd_icon_priority">优先级</string>
 
+    <string name="task_long_term_label">长期任务</string>
+    <string name="task_long_term_set_as">设为长期任务</string>
+    <string name="task_list_header_long_term">每日专注</string>
+
     <string name="task_snackbar_message_complete">任务已完成</string>
     <string name="task_snackbar_button_undo">撤销</string>
+
+    <string name="task_limit_reached">已达任务上限（100条）</string>
+    <string name="task_long_term_exists">已有一条每日专注任务</string>
 
     <string name="task_alarm_permission_dialog_title">闹钟和提醒</string>
     <string name="task_alarm_permission_dialog_text">要让闹钟正常工作，just do it 需要设置闹钟和提醒的权限。如果未授予此权限，现有的闹钟也将失效。</string>

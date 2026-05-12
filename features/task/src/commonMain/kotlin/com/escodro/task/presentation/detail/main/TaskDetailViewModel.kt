@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.escodro.coroutines.AppCoroutineScope
 import com.escodro.coroutines.CoroutineDebouncer
 import com.escodro.domain.usecase.task.LoadTask
+import com.escodro.domain.usecase.task.SetAsLongTerm
+import com.escodro.domain.usecase.task.UnsetAsLongTerm
 import com.escodro.domain.usecase.task.UpdateTaskCategory
 import com.escodro.domain.usecase.task.UpdateTaskDescription
 import com.escodro.domain.usecase.task.UpdateTaskPriority
@@ -22,6 +24,8 @@ internal class TaskDetailViewModel(
     private val updateTaskDescription: UpdateTaskDescription,
     private val updateTaskCategory: UpdateTaskCategory,
     private val updateTaskPriority: UpdateTaskPriority,
+    private val setAsLongTerm: SetAsLongTerm,
+    private val unsetAsLongTerm: UnsetAsLongTerm,
     private val coroutineDebouncer: CoroutineDebouncer,
     private val applicationScope: AppCoroutineScope,
     private val taskMapper: TaskMapper,
@@ -59,5 +63,14 @@ internal class TaskDetailViewModel(
     fun updatePriority(taskId: TaskId, priority: TaskPriority) =
         applicationScope.launch {
             updateTaskPriority(taskId = taskId.value, priority = taskPriorityMapper.toDomain(priority))
+        }
+
+    fun toggleLongTerm(taskId: TaskId, isLongTerm: Boolean) =
+        applicationScope.launch {
+            if (isLongTerm) {
+                setAsLongTerm(taskId.value)
+            } else {
+                unsetAsLongTerm()
+            }
         }
 }

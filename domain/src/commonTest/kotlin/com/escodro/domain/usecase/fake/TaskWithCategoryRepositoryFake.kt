@@ -36,4 +36,6 @@ internal class TaskWithCategoryRepositoryFake(
         }
         return categoryRepository.findCategoryById(categoryId)
     }
+
+    override suspend fun findLongTermTask(): TaskWithCategory? = null
 }

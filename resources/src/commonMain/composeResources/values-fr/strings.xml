@@ -37,6 +37,10 @@
 
     <string name="task_add_save">Ajouter</string>
     <string name="task_add_label">Tâche</string>
+    <string name="task_add_description">Description</string>
+    <string name="task_add_set_due_date">Définir une date limite</string>
+    <string name="task_add_due_date">Date limite</string>
+    <string name="task_add_long_term">Tâche quotidienne prioritaire</string>
 
     <string name="task_priority_none">Aucune</string>
     <string name="task_priority_low">Basse</string>
@@ -44,8 +48,15 @@
     <string name="task_priority_high">Haute</string>
     <string name="task_detail_cd_icon_priority">Priorité</string>
 
+    <string name="task_long_term_label">Tâche à long terme</string>
+    <string name="task_long_term_set_as">Définir comme tâche à long terme</string>
+    <string name="task_list_header_long_term">Focus quotidien</string>
+
     <string name="task_snackbar_message_complete">Tâche terminée</string>
     <string name="task_snackbar_button_undo">Annuler</string>
+
+    <string name="task_limit_reached">Maximum de 100 tâches atteint</string>
+    <string name="task_long_term_exists">Une tâche quotidienne prioritaire existe déjà</string>
 
     <string name="task_alarm_permission_dialog_title">Alarmes et rappels</string>
     <string name="task_alarm_permission_dialog_text">Pour que les alarmes fonctionnent, just do it a besoin de la permission de définir des alarmes et des rappels. Si cette permission n'est pas accordée, les alarmes existantes ne fonctionneront pas non plus.</string>

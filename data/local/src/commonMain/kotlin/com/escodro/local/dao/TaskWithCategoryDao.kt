@@ -32,4 +32,11 @@ interface TaskWithCategoryDao {
      * @return the list of tasks that match the given query
      */
     fun findTaskByName(query: String): Flow<List<TaskWithCategory>>
+
+    /**
+     * Get the long-term task with category (if any).
+     *
+     * @return the long-term task with category or null
+     */
+    fun findLongTermTask(): Flow<TaskWithCategory?>
 }

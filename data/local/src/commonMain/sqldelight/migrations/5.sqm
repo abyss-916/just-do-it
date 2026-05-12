@@ -1,0 +1,1 @@
+ALTER TABLE Task ADD COLUMN task_is_long_term INTEGER AS Boolean NOT NULL DEFAULT 0;

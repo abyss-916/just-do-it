@@ -29,4 +29,5 @@ data class Task(
     val isRepeating: Boolean = false,
     val alarmInterval: AlarmInterval? = null,
     val priority: TaskPriority? = null,
+    val isLongTerm: Boolean = false,
 )

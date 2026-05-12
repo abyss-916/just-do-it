@@ -31,5 +31,6 @@ internal class TaskMapper(
             isRepeating = domainTask.isRepeating,
             alarmInterval = alarmIntervalMapper.toViewData(domainTask.alarmInterval),
             priority = taskPriorityMapper.toViewData(domainTask.priority),
+            isLongTerm = domainTask.isLongTerm,
         )
 }

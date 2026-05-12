@@ -13,6 +13,7 @@ internal data class TaskDetailActions(
     val onDescriptionChange: (String) -> Unit = {},
     val onCategoryChange: (CategoryId) -> Unit = {},
     val onPriorityChange: (TaskPriority) -> Unit = {},
+    val onLongTermToggle: (Boolean) -> Unit = {},
     val onAlarmChange: (LocalDateTime?) -> Unit = {},
     val onIntervalChange: (AlarmInterval) -> Unit = {},
     val hasExactAlarmPermission: () -> Boolean = { false },

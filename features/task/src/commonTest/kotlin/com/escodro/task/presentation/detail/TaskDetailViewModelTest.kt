@@ -3,6 +3,7 @@ package com.escodro.task.presentation.detail
 import com.escodro.coroutines.AppCoroutineScope
 import com.escodro.task.mapper.AlarmIntervalMapper
 import com.escodro.task.mapper.TaskMapper
+import com.escodro.task.mapper.TaskPriorityMapper
 import com.escodro.task.presentation.detail.main.CategoryId
 import com.escodro.task.presentation.detail.main.TaskDetailState
 import com.escodro.task.presentation.detail.main.TaskDetailViewModel
@@ -10,8 +11,11 @@ import com.escodro.task.presentation.detail.main.TaskId
 import com.escodro.task.presentation.fake.CoroutinesDebouncerFake
 import com.escodro.task.presentation.fake.FAKE_DOMAIN_TASK
 import com.escodro.task.presentation.fake.LoadTaskFake
+import com.escodro.task.presentation.fake.SetAsLongTermFake
+import com.escodro.task.presentation.fake.UnsetAsLongTermFake
 import com.escodro.task.presentation.fake.UpdateTaskCategoryFake
 import com.escodro.task.presentation.fake.UpdateTaskDescriptionFake
+import com.escodro.task.presentation.fake.UpdateTaskPriorityFake
 import com.escodro.task.presentation.fake.UpdateTaskTitleFake
 import com.escodro.test.rule.CoroutinesTestDispatcher
 import com.escodro.test.rule.CoroutinesTestDispatcherImpl
@@ -33,14 +37,26 @@ internal class TaskDetailViewModelTest :
 
     private val updateTaskCategory = UpdateTaskCategoryFake()
 
-    private val taskMapper = TaskMapper(AlarmIntervalMapper())
+    private val updateTaskPriority = UpdateTaskPriorityFake()
+
+    private val setAsLongTerm = SetAsLongTermFake()
+
+    private val unsetAsLongTerm = UnsetAsLongTermFake()
+
+    private val taskMapper = TaskMapper(AlarmIntervalMapper(), TaskPriorityMapper())
+
+    private val taskPriorityMapper = TaskPriorityMapper()
 
     private val viewModel = TaskDetailViewModel(
         loadTaskUseCase = loadTask,
         updateTaskTitle = updateTaskTitle,
         updateTaskDescription = updateDescription,
         updateTaskCategory = updateTaskCategory,
+        updateTaskPriority = updateTaskPriority,
+        setAsLongTerm = setAsLongTerm,
+        unsetAsLongTerm = unsetAsLongTerm,
         taskMapper = taskMapper,
+        taskPriorityMapper = taskPriorityMapper,
         coroutineDebouncer = CoroutinesDebouncerFake(),
         applicationScope = AppCoroutineScope(context = testDispatcher()),
     )

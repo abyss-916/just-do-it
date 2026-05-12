@@ -41,6 +41,8 @@ import com.escodro.domain.usecase.task.UpdateTaskDescription
 import com.escodro.domain.usecase.task.UpdateTaskPriority
 import com.escodro.domain.usecase.task.UpdateTaskStatus
 import com.escodro.domain.usecase.task.UpdateTaskTitle
+import com.escodro.domain.usecase.task.SetAsLongTerm
+import com.escodro.domain.usecase.task.UnsetAsLongTerm
 import com.escodro.domain.usecase.task.implementation.AddTaskImpl
 import com.escodro.domain.usecase.task.implementation.LoadTaskImpl
 import com.escodro.domain.usecase.task.implementation.UpdateTaskCategoryImpl
@@ -49,8 +51,14 @@ import com.escodro.domain.usecase.task.implementation.UpdateTaskImpl
 import com.escodro.domain.usecase.task.implementation.UpdateTaskPriorityImpl
 import com.escodro.domain.usecase.task.implementation.UpdateTaskStatusImpl
 import com.escodro.domain.usecase.task.implementation.UpdateTaskTitleImpl
+import com.escodro.domain.usecase.task.implementation.SetAsLongTermImpl
+import com.escodro.domain.usecase.task.implementation.UnsetAsLongTermImpl
+import com.escodro.domain.usecase.taskwithcategory.CountUncompletedTasks
 import com.escodro.domain.usecase.taskwithcategory.LoadCompletedTasks
+import com.escodro.domain.usecase.taskwithcategory.LoadLongTermTask
 import com.escodro.domain.usecase.taskwithcategory.LoadUncompletedTasks
+import com.escodro.domain.usecase.taskwithcategory.implementation.CountUncompletedTasksImpl
+import com.escodro.domain.usecase.taskwithcategory.implementation.LoadLongTermTaskImpl
 import com.escodro.domain.usecase.taskwithcategory.implementation.LoadUncompletedTasksImpl
 import com.escodro.domain.usecase.tracker.LoadCompletedTasksByPeriod
 import com.escodro.domain.usecase.tracker.implementation.LoadCompletedTasksByPeriodImpl
@@ -95,6 +103,8 @@ val domainModule = module {
     factoryOf(::UpdateTaskDescriptionImpl) bind UpdateTaskDescription::class
     factoryOf(::UpdateTaskCategoryImpl) bind UpdateTaskCategory::class
     factoryOf(::UpdateTaskPriorityImpl) bind UpdateTaskPriority::class
+    factory<SetAsLongTerm> { SetAsLongTermImpl(get(), get(), get(), get()) }
+    factory<UnsetAsLongTerm> { UnsetAsLongTermImpl(get(), get()) }
 
     // Category Use Cases
     factoryOf(::DeleteCategoryImpl) bind DeleteCategory::class
@@ -109,6 +119,8 @@ val domainModule = module {
     // Task With Category Use Cases
     factoryOf(::LoadCompletedTasks)
     factoryOf(::LoadUncompletedTasksImpl) bind LoadUncompletedTasks::class
+    factoryOf(::LoadLongTermTaskImpl) bind LoadLongTermTask::class
+    factoryOf(::CountUncompletedTasksImpl) bind CountUncompletedTasks::class
 
     // Alarm Use Cases
     factoryOf(::CancelAlarmImpl) bind CancelAlarm::class

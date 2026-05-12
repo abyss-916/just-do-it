@@ -37,6 +37,10 @@
 
     <string name="task_add_save">Adicionar</string>
     <string name="task_add_label">Tarefa</string>
+    <string name="task_add_description">Descrição</string>
+    <string name="task_add_set_due_date">Definir data limite</string>
+    <string name="task_add_due_date">Data limite</string>
+    <string name="task_add_long_term">Tarefa de foco diário</string>
 
     <string name="task_priority_none">Nenhuma</string>
     <string name="task_priority_low">Baixa</string>
@@ -44,8 +48,15 @@
     <string name="task_priority_high">Alta</string>
     <string name="task_detail_cd_icon_priority">Prioridade</string>
 
+    <string name="task_long_term_label">Tarefa de longo prazo</string>
+    <string name="task_long_term_set_as">Definir como tarefa de longo prazo</string>
+    <string name="task_list_header_long_term">Foco diário</string>
+
     <string name="task_snackbar_message_complete">Tarefa finalizada</string>
     <string name="task_snackbar_button_undo">Desfazer</string>
+
+    <string name="task_limit_reached">Limite de 100 tarefas atingido</string>
+    <string name="task_long_term_exists">Já existe uma tarefa de foco diário</string>
 
     <string name="task_alarm_permission_dialog_confirm">Dar permissão</string>
     <string name="task_alarm_permission_dialog_cancel">Agora não</string>
