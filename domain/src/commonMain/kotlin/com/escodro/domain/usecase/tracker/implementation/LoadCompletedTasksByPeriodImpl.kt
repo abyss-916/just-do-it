@@ -29,6 +29,7 @@ internal class LoadCompletedTasksByPeriodImpl(
             .map { list ->
                 list
                     .filter { item -> item.task.isCompleted }
+                    .filter { item -> !item.task.isLongTerm }
                     .filter(::filterByLastMonth)
             }
 

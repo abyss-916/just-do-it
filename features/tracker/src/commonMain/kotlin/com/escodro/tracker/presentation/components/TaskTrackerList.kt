@@ -20,6 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.escodro.resources.Res
+import com.escodro.resources.category_default_personal
+import com.escodro.resources.category_default_shopping
+import com.escodro.resources.category_default_work
 import com.escodro.resources.tracker_cp_item_icon
 import com.escodro.resources.tracker_name_no_category
 import com.escodro.tracker.model.Tracker
@@ -42,7 +45,7 @@ internal fun TaskTrackerList(
 @Suppress("MagicNumber")
 private fun TrackerItem(item: Tracker.CategoryInfo) {
     val tint = item.color?.let { Color(it) } ?: MaterialTheme.colorScheme.outline
-    val name = item.name ?: stringResource(Res.string.tracker_name_no_category)
+    val name = localizedCategoryName(item.name)
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -67,3 +70,13 @@ private fun TrackerItem(item: Tracker.CategoryInfo) {
         )
     }
 }
+
+@Composable
+private fun localizedCategoryName(storedName: String?): String =
+    when (storedName) {
+        null -> stringResource(Res.string.tracker_name_no_category)
+        "Personal" -> stringResource(Res.string.category_default_personal)
+        "Work" -> stringResource(Res.string.category_default_work)
+        "Shopping List" -> stringResource(Res.string.category_default_shopping)
+        else -> storedName
+    }
