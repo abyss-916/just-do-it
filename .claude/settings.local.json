@@ -76,7 +76,20 @@
       "Bash(./gradlew :features:task:check)",
       "Bash(./gradlew :features:task:ktlintFormat)",
       "Bash(./gradlew :features:task:detektMainAndroid)",
-      "Bash(./gradlew :features:task:compileDesktopMain)"
+      "Bash(./gradlew :features:task:compileDesktopMain)",
+      "PowerShell(New-Item *)",
+      "PowerShell(Copy-Item *)",
+      "PowerShell(.\\\\gradlew :desktop-app:assemble --no-daemon 2>&1 | Select-Object -Last 5)",
+      "PowerShell(.\\\\gradlew :features:task:compileKotlinDesktop --no-daemon 2>&1 | Select-Object -Last 3)",
+      "PowerShell(.\\\\gradlew :app:assembleDebug --no-daemon 2>&1 | Select-Object -Last 5)",
+      "PowerShell(.\\\\gradlew :resources:assemble --no-daemon 2>&1 | Select-Object -Last 3)",
+      "PowerShell(.\\\\gradlew :features:task:desktopTest --no-daemon 2>&1 | Select-Object -Last 5)",
+      "PowerShell(.\\\\gradlew :desktop-app:run --no-daemon 2>&1 | Select-Object -Last 10)",
+      "PowerShell(.\\\\gradlew :desktop-app:run --no-daemon 2>&1 | Select-Object -Last 5)",
+      "PowerShell(.\\\\gradlew :desktop-app:check --no-daemon 2>&1 | Select-Object -Last 5)",
+      "PowerShell(.\\\\gradlew :desktop-app:assemble :app:assembleDebug --no-daemon 2>&1 | Select-Object -Last 5)",
+      "PowerShell(git fetch *)",
+      "PowerShell(git add *)"
     ]
   }
 }

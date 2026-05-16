@@ -43,7 +43,8 @@ freeline_project_description.json
 # Kotlin
 .kotlin
 
-# AI generated files
+# AI assistant local files
+.claude/
 /.output.txt
 *.DS_Store
 
