@@ -36,6 +36,7 @@
     <string name="task_alarm_repeating_yearly">Chaque année</string>
 
     <string name="task_add_save">Ajouter</string>
+    <string name="task_add_cancel">Annuler</string>
     <string name="task_add_label">Tâche</string>
     <string name="task_add_description">Description</string>
     <string name="task_add_set_due_date">Définir une date limite</string>
@@ -51,6 +52,20 @@
     <string name="task_long_term_label">Tâche à long terme</string>
     <string name="task_long_term_set_as">Définir comme tâche à long terme</string>
     <string name="task_list_header_long_term">Focus quotidien</string>
+    <string name="task_long_term_completed_today">Terminé aujourd\'hui</string>
+
+    <string name="long_term_task_manage">Gérer</string>
+    <string name="long_term_task_add">Ajouter</string>
+    <string name="long_term_task_add_exists_warning">Une tâche de focus quotidien existe déjà. Supprimez-la d'abord pour en ajouter une nouvelle.</string>
+    <string name="long_term_task_delete_no_task_warning">Il n'y a aucune tâche de long terme à supprimer.</string>
+    <string name="long_term_task_no_task">Aucune tâche de long terme</string>
+    <string name="long_term_task_title">Tâche de long terme</string>
+    <string name="long_term_task_edit">Modifier la tâche de long terme</string>
+    <string name="long_term_task_delete">Supprimer</string>
+    <string name="long_term_task_delete_confirm">Tâche de long terme supprimée</string>
+    <string name="long_term_task_exists">Une tâche de long terme existe déjà</string>
+
+    <string name="task_list_header_regular">Tâches</string>
 
     <string name="task_snackbar_message_complete">Tâche terminée</string>
     <string name="task_snackbar_button_undo">Annuler</string>
@@ -139,6 +154,7 @@
     <string name="dialog_picker_confirm">Confirmer</string>
 
     <string name="default_ok">OK</string>
+    <string name="long_term_task_back">Retour</string>
 
     <!-- Kuvio Design System -->
     <string name="kuvio_add_task_bar_placeholder">Ajouter une t\u00e2che\u2026</string>
@@ -156,7 +172,13 @@
     <string name="language_portuguese">Português</string>
     <string name="language_chinese">中文</string>
 
-    <!-- Relative Date -->
+    <!-- Relative Date (date only, no time) -->
+    <string name="relative_date_today">aujourd\'hui</string>
+    <string name="relative_date_tomorrow">demain</string>
+    <string name="relative_date_yesterday">hier</string>
+    <string name="relative_date_days">dans %d jours</string>
+
+    <!-- Relative Date Time (date + time) -->
     <string name="relative_date_time_just_now">à l'instant</string>
     <string name="relative_date_time_one_minute">il y a 1 minute</string>
     <string name="relative_date_time_minutes">il y a %d minutes</string>

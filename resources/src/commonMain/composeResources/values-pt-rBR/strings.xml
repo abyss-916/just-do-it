@@ -36,6 +36,7 @@
     <string name="task_alarm_repeating_yearly">Anualmente</string>
 
     <string name="task_add_save">Adicionar</string>
+    <string name="task_add_cancel">Cancelar</string>
     <string name="task_add_label">Tarefa</string>
     <string name="task_add_description">Descrição</string>
     <string name="task_add_set_due_date">Definir data limite</string>
@@ -51,6 +52,20 @@
     <string name="task_long_term_label">Tarefa de longo prazo</string>
     <string name="task_long_term_set_as">Definir como tarefa de longo prazo</string>
     <string name="task_list_header_long_term">Foco diário</string>
+    <string name="task_long_term_completed_today">Concluída hoje</string>
+
+    <string name="long_term_task_manage">Gerenciar</string>
+    <string name="long_term_task_add">Adicionar</string>
+    <string name="long_term_task_add_exists_warning">Já existe uma tarefa de foco diário. Exclua-a primeiro para adicionar uma nova.</string>
+    <string name="long_term_task_delete_no_task_warning">Não há tarefa de longo prazo para excluir.</string>
+    <string name="long_term_task_no_task">Nenhuma tarefa de longo prazo</string>
+    <string name="long_term_task_title">Tarefa de longo prazo</string>
+    <string name="long_term_task_edit">Editar tarefa de longo prazo</string>
+    <string name="long_term_task_delete">Excluir</string>
+    <string name="long_term_task_delete_confirm">Tarefa de longo prazo excluída</string>
+    <string name="long_term_task_exists">Já existe uma tarefa de longo prazo</string>
+
+    <string name="task_list_header_regular">Tarefas</string>
 
     <string name="task_snackbar_message_complete">Tarefa finalizada</string>
     <string name="task_snackbar_button_undo">Desfazer</string>
@@ -136,6 +151,7 @@
     <string name="dialog_picker_confirm">Confirmar</string>
 
     <string name="default_ok">OK</string>
+    <string name="long_term_task_back">Voltar</string>
 
     <!-- Kuvio Design System -->
     <string name="kuvio_add_task_bar_placeholder">Adicionar uma tarefa\u2026</string>
@@ -153,7 +169,13 @@
     <string name="language_portuguese">Português</string>
     <string name="language_chinese">中文</string>
 
-    <!-- Relative Date -->
+    <!-- Relative Date (date only, no time) -->
+    <string name="relative_date_today">hoje</string>
+    <string name="relative_date_tomorrow">amanhã</string>
+    <string name="relative_date_yesterday">ontem</string>
+    <string name="relative_date_days">%d dias</string>
+
+    <!-- Relative Date Time (date + time) -->
     <string name="relative_date_time_just_now">agora</string>
     <string name="relative_date_time_one_minute">há 1 minuto</string>
     <string name="relative_date_time_minutes">há %d minutos</string>

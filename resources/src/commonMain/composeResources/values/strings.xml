@@ -19,12 +19,16 @@
     <string name="task_detail_cd_icon_category">Categories</string>
     <string name="task_detail_cd_icon_description">Description</string>
     <string name="task_detail_cd_icon_alarm">Alarm</string>
+    <string name="task_detail_cd_icon_due_date">Due date</string>
     <string name="task_detail_cd_icon_remove_alarm">Remove alarm</string>
     <string name="task_detail_cd_icon_repeat_alarm">Repeating alarm</string>
 
     <string name="task_detail_category_empty_list">No categories</string>
 
     <string name="task_detail_alarm_no_alarm">No alarm</string>
+
+    <string name="task_detail_due_date_no_date">No due date</string>
+    <string name="task_detail_set_due_date">Set due date</string>
 
     <string name="task_detail_pane_title">Select a task to see the details</string>
 
@@ -36,6 +40,7 @@
     <string name="task_alarm_repeating_yearly">Every year</string>
 
     <string name="task_add_save">Add</string>
+    <string name="task_add_cancel">Cancel</string>
     <string name="task_add_label">Task</string>
     <string name="task_add_description">Description</string>
     <string name="task_add_set_due_date">Set due date</string>
@@ -51,6 +56,20 @@
     <string name="task_long_term_label">Long-term task</string>
     <string name="task_long_term_set_as">Set as long-term</string>
     <string name="task_list_header_long_term">Daily focus</string>
+    <string name="task_long_term_completed_today">Completed today</string>
+
+    <string name="long_term_task_manage">Manage</string>
+    <string name="long_term_task_add">Add</string>
+    <string name="long_term_task_add_exists_warning">A daily focus task already exists. Delete it first to add a new one.</string>
+    <string name="long_term_task_delete_no_task_warning">There is no long-term task to delete.</string>
+    <string name="long_term_task_no_task">No long-term task</string>
+    <string name="long_term_task_title">Long-term task</string>
+    <string name="long_term_task_edit">Edit long-term task</string>
+    <string name="long_term_task_delete">Delete</string>
+    <string name="long_term_task_delete_confirm">Long-term task deleted</string>
+    <string name="long_term_task_exists">A long-term task already exists</string>
+
+    <string name="task_list_header_regular">Tasks</string>
 
     <string name="task_snackbar_message_complete">Task completed</string>
     <string name="task_snackbar_button_undo">Undo</string>
@@ -139,6 +158,7 @@
     <string name="dialog_picker_confirm">Confirm</string>
 
     <string name="default_ok">OK</string>
+    <string name="long_term_task_back">Back</string>
 
     <!-- Kuvio Design System -->
     <string name="kuvio_add_task_bar_placeholder">Add a task\u2026</string>
@@ -182,7 +202,13 @@
     <string name="language_portuguese">Português</string>
     <string name="language_chinese">中文</string>
 
-    <!-- Relative Date -->
+    <!-- Relative Date (date only, no time) -->
+    <string name="relative_date_today">today</string>
+    <string name="relative_date_tomorrow">tomorrow</string>
+    <string name="relative_date_yesterday">yesterday</string>
+    <string name="relative_date_days">%d days from now</string>
+
+    <!-- Relative Date Time (date + time) -->
     <string name="relative_date_time_just_now">just now</string>
     <string name="relative_date_time_one_minute">1 minute ago</string>
     <string name="relative_date_time_minutes">%d minutes ago</string>

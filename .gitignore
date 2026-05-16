@@ -51,3 +51,7 @@ freeline_project_description.json
 plugins/build/
 detekt/
 **/generated/
+
+# Local files
+figures/
+ppt/

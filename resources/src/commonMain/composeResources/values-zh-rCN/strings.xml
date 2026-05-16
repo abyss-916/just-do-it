@@ -19,12 +19,16 @@
     <string name="task_detail_cd_icon_category">标签</string>
     <string name="task_detail_cd_icon_description">描述</string>
     <string name="task_detail_cd_icon_alarm">闹钟</string>
+    <string name="task_detail_cd_icon_due_date">截止日期</string>
     <string name="task_detail_cd_icon_remove_alarm">移除闹钟</string>
     <string name="task_detail_cd_icon_repeat_alarm">重复闹钟</string>
 
     <string name="task_detail_category_empty_list">没有标签</string>
 
     <string name="task_detail_alarm_no_alarm">无闹钟</string>
+
+    <string name="task_detail_due_date_no_date">无截止日期</string>
+    <string name="task_detail_set_due_date">设置截止日期</string>
 
     <string name="task_detail_pane_title">选择一个任务查看详情</string>
 
@@ -36,6 +40,7 @@
     <string name="task_alarm_repeating_yearly">每年</string>
 
     <string name="task_add_save">添加</string>
+    <string name="task_add_cancel">取消</string>
     <string name="task_add_label">任务</string>
     <string name="task_add_description">描述</string>
     <string name="task_add_set_due_date">设置截止日期</string>
@@ -51,6 +56,20 @@
     <string name="task_long_term_label">长期任务</string>
     <string name="task_long_term_set_as">设为长期任务</string>
     <string name="task_list_header_long_term">每日专注</string>
+    <string name="task_long_term_completed_today">今日已完成</string>
+
+    <string name="long_term_task_manage">管理</string>
+    <string name="long_term_task_add">添加</string>
+    <string name="long_term_task_add_exists_warning">已存在长期任务，请先删除后再添加。</string>
+    <string name="long_term_task_delete_no_task_warning">当前没有可删除的长期任务。</string>
+    <string name="long_term_task_no_task">无长期任务</string>
+    <string name="long_term_task_title">长期任务</string>
+    <string name="long_term_task_edit">编辑长期任务</string>
+    <string name="long_term_task_delete">删除</string>
+    <string name="long_term_task_delete_confirm">长期任务已删除</string>
+    <string name="long_term_task_exists">已存在长期任务</string>
+
+    <string name="task_list_header_regular">任务</string>
 
     <string name="task_snackbar_message_complete">任务已完成</string>
     <string name="task_snackbar_button_undo">撤销</string>
@@ -139,6 +158,7 @@
     <string name="dialog_picker_confirm">确认</string>
 
     <string name="default_ok">确定</string>
+    <string name="long_term_task_back">返回</string>
 
     <!-- Kuvio Design System -->
     <string name="kuvio_add_task_bar_placeholder">添加任务…</string>
@@ -182,7 +202,13 @@
     <string name="language_portuguese">Português</string>
     <string name="language_chinese">中文</string>
 
-    <!-- Relative Date -->
+    <!-- Relative Date (date only, no time) -->
+    <string name="relative_date_today">今天</string>
+    <string name="relative_date_tomorrow">明天</string>
+    <string name="relative_date_yesterday">昨天</string>
+    <string name="relative_date_days">%d 天后</string>
+
+    <!-- Relative Date Time (date + time) -->
     <string name="relative_date_time_just_now">刚刚</string>
     <string name="relative_date_time_one_minute">1 分钟前</string>
     <string name="relative_date_time_minutes">%d 分钟前</string>

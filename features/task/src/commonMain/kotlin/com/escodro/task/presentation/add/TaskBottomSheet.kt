@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -20,11 +19,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -48,8 +47,8 @@ import com.escodro.categoryapi.presentation.CategoryListViewModel
 import com.escodro.categoryapi.presentation.CategoryState
 import com.escodro.designsystem.components.textfield.AlkaaInputTextField
 import com.escodro.resources.Res
-import com.escodro.resources.default_ok
-import com.escodro.resources.dialog_picker_next
+import com.escodro.resources.dialog_picker_confirm
+import com.escodro.resources.task_add_cancel
 import com.escodro.resources.task_add_description
 import com.escodro.resources.task_add_due_date
 import com.escodro.resources.task_add_label
@@ -66,7 +65,6 @@ import com.escodro.task.presentation.detail.main.CategoryId
 import com.escodro.task.presentation.detail.priority.PrioritySelection
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -75,7 +73,7 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
-import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -116,7 +114,6 @@ internal fun AddTaskBottomSheetContent(
 
     val snackbarMessage = when (addTaskViewModel.state) {
         is AddTaskState.TaskLimitReached -> stringResource(Res.string.task_limit_reached)
-        is AddTaskState.LongTermTaskExists -> stringResource(Res.string.task_long_term_exists)
         else -> null
     }
 
@@ -157,7 +154,6 @@ private fun AddTaskBottomSheetInnerContent(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .fillMaxWidth(0.5f)
             .background(MaterialTheme.colorScheme.surface)
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceAround,
@@ -166,12 +162,11 @@ private fun AddTaskBottomSheetInnerContent(
         var taskDescription: String by rememberSaveable { mutableStateOf("") }
         var taskDueDate: Long? by rememberSaveable { mutableStateOf(null) }
         var showDueDatePicker: Boolean by rememberSaveable { mutableStateOf(false) }
-        var alarmInterval: AlarmInterval by rememberSaveable { mutableStateOf(AlarmInterval.NEVER) }
+        var taskAlarmDate: Long? by rememberSaveable { mutableStateOf(null) }
         var taskPriority: TaskPriority by rememberSaveable { mutableStateOf(TaskPriority.NONE) }
-        var isLongTerm: Boolean by rememberSaveable { mutableStateOf(false) }
         val categoryState by remember(categoryViewModel) {
-            categoryViewModel
-        }.loadCategories().collectAsState(initial = CategoryState.Empty)
+            categoryViewModel.loadCategories()
+        }.collectAsState(initial = CategoryState.Empty)
         var currentCategory by rememberSaveable { mutableStateOf<CategoryId?>(null) }
         val focusRequester = remember { FocusRequester() }
 
@@ -212,51 +207,61 @@ private fun AddTaskBottomSheetInnerContent(
         DueDateSelectionRow(
             dueDateMillis = taskDueDate,
             onDueDateClick = { showDueDatePicker = true },
-            onDueDateRemove = { taskDueDate = null },
-        )
-
-        LongTermToggle(
-            isLongTerm = isLongTerm,
-            onLongTermChange = { isLongTerm = it },
         )
 
         AlarmSelection(
-            calendar = getLocalDateTimeFromEpoch(taskDueDate),
-            interval = alarmInterval,
-            onAlarmUpdate = { dateTime -> taskDueDate = getEpochFromLocalDateTime(dateTime) },
-            onIntervalSelect = { interval -> alarmInterval = interval },
+            calendar = getLocalDateTimeFromEpoch(taskAlarmDate),
+            onAlarmUpdate = { dateTime -> taskAlarmDate = getEpochFromLocalDateTime(dateTime) },
             hasExactAlarmPermission = { alarmPermission.hasExactAlarmPermission() },
             openExactAlarmPermissionScreen = { alarmPermission.openExactAlarmPermissionScreen() },
             openAppSettingsScreen = { alarmPermission.openAppSettings() },
         )
 
-        Button(
+        Row(
             modifier = Modifier
-                .padding(top = 8.dp, bottom = 16.dp)
                 .fillMaxWidth()
-                .height(48.dp),
-            onClick = {
-                addTaskViewModel.addTask(
-                    title = taskInputText,
-                    description = taskDescription.takeIf { it.isNotBlank() },
-                    categoryId = currentCategory,
-                    dueDate = getLocalDateTimeFromEpoch(taskDueDate),
-                    alarmInterval = alarmInterval,
-                    priority = taskPriority,
-                    isLongTerm = isLongTerm,
-                )
-                taskInputText = ""
-                taskDescription = ""
-                taskPriority = TaskPriority.NONE
-                taskDueDate = null
-                isLongTerm = false
-                onHideBottomSheet()
-            },
+                .padding(top = 8.dp, bottom = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(
-                text = stringResource(Res.string.task_add_save),
-                style = MaterialTheme.typography.bodyLarge,
-            )
+            OutlinedButton(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(48.dp),
+                onClick = onHideBottomSheet,
+            ) {
+                Text(
+                    text = stringResource(Res.string.task_add_cancel),
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+            }
+
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(48.dp),
+                onClick = {
+                    addTaskViewModel.addTask(
+                        title = taskInputText,
+                        description = taskDescription.takeIf { it.isNotBlank() },
+                        categoryId = currentCategory,
+                        dueDate = getLocalDateTimeFromEpoch(taskDueDate),
+                        alarmDate = getLocalDateTimeFromEpoch(taskAlarmDate),
+                        alarmInterval = AlarmInterval.NEVER,
+                        priority = taskPriority,
+                    )
+                    taskInputText = ""
+                    taskDescription = ""
+                    taskPriority = TaskPriority.NONE
+                    taskDueDate = null
+                    taskAlarmDate = null
+                    onHideBottomSheet()
+                },
+            ) {
+                Text(
+                    text = stringResource(Res.string.task_add_save),
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+            }
         }
 
         if (showDueDatePicker) {
@@ -275,7 +280,6 @@ private fun AddTaskBottomSheetInnerContent(
 private fun DueDateSelectionRow(
     dueDateMillis: Long?,
     onDueDateClick: () -> Unit,
-    onDueDateRemove: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -301,44 +305,6 @@ private fun DueDateSelectionRow(
                 .weight(1f)
                 .padding(start = 8.dp),
         )
-        if (dueDateMillis != null) {
-            TextButton(onClick = onDueDateRemove) {
-                Text(text = stringResource(Res.string.default_ok))
-            }
-        }
-    }
-}
-
-@Composable
-private fun LongTermToggle(
-    isLongTerm: Boolean,
-    onLongTermChange: (Boolean) -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Flag,
-                contentDescription = null,
-                modifier = Modifier.width(24.dp),
-            )
-            Text(
-                text = stringResource(Res.string.task_add_long_term),
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(start = 8.dp),
-            )
-        }
-        Switch(
-            checked = isLongTerm,
-            onCheckedChange = onLongTermChange,
-        )
     }
 }
 
@@ -355,12 +321,7 @@ private fun DueDatePickerDialog(
             TextButton(onClick = {
                 onDateSelected(datePickerState.selectedDateMillis)
             }) {
-                Text(text = stringResource(Res.string.dialog_picker_next))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(text = stringResource(Res.string.default_ok))
+                Text(text = stringResource(Res.string.dialog_picker_confirm))
             }
         },
     ) {
@@ -368,23 +329,21 @@ private fun DueDatePickerDialog(
     }
 }
 
-@OptIn(ExperimentalTime::class)
+@Suppress("DEPRECATION")
 private fun epochToLocalDate(epoch: Long): LocalDate =
     Instant.fromEpochMilliseconds(epoch).toLocalDateTime(TimeZone.currentSystemDefault()).date
 
-@OptIn(ExperimentalTime::class)
 private fun getLocalDateTimeFromEpoch(epoch: Long?): LocalDateTime? = epoch?.let {
     val localDate = Instant.fromEpochMilliseconds(it).toLocalDateTime(TimeZone.currentSystemDefault())
     LocalDateTime(
         year = localDate.year,
         month = localDate.month,
         day = localDate.day,
-        hour = 23,
-        minute = 59,
+        hour = localDate.hour,
+        minute = localDate.minute,
     )
 }
 
-@OptIn(ExperimentalTime::class)
 private fun getEpochFromLocalDateTime(dateTime: LocalDateTime?): Long? = dateTime?.let {
     dateTime.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
 }

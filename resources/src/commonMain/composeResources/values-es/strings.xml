@@ -36,6 +36,7 @@
     <string name="task_alarm_repeating_yearly">Cada año</string>
 
     <string name="task_add_save">Añadir</string>
+    <string name="task_add_cancel">Cancelar</string>
     <string name="task_add_label">Tarea</string>
     <string name="task_add_description">Descripción</string>
     <string name="task_add_set_due_date">Establecer fecha límite</string>
@@ -51,6 +52,20 @@
     <string name="task_long_term_label">Tarea a largo plazo</string>
     <string name="task_long_term_set_as">Establecer como tarea a largo plazo</string>
     <string name="task_list_header_long_term">Enfoque diario</string>
+    <string name="task_long_term_completed_today">Completado hoy</string>
+
+    <string name="long_term_task_manage">Gestionar</string>
+    <string name="long_term_task_add">Añadir</string>
+    <string name="long_term_task_add_exists_warning">Ya existe una tarea de enfoque diario. Elimínela primero para añadir una nueva.</string>
+    <string name="long_term_task_delete_no_task_warning">No hay ninguna tarea a largo plazo para eliminar.</string>
+    <string name="long_term_task_no_task">Sin tarea a largo plazo</string>
+    <string name="long_term_task_title">Tarea a largo plazo</string>
+    <string name="long_term_task_edit">Editar tarea a largo plazo</string>
+    <string name="long_term_task_delete">Eliminar</string>
+    <string name="long_term_task_delete_confirm">Tarea a largo plazo eliminada</string>
+    <string name="long_term_task_exists">Ya existe una tarea a largo plazo</string>
+
+    <string name="task_list_header_regular">Tareas</string>
 
     <string name="task_snackbar_message_complete">Tarea completada</string>
     <string name="task_snackbar_button_undo">Deshacer</string>
@@ -139,6 +154,7 @@
     <string name="dialog_picker_confirm">Confirmar</string>
 
     <string name="default_ok">Aceptar</string>
+    <string name="long_term_task_back">Volver</string>
 
     <!-- Kuvio Design System -->
     <string name="kuvio_add_task_bar_placeholder">A\u00f1adir una tarea\u2026</string>
@@ -147,7 +163,13 @@
     <string name="kuvio_list_icon_cd">Elegir lista</string>
     <string name="kuvio_notifications_icon_cd">Establecer recordatorio</string>
 
-    <!-- Relative Date -->
+    <!-- Relative Date (date only, no time) -->
+    <string name="relative_date_today">hoy</string>
+    <string name="relative_date_tomorrow">mañana</string>
+    <string name="relative_date_yesterday">ayer</string>
+    <string name="relative_date_days">en %d días</string>
+
+    <!-- Relative Date Time (date + time) -->
     <string name="relative_date_time_just_now">ahora mismo</string>
     <string name="relative_date_time_one_minute">hace 1 minuto</string>
     <string name="relative_date_time_minutes">hace %d minutos</string>
