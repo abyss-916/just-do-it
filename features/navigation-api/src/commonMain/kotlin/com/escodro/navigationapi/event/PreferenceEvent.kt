@@ -9,10 +9,6 @@ object PreferenceEvent {
         override fun nextDestination(): Destination = PreferenceDestination.About
     }
 
-    data object OnLicensesClick : Event {
-        override fun nextDestination(): Destination = PreferenceDestination.Licenses
-    }
-
     data object OnTrackerClick : Event {
         override fun nextDestination(): Destination = PreferenceDestination.Tracker
     }

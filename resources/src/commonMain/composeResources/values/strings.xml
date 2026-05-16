@@ -18,14 +18,14 @@
 
     <string name="task_detail_cd_icon_category">Categories</string>
     <string name="task_detail_cd_icon_description">Description</string>
-    <string name="task_detail_cd_icon_alarm">Alarm</string>
+    <string name="task_detail_cd_icon_alarm">Reminder</string>
     <string name="task_detail_cd_icon_due_date">Due date</string>
-    <string name="task_detail_cd_icon_remove_alarm">Remove alarm</string>
-    <string name="task_detail_cd_icon_repeat_alarm">Repeating alarm</string>
+    <string name="task_detail_cd_icon_remove_alarm">Remove reminder</string>
+    <string name="task_detail_cd_icon_repeat_alarm">Repeating reminder</string>
 
     <string name="task_detail_category_empty_list">No categories</string>
 
-    <string name="task_detail_alarm_no_alarm">No alarm</string>
+    <string name="task_detail_alarm_no_alarm">No reminder</string>
 
     <string name="task_detail_due_date_no_date">No due date</string>
     <string name="task_detail_set_due_date">Set due date</string>
@@ -77,18 +77,18 @@
     <string name="task_limit_reached">Maximum of 100 tasks reached</string>
     <string name="task_long_term_exists">A daily focus task already exists</string>
 
-    <string name="task_alarm_permission_dialog_title">Alarms and reminders</string>
-    <string name="task_alarm_permission_dialog_text">For alarms to work, just do it needs permission to set alarms and reminders. If this permission is not granted, existing alarms will not work either.</string>
+    <string name="task_alarm_permission_dialog_title">Notifications and reminders</string>
+    <string name="task_alarm_permission_dialog_text">For reminders to work, just do it needs permission to set notifications and reminders. If this permission is not granted, existing reminders will not work either.</string>
     <string name="task_alarm_permission_dialog_confirm">Grant permission</string>
     <string name="task_alarm_permission_dialog_cancel">Not now</string>
 
     <string name="task_notification_permission_dialog_title">Notifications</string>
-    <string name="task_notification_permission_dialog_text">To show notifications for alarms, just do it needs permission. If this permission is not granted, existing alarms will not work either.</string>
+    <string name="task_notification_permission_dialog_text">To show notifications for reminders, just do it needs permission. If this permission is not granted, existing reminders will not work either.</string>
     <string name="task_notification_permission_dialog_confirm">Grant permission</string>
     <string name="task_notification_permission_dialog_cancel">Not now</string>
 
     <string name="task_notification_rationale_dialog_title">Notifications</string>
-    <string name="task_notification_rationale_dialog_text">It's not possible to set alarms without notification permission. If you want to use this feature, please go to the app settings and grant it manually.</string>
+    <string name="task_notification_rationale_dialog_text">It's not possible to set reminders without notification permission. If you want to use this feature, please go to the app settings and grant it manually.</string>
     <string name="task_notification_rationale_dialog_confirm">Take me there</string>
     <string name="task_notification_rationale_dialog_cancel">Ignore</string>
 
@@ -117,7 +117,7 @@
     <string name="preference_title_tracker">Task Tracker</string>
 
     <string name="about_title">just do it</string>
-    <string name="about_description">just do it (Finnish for "to begin" or "to start") is a simple to-do list to make your life easier.\n\nIt all started when I created a project to learn and keep up to date with the latest Android components and libraries. Now it is available on multiple platforms thanks to Kotlin and Compose Multiplatform! If you're a developer or an enthusiast, feel free to access, copy, and update the open-source code.\n\nThanks a lot for using my app!</string>
+    <string name="about_description">just do it (Finnish for "to begin" or "to start") is a simple to-do list to make your life easier.\n\nIt all started when I created a project to learn and keep up to date with the latest Android components and libraries. Now it is available on Android and Windows PC thanks to Kotlin and Compose Multiplatform!\n\nThanks a lot for using my app!</string>
     <string name="about_button_project">Visit project on GitHub</string>
     <string name="about_cd_github">GitHub</string>
     <string name="preference_title_app_theme">App theme</string>
@@ -148,7 +148,7 @@
     <!-- Alarm -->
     <string name="content_app_name">just do it</string>
 
-    <string name="channel_task_name">Task alarms</string>
+    <string name="channel_task_name">Task notifications</string>
     <string name="channel_task_description">Notifications for reminders</string>
 
     <string name="notification_action_completed">Done</string>

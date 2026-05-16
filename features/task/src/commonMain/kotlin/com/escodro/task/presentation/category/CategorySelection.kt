@@ -1,6 +1,7 @@
 package com.escodro.task.presentation.category
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -57,6 +58,7 @@ internal fun CategorySelection(
                 currentCategory = currentCategory,
                 contentPadding = contentPadding,
                 onCategoryChange = onCategoryChange,
+                modifier = modifier,
             )
 
             CategoryState.Empty -> EmptyCategoryList()
@@ -73,40 +75,26 @@ private fun LoadedCategoryList(
     currentCategory: Long?,
     contentPadding: PaddingValues,
     onCategoryChange: (CategoryId) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val state = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val currentItem = categoryList.find { category -> category.id == currentCategory }
     var selectedState by remember { mutableStateOf(currentItem?.id) }
 
-    LazyRow(
-        state = state,
-        contentPadding = contentPadding,
-    ) {
-        item {
-            val selectedItem =
-                categoryList.find { category -> category.id == selectedState } ?: return@item
-            CategoryItemChip(
-                id = selectedItem.id,
-                name = localizedCategoryName(selectedItem.name),
-                color = Color(selectedItem.color),
-                isSelected = true,
-                onSelectChange = { id ->
-                    coroutineScope.launch { state.animateScrollToItem(0) }
-                    selectedState = id
-                    onCategoryChange(CategoryId(id))
-                },
-                modifier = Modifier.padding(end = 8.dp),
-            )
-        }
-        items(
-            items = categoryList.filter { category -> category.id != selectedState },
-            itemContent = { category ->
+    Column(modifier = modifier) {
+        LazyRow(
+            state = state,
+            contentPadding = contentPadding,
+        ) {
+            item {
+                val selectedItem =
+                    categoryList.find { category -> category.id == selectedState } ?: return@item
                 CategoryItemChip(
-                    id = category.id,
-                    name = localizedCategoryName(category.name),
-                    color = Color(category.color),
-                    isSelected = selectedState == category.id,
+                    id = selectedItem.id,
+                    name = localizedCategoryName(selectedItem.name),
+                    color = Color(selectedItem.color),
+                    isSelected = true,
                     onSelectChange = { id ->
                         coroutineScope.launch { state.animateScrollToItem(0) }
                         selectedState = id
@@ -114,7 +102,28 @@ private fun LoadedCategoryList(
                     },
                     modifier = Modifier.padding(end = 8.dp),
                 )
-            },
+            }
+            items(
+                items = categoryList.filter { category -> category.id != selectedState },
+                itemContent = { category ->
+                    CategoryItemChip(
+                        id = category.id,
+                        name = localizedCategoryName(category.name),
+                        color = Color(category.color),
+                        isSelected = selectedState == category.id,
+                        onSelectChange = { id ->
+                            coroutineScope.launch { state.animateScrollToItem(0) }
+                            selectedState = id
+                            onCategoryChange(CategoryId(id))
+                        },
+                        modifier = Modifier.padding(end = 8.dp),
+                    )
+                },
+            )
+        }
+        CategoryFilterScrollbar(
+            listState = state,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp),
         )
     }
 }

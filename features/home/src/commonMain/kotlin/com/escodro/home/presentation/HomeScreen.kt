@@ -68,7 +68,7 @@ private fun HomeLoader(
         navEventController.sendEvent(HomeEvent.OnTabClick(section))
     }
 
-    AlkaaHomeScaffold(
+    HomePlatformLayout(
         appState = appState,
         navItems = navItems.toImmutableList(),
         currentSection = appState.navBackStack.topLevelKey as TopLevel,
@@ -78,7 +78,7 @@ private fun HomeLoader(
 }
 
 @Composable
-private fun AlkaaHomeScaffold(
+internal fun AlkaaHomeScaffold(
     appState: AlkaaAppState,
     navItems: ImmutableList<TopLevel>,
     currentSection: TopLevel,
@@ -107,7 +107,10 @@ private fun AlkaaHomeScaffold(
                     enter = TopBarEnterTransition,
                     exit = TopBarExitTransition,
                 ) {
-                    MainTopBar(title = stringResource(currentSection.title))
+                    MainTopBar(
+                        title = stringResource(currentSection.title),
+                        modifier = Modifier.HomeTopBarDivider(),
+                    )
                 }
             },
             contentWindowInsets = WindowInsets(left = 0, top = 0, right = 0, bottom = 0),

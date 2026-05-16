@@ -39,7 +39,6 @@ import org.koin.compose.koinInject
 fun PreferenceSection(
     isSinglePane: Boolean,
     onAboutClick: () -> Unit,
-    onOpenSourceClick: () -> Unit,
     onTrackerClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -48,7 +47,6 @@ fun PreferenceSection(
         modifier = modifier,
         onAboutClick = onAboutClick,
         onTrackerClick = onTrackerClick,
-        onOpenSourceClick = onOpenSourceClick,
     )
 }
 
@@ -58,7 +56,6 @@ private fun PreferenceLoader(
     isSinglePane: Boolean,
     onAboutClick: () -> Unit,
     onTrackerClick: () -> Unit,
-    onOpenSourceClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PreferenceViewModel = koinInject(),
 ) {
@@ -74,7 +71,6 @@ private fun PreferenceLoader(
         PreferenceContent(
             onAboutClick = onAboutClick,
             onTrackerClick = onTrackerClick,
-            onOpenSourceClick = onOpenSourceClick,
             theme = theme,
             onThemeUpdate = viewModel::updateTheme,
             language = language,
@@ -97,7 +93,6 @@ private fun PreferenceLoader(
 internal fun PreferenceContent(
     onAboutClick: () -> Unit,
     onTrackerClick: () -> Unit,
-    onOpenSourceClick: () -> Unit,
     theme: AppThemeOptions,
     onThemeUpdate: (AppThemeOptions) -> Unit,
     language: LanguageOptions,
@@ -116,7 +111,6 @@ internal fun PreferenceContent(
         ThemeItem(currentTheme = theme, onThemeUpdate = onThemeUpdate)
         LanguageItem(currentLanguage = language, onLanguageUpdate = onLanguageUpdate)
         AboutItem(onAboutClick = onAboutClick)
-        OpenSourceLibraryItem(onOpenSourceClick = onOpenSourceClick)
         VersionItem()
     }
 }
@@ -156,14 +150,6 @@ private fun AdaptivePreferenceScaffold(
                         )
                     }
                 },
-                onOpenSourceClick = {
-                    coroutineScope.launch {
-                        navigator.navigateTo(
-                            ListDetailPaneScaffoldRole.Detail,
-                            PreferenceItem.OPEN_SOURCE,
-                        )
-                    }
-                },
                 theme = theme,
                 onThemeUpdate = onThemeUpdate,
                 language = language,
@@ -182,13 +168,6 @@ private fun AdaptivePreferenceScaffold(
 
                 PreferenceItem.ABOUT -> {
                     AboutScreen(
-                        isSinglePane = false,
-                        onUpPress = { coroutineScope.launch { navigator.navigateBack() } },
-                    )
-                }
-
-                PreferenceItem.OPEN_SOURCE -> {
-                    OpenSource(
                         isSinglePane = false,
                         onUpPress = { coroutineScope.launch { navigator.navigateBack() } },
                     )
@@ -219,5 +198,4 @@ private fun Separator() {
 private enum class PreferenceItem {
     TRACKER,
     ABOUT,
-    OPEN_SOURCE,
 }

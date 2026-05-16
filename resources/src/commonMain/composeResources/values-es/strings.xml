@@ -18,13 +18,13 @@
 
     <string name="task_detail_cd_icon_category">Categorías</string>
     <string name="task_detail_cd_icon_description">Descripción</string>
-    <string name="task_detail_cd_icon_alarm">Alarma</string>
-    <string name="task_detail_cd_icon_remove_alarm">Eliminar alarma</string>
-    <string name="task_detail_cd_icon_repeat_alarm">Alarma repetitiva</string>
+    <string name="task_detail_cd_icon_alarm">Recordatorio</string>
+    <string name="task_detail_cd_icon_remove_alarm">Eliminar recordatorio</string>
+    <string name="task_detail_cd_icon_repeat_alarm">Recordatorio repetitivo</string>
 
     <string name="task_detail_category_empty_list">Sin categorías</string>
 
-    <string name="task_detail_alarm_no_alarm">Sin alarma</string>
+    <string name="task_detail_alarm_no_alarm">Sin recordatorio</string>
 
     <string name="task_detail_pane_title">Selecciona una tarea para ver los detalles</string>
 
@@ -73,18 +73,18 @@
     <string name="task_limit_reached">Se alcanzó el límite de 100 tareas</string>
     <string name="task_long_term_exists">Ya existe una tarea de enfoque diario</string>
 
-    <string name="task_alarm_permission_dialog_title">Alarmas y recordatorios</string>
-    <string name="task_alarm_permission_dialog_text">Para que las alarmas funcionen, just do it necesita permiso para configurar alarmas y recordatorios. Si no se concede este permiso, las alarmas existentes tampoco funcionarán.</string>
+    <string name="task_alarm_permission_dialog_title">Notificaciones y recordatorios</string>
+    <string name="task_alarm_permission_dialog_text">Para que los recordatorios funcionen, just do it necesita permiso para configurar notificaciones y recordatorios. Si no se concede este permiso, los recordatorios existentes tampoco funcionarán.</string>
     <string name="task_alarm_permission_dialog_confirm">Conceder permiso</string>
     <string name="task_alarm_permission_dialog_cancel">Ahora no</string>
 
     <string name="task_notification_permission_dialog_title">Notificaciones</string>
-    <string name="task_notification_permission_dialog_text">Para mostrar notificaciones de las alarmas, just do it necesita permiso. Si no se concede este permiso, las alarmas existentes tampoco funcionarán.</string>
+    <string name="task_notification_permission_dialog_text">Para mostrar notificaciones de los recordatorios, just do it necesita permiso. Si no se concede este permiso, los recordatorios existentes tampoco funcionarán.</string>
     <string name="task_notification_permission_dialog_confirm">Conceder permiso</string>
     <string name="task_notification_permission_dialog_cancel">Ahora no</string>
 
     <string name="task_notification_rationale_dialog_title">Notificaciones</string>
-    <string name="task_notification_rationale_dialog_text">No es posible configurar alarmas sin el permiso de notificación. Si quieres usar esta función, ve a los ajustes de la aplicación y concédelo manualmente.</string>
+    <string name="task_notification_rationale_dialog_text">No es posible configurar recordatorios sin el permiso de notificación. Si quieres usar esta función, ve a los ajustes de la aplicación y concédelo manualmente.</string>
     <string name="task_notification_rationale_dialog_confirm">Llévame allí</string>
     <string name="task_notification_rationale_dialog_cancel">Ignorar</string>
 
@@ -113,7 +113,7 @@
     <string name="preference_title_tracker">Seguimiento de tareas</string>
 
     <string name="about_title">just do it</string>
-    <string name="about_description">just do it (del finés \"empezar\" o \"comenzar\") es una lista de tareas sencilla para hacerte la vida más fácil.\n\nTodo empezó cuando creé un proyecto para aprender y mantenerme al día con los últimos componentes y librerías de Android. ¡Ahora está disponible en múltiples plataformas gracias a Kotlin y Compose Multiplatform! Si eres desarrollador o entusiasta, siéntete libre de acceder, copiar y actualizar el código de código abierto.\n\n¡Muchas gracias por usar mi aplicación!</string>
+    <string name="about_description">just do it (del finés \"empezar\" o \"comenzar\") es una lista de tareas sencilla para hacerte la vida más fácil.\n\nTodo empezó cuando creé un proyecto para aprender y mantenerme al día con los últimos componentes y librerías de Android. ¡Ahora está disponible en Android y Windows PC gracias a Kotlin y Compose Multiplatform!\n\n¡Muchas gracias por usar mi aplicación!</string>
     <string name="about_button_project">Visitar el proyecto en GitHub</string>
     <string name="about_cd_github">GitHub</string>
     <string name="preference_title_app_theme">Tema de la aplicación</string>
@@ -144,7 +144,7 @@
     <!-- Alarm -->
     <string name="content_app_name">just do it</string>
 
-    <string name="channel_task_name">Alarmas de tareas</string>
+    <string name="channel_task_name">Notificaciones de tareas</string>
     <string name="channel_task_description">Notificaciones de recordatorios</string>
 
     <string name="notification_action_completed">Hecho</string>

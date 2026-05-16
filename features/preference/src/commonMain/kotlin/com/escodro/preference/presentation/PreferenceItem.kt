@@ -27,7 +27,6 @@ import com.escodro.resources.Res
 import com.escodro.resources.preference_title_about
 import com.escodro.resources.preference_title_app_theme
 import com.escodro.resources.preference_title_language
-import com.escodro.resources.preference_title_open_source
 import com.escodro.resources.preference_title_tracker
 import com.escodro.resources.preference_title_version
 import kotlinx.coroutines.delay
@@ -108,14 +107,6 @@ internal fun AboutItem(onAboutClick: () -> Unit) {
     PreferenceItem(
         title = stringResource(Res.string.preference_title_about),
         onItemClick = onAboutClick,
-    )
-}
-
-@Composable
-internal fun OpenSourceLibraryItem(onOpenSourceClick: () -> Unit) {
-    PreferenceItem(
-        title = stringResource(Res.string.preference_title_open_source),
-        onItemClick = onOpenSourceClick,
     )
 }
 
