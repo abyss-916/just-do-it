@@ -1,6 +1,8 @@
 package com.escodro.task.di
 
+import com.escodro.task.provider.DesktopRelativeDateProvider
 import com.escodro.task.provider.DesktopRelativeDateTimeProvider
+import com.escodro.task.provider.RelativeDateProvider
 import com.escodro.task.provider.RelativeDateTimeProvider
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
@@ -11,4 +13,5 @@ import org.koin.dsl.module
  */
 actual val platformTaskModule = module {
     factoryOf(::DesktopRelativeDateTimeProvider) bind RelativeDateTimeProvider::class
+    factoryOf(::DesktopRelativeDateProvider) bind RelativeDateProvider::class
 }

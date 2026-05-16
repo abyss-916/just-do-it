@@ -28,8 +28,14 @@ internal class CategoryDaoImpl(
     }
 
     override suspend fun insertCategory(categoryList: List<Category>) {
-        for (category in categoryList) {
-            insertCategory(category)
+        val db = databaseProvider.getInstance()
+        db.transaction {
+            for (category in categoryList) {
+                db.categoryQueries.insert(
+                    category_name = category.category_name,
+                    category_color = category.category_color,
+                )
+            }
         }
     }
 

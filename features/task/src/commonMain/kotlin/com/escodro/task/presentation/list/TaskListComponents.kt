@@ -33,7 +33,7 @@ import com.escodro.designsystem.theme.priority_low
 import com.escodro.designsystem.theme.priority_medium
 import com.escodro.task.model.TaskPriority
 import com.escodro.task.model.TaskWithCategory
-import com.escodro.task.provider.RelativeDateTimeProvider
+import com.escodro.task.provider.RelativeDateProvider
 import kotlinx.datetime.LocalDateTime
 import org.koin.compose.koinInject
 
@@ -114,12 +114,10 @@ internal fun CardRibbon(colorInt: Int?, modifier: Modifier = Modifier) {
 }
 
 @Composable
-internal fun RelativeDateText(
-    calendar: LocalDateTime,
-    relativeDateTimeProvider: RelativeDateTimeProvider = koinInject(),
-) {
+internal fun RelativeDateText(calendar: LocalDateTime) {
+    val relativeDateProvider: RelativeDateProvider = koinInject()
     Text(
-        text = relativeDateTimeProvider.toRelativeDateTimeString(calendar),
+        text = relativeDateProvider.toRelativeDateString(calendar),
         style = MaterialTheme.typography.bodyMedium,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,

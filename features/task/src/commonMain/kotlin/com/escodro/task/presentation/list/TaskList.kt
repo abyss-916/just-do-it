@@ -1,10 +1,14 @@
 package com.escodro.task.presentation.list
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,8 +16,14 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.ThumbUp
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -21,6 +31,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
@@ -48,6 +59,12 @@ import com.escodro.designsystem.components.button.AddFloatingButton
 import com.escodro.designsystem.components.content.AlkaaLoadingContent
 import com.escodro.designsystem.components.content.DefaultIconTextContent
 import com.escodro.resources.Res
+import com.escodro.resources.long_term_task_add
+import com.escodro.resources.long_term_task_add_exists_warning
+import com.escodro.resources.long_term_task_delete
+import com.escodro.resources.long_term_task_delete_no_task_warning
+import com.escodro.resources.long_term_task_manage
+import com.escodro.resources.long_term_task_no_task
 import com.escodro.resources.task_cd_add_task
 import com.escodro.resources.task_detail_pane_title
 import com.escodro.resources.task_list_cd_empty_list
@@ -55,6 +72,8 @@ import com.escodro.resources.task_list_cd_error
 import com.escodro.resources.task_list_header_empty
 import com.escodro.resources.task_list_header_error
 import com.escodro.resources.task_list_header_long_term
+import com.escodro.resources.task_list_header_regular
+import com.escodro.resources.task_long_term_completed_today
 import com.escodro.resources.task_snackbar_button_undo
 import com.escodro.resources.task_snackbar_message_complete
 import com.escodro.task.model.TaskWithCategory
@@ -62,6 +81,8 @@ import com.escodro.task.presentation.category.CategorySelection
 import com.escodro.task.presentation.detail.main.CategoryId
 import com.escodro.task.presentation.detail.main.TaskDetailScreen
 import com.escodro.task.presentation.detail.main.TaskId
+import com.escodro.task.presentation.longterm.LongTermTaskBottomSheet
+import com.escodro.task.presentation.longterm.LongTermTaskViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -76,6 +97,7 @@ fun TaskListSection(
     isSinglePane: Boolean,
     onItemClick: (Long) -> Unit,
     onFabClick: () -> Unit,
+    onLongTermTaskManage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TaskListLoader(
@@ -83,6 +105,7 @@ fun TaskListSection(
         modifier = modifier,
         onFabClick = onFabClick,
         onItemClick = onItemClick,
+        onLongTermTaskManage = onLongTermTaskManage,
     )
 }
 
@@ -92,18 +115,20 @@ internal fun TaskListLoader(
     isSinglePane: Boolean,
     onItemClick: (Long) -> Unit,
     onFabClick: () -> Unit,
+    onLongTermTaskManage: () -> Unit,
     modifier: Modifier = Modifier,
     taskListViewModel: TaskListViewModel = koinInject(),
     categoryViewModel: CategoryListViewModel = koinInject(),
 ) {
     val (currentCategory, onCategoryChange) = rememberSaveable { mutableStateOf<CategoryId?>(null) }
     val refreshKey: Int by rememberRefreshKey()
+    val longTermRefreshKey = LongTermTaskViewModel.refreshKey
 
     val taskViewState by remember(taskListViewModel, currentCategory, refreshKey) {
         taskListViewModel.loadTaskList(currentCategory?.value)
     }.collectAsState(initial = TaskListViewState.Loading)
 
-    val longTermTask by remember(taskListViewModel, refreshKey) {
+    val longTermTask by remember(taskListViewModel, refreshKey, longTermRefreshKey) {
         taskListViewModel.loadLongTermTask()
     }.collectAsState(initial = null)
 
@@ -123,6 +148,7 @@ internal fun TaskListLoader(
             refreshKey = refreshKey,
             modifier = modifier,
             onItemClick = onItemClick,
+            onLongTermTaskManage = onLongTermTaskManage,
         )
     } else {
         AdaptiveTaskListScaffold(
@@ -135,6 +161,7 @@ internal fun TaskListLoader(
             onCategoryChange = onCategoryChange,
             refreshKey = refreshKey,
             modifier = modifier,
+            onLongTermTaskManage = onLongTermTaskManage,
         )
     }
 }
@@ -151,6 +178,7 @@ private fun AdaptiveTaskListScaffold(
     currentCategory: CategoryId?,
     onCategoryChange: (CategoryId?) -> Unit,
     refreshKey: Int,
+    onLongTermTaskManage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val navigator: ThreePaneScaffoldNavigator<TaskId> =
@@ -168,6 +196,9 @@ private fun AdaptiveTaskListScaffold(
                     categoryViewState = categoryViewState,
                     onTaskCheckedChange = { item ->
                         onUpdateTaskStatus(item)
+                        if (item == longTermTask) {
+                            LongTermTaskViewModel.triggerRefresh()
+                        }
                         coroutineScope.launch { navigator.navigateBack() }
                     },
                     onFabClick = onFabClick,
@@ -180,6 +211,7 @@ private fun AdaptiveTaskListScaffold(
                             navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, TaskId(taskId))
                         }
                     },
+                    onLongTermTaskManage = onLongTermTaskManage,
                 )
             }
         },
@@ -218,6 +250,7 @@ internal fun TaskListScaffold(
     currentCategory: CategoryId?,
     onCategoryChange: (CategoryId?) -> Unit,
     refreshKey: Int,
+    onLongTermTaskManage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -277,7 +310,7 @@ internal fun TaskListScaffold(
                 }
 
                 is TaskListViewState.Loaded -> {
-                    TaskListContent(
+                    TaskListWithLongTermSection(
                         taskList = state.items,
                         longTermTask = longTermTask,
                         onItemClick = onItemClick,
@@ -286,11 +319,17 @@ internal fun TaskListScaffold(
                             onTaskCheckedChange(taskWithCategory)
                             onShowSnackbar(taskWithCategory)
                         },
+                        onLongTermTaskManage = onLongTermTaskManage,
                     )
                 }
 
                 TaskListViewState.Empty -> {
-                    TaskListEmpty()
+                    TaskListEmptyWithLongTermBar(
+                        longTermTask = longTermTask,
+                        onItemClick = onItemClick,
+                        onCheckedChange = onTaskCheckedChange,
+                        onLongTermTaskManage = onLongTermTaskManage,
+                    )
                 }
             }
         }
@@ -311,48 +350,215 @@ private fun TaskFilter(
     )
 }
 
+@Suppress("LongMethod")
 @Composable
-private fun TaskListContent(
+private fun TaskListWithLongTermSection(
     taskList: ImmutableList<TaskWithCategory>,
     longTermTask: TaskWithCategory?,
     onItemClick: (Long) -> Unit,
     onCheckedChange: (TaskWithCategory) -> Unit,
     refreshKey: Int,
+    onLongTermTaskManage: () -> Unit,
 ) {
     val displayedTasks = taskList.take(MaxTaskCount)
     val listState = rememberLazyListState()
 
-    androidx.compose.foundation.layout.Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            state = listState,
-            contentPadding = PaddingValues(bottom = 48.dp),
-            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+    val onLongTermChecked: (TaskWithCategory) -> Unit = { taskWithCategory ->
+        onCheckedChange(taskWithCategory)
+        LongTermTaskViewModel.triggerRefresh()
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        LongTermTaskBar(
+            task = longTermTask,
+            onItemClick = onItemClick,
+            onCheckedChange = onLongTermChecked,
+            onAddClick = onLongTermTaskManage,
+            onDeleteClick = onLongTermTaskManage,
+        )
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+        Text(
+            text = stringResource(Res.string.task_list_header_regular),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+        )
+        Box(modifier = Modifier.fillMaxSize().weight(1f)) {
+            LazyColumn(
+                state = listState,
+                contentPadding = PaddingValues(bottom = 48.dp),
+                modifier = Modifier.padding(start = 8.dp),
+            ) {
+                items(
+                    items = displayedTasks,
+                    key = { taskWithCategory -> taskWithCategory.task.id },
+                    itemContent = { task ->
+                        TaskItem(
+                            task = task,
+                            onItemClick = onItemClick,
+                            onCheckedChange = onCheckedChange,
+                        )
+                    },
+                )
+            }
+            TaskListScrollbar(
+                listState = listState,
+                modifier = Modifier.align(Alignment.CenterEnd).padding(end = 10.dp, top = 4.dp, bottom = 4.dp),
+            )
+        }
+    }
+}
+
+@Suppress("LongMethod")
+@Composable
+private fun LongTermTaskBar(
+    task: TaskWithCategory?,
+    onItemClick: (Long) -> Unit,
+    onCheckedChange: (TaskWithCategory) -> Unit,
+    onAddClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+) {
+    var showMenu by remember { mutableStateOf(false) }
+    var showAddWarning by remember { mutableStateOf(false) }
+    var showDeleteWarning by remember { mutableStateOf(false) }
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    val addWarningMessage = stringResource(Res.string.long_term_task_add_exists_warning)
+    val deleteWarningMessage = stringResource(Res.string.long_term_task_delete_no_task_warning)
+
+    LaunchedEffect(showAddWarning) {
+        if (showAddWarning) {
+            snackbarHostState.showSnackbar(
+                message = addWarningMessage,
+                duration = SnackbarDuration.Short,
+            )
+            showAddWarning = false
+        }
+    }
+
+    LaunchedEffect(showDeleteWarning) {
+        if (showDeleteWarning) {
+            snackbarHostState.showSnackbar(
+                message = deleteWarningMessage,
+                duration = SnackbarDuration.Short,
+            )
+            showDeleteWarning = false
+        }
+    }
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (longTermTask != null) {
-                item {
-                    LongTermTaskSection(
-                        task = longTermTask,
-                        onItemClick = onItemClick,
-                        onCheckedChange = onCheckedChange,
+            Text(
+                text = stringResource(Res.string.task_list_header_long_term),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Box {
+                IconButton(onClick = { showMenu = true }) {
+                    Icon(
+                        imageVector = Icons.Outlined.MoreVert,
+                        contentDescription = stringResource(Res.string.long_term_task_manage),
+                    )
+                }
+                DropdownMenu(
+                    expanded = showMenu,
+                    onDismissRequest = { showMenu = false },
+                ) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(Res.string.long_term_task_add)) },
+                        onClick = {
+                            showMenu = false
+                            if (task != null) {
+                                showAddWarning = true
+                            } else {
+                                onAddClick()
+                            }
+                        },
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(Res.string.long_term_task_delete)) },
+                        onClick = {
+                            showMenu = false
+                            if (task == null) {
+                                showDeleteWarning = true
+                            } else {
+                                onDeleteClick()
+                            }
+                        },
                     )
                 }
             }
-            items(
-                items = displayedTasks,
-                key = { taskWithCategory -> taskWithCategory.task.id },
-                itemContent = { task ->
-                    TaskItem(
-                        task = task,
-                        onItemClick = onItemClick,
-                        onCheckedChange = onCheckedChange,
-                    )
-                },
+        }
+
+        if (task != null) {
+            if (task.task.isCompleted) {
+                Text(
+                    text = stringResource(Res.string.task_long_term_completed_today),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                )
+            } else {
+                TaskItem(
+                    task = task,
+                    onItemClick = onItemClick,
+                    onCheckedChange = onCheckedChange,
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                )
+            }
+        } else {
+            Text(
+                text = stringResource(Res.string.long_term_task_no_task),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
             )
         }
-        TaskListScrollbar(
-            listState = listState,
-            modifier = Modifier.align(Alignment.CenterEnd).padding(end = 2.dp),
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
+    }
+}
+
+@Composable
+private fun TaskListEmptyWithLongTermBar(
+    longTermTask: TaskWithCategory?,
+    onItemClick: (Long) -> Unit,
+    onCheckedChange: (TaskWithCategory) -> Unit,
+    onLongTermTaskManage: () -> Unit,
+) {
+    val onLongTermChecked: (TaskWithCategory) -> Unit = { taskWithCategory ->
+        onCheckedChange(taskWithCategory)
+        LongTermTaskViewModel.triggerRefresh()
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        LongTermTaskBar(
+            task = longTermTask,
+            onItemClick = onItemClick,
+            onCheckedChange = onLongTermChecked,
+            onAddClick = onLongTermTaskManage,
+            onDeleteClick = onLongTermTaskManage,
+        )
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+        Text(
+            text = stringResource(Res.string.task_list_header_regular),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+        )
+        Box(modifier = Modifier.fillMaxSize().weight(1f)) {
+            DefaultIconTextContent(
+                icon = Icons.Outlined.ThumbUp,
+                iconContentDescription = stringResource(Res.string.task_list_cd_empty_list),
+                header = stringResource(Res.string.task_list_header_empty),
+            )
+        }
     }
 }
 
@@ -372,28 +578,6 @@ private fun TaskListError() {
         iconContentDescription = stringResource(Res.string.task_list_cd_error),
         header = stringResource(Res.string.task_list_header_error),
     )
-}
-
-@Composable
-private fun LongTermTaskSection(
-    task: TaskWithCategory,
-    onItemClick: (Long) -> Unit,
-    onCheckedChange: (TaskWithCategory) -> Unit,
-) {
-    Column(
-        modifier = Modifier.padding(top = 8.dp, bottom = 4.dp),
-    ) {
-        Text(
-            text = stringResource(Res.string.task_list_header_long_term),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-        )
-        TaskItem(
-            task = task,
-            onItemClick = onItemClick,
-            onCheckedChange = onCheckedChange,
-        )
-    }
 }
 
 /**

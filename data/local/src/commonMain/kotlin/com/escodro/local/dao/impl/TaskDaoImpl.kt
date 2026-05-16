@@ -8,6 +8,7 @@ import com.escodro.local.TaskQueries
 import com.escodro.local.dao.TaskDao
 import com.escodro.local.provider.DatabaseProvider
 import kotlinx.coroutines.flow.first
+import kotlinx.datetime.LocalDateTime
 
 internal class TaskDaoImpl(
     private val databaseProvider: DatabaseProvider,
@@ -27,6 +28,7 @@ internal class TaskDaoImpl(
                 task_description = task.task_description,
                 task_category_id = task.task_category_id,
                 task_due_date = task.task_due_date,
+                task_alarm_date = task.task_alarm_date,
                 task_creation_date = task.task_creation_date,
                 task_completed_date = task.task_completed_date,
                 task_is_repeating = task.task_is_repeating,
@@ -46,6 +48,7 @@ internal class TaskDaoImpl(
                 task_description = task_description,
                 task_category_id = task_category_id,
                 task_due_date = task_due_date,
+                task_alarm_date = task_alarm_date,
                 task_creation_date = task_creation_date,
                 task_completed_date = task_completed_date,
                 task_is_repeating = task_is_repeating,
@@ -68,13 +71,17 @@ internal class TaskDaoImpl(
         taskQueries.cleanTable()
     }
 
-    override suspend fun findAllTasksWithDueDate(): List<Task> =
+    override suspend fun findAllTasksWithAlarmDate(): List<Task> =
         taskQueries
-            .selectAllTasksWithDueDate(mapper = ::Task)
+            .selectAllTasksWithAlarmDate(mapper = ::Task)
             .asFlow()
             .mapToList(dispatcherProvider.io)
             .first()
 
     override suspend fun getTaskById(taskId: Long): Task? =
         taskQueries.selectTaskById(taskId).executeAsOneOrNull()
+
+    override suspend fun resetLongTermTaskIfCompletedBefore(thresholdDate: LocalDateTime) {
+        taskQueries.resetLongTermTaskIfCompletedBefore(thresholdDate)
+    }
 }

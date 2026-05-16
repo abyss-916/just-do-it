@@ -121,7 +121,8 @@ internal class CompleteTaskTest {
         addTaskUseCase(task)
         completeTaskUseCase(task)
 
-        assertFalse(alarmInteractor.isAlarmScheduled(task.id))
+        assertNotNull(alarmInteractor.lastCancelledTask)
+        assertTrue(alarmInteractor.lastCancelledTask!!.id == task.id)
     }
 
     @Test
@@ -130,7 +131,8 @@ internal class CompleteTaskTest {
         addTaskUseCase(task)
         completeTaskUseCase(task)
 
-        assertFalse(notificationInteractor.isNotificationShown(task.id))
+        assertNotNull(notificationInteractor.lastDismissedTask)
+        assertTrue(notificationInteractor.lastDismissedTask!!.id == task.id)
     }
 
     @Test

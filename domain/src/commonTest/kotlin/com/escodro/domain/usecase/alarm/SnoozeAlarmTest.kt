@@ -14,6 +14,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.ExperimentalTime
 
@@ -34,6 +35,7 @@ internal class SnoozeAlarmTest {
         dateTimeProvider = calendarProvider,
         notificationInteractor = notificationInteractor,
         alarmInteractor = alarmInteractor,
+        taskRepository = taskRepository,
     )
 
     private val baseTask = Task(id = 2345L, title = "it's time")
@@ -76,5 +78,6 @@ internal class SnoozeAlarmTest {
         snoozeAlarmUseCase(baseTask.id, 15)
 
         notificationInteractor.isNotificationShown(baseTask.id)
+        assertFalse(notificationInteractor.isNotificationShown(baseTask.id))
     }
 }

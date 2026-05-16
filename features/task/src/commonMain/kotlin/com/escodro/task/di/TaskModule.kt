@@ -14,6 +14,7 @@ import com.escodro.task.presentation.detail.alarm.interactor.OpenAlarmSchedulerI
 import com.escodro.task.presentation.detail.main.TaskDetailScreenImpl
 import com.escodro.task.presentation.detail.main.TaskDetailViewModel
 import com.escodro.task.presentation.list.TaskListViewModel
+import com.escodro.task.presentation.longterm.LongTermTaskViewModel
 import com.escodro.taskapi.TaskDetailScreen
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
@@ -31,6 +32,7 @@ val taskModule = module {
     viewModelOf(::TaskDetailViewModel)
     viewModelOf(::TaskAlarmViewModel)
     viewModelOf(::AddTaskViewModel)
+    viewModelOf(::LongTermTaskViewModel)
 
     factoryOf(::OpenAlarmSchedulerImpl) bind OpenAlarmScheduler::class
 

@@ -55,6 +55,6 @@ class CancelAlarmTest {
         val result = getTaskUseCase(task.id)
 
         requireNotNull(result)
-        assertNull(result.dueDate)
+        assertNull(result.alarmDate)
     }
 }

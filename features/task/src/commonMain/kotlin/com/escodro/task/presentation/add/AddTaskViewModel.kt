@@ -8,7 +8,6 @@ import com.escodro.coroutines.AppCoroutineScope
 import com.escodro.domain.model.Task
 import com.escodro.domain.usecase.task.AddTask
 import com.escodro.domain.usecase.taskwithcategory.CountUncompletedTasks
-import com.escodro.domain.usecase.taskwithcategory.LoadLongTermTask
 import com.escodro.task.mapper.AlarmIntervalMapper
 import com.escodro.task.mapper.TaskPriorityMapper
 import com.escodro.task.model.AlarmInterval
@@ -21,8 +20,8 @@ import kotlinx.datetime.LocalDateTime
  */
 sealed class AddTaskState {
     data object None : AddTaskState()
+
     data object TaskLimitReached : AddTaskState()
-    data object LongTermTaskExists : AddTaskState()
 }
 
 internal class AddTaskViewModel(
@@ -31,7 +30,6 @@ internal class AddTaskViewModel(
     private val taskPriorityMapper: TaskPriorityMapper,
     private val applicationScope: AppCoroutineScope,
     private val countUncompletedTasks: CountUncompletedTasks,
-    private val loadLongTermTask: LoadLongTermTask,
 ) : ViewModel() {
 
     var state: AddTaskState by mutableStateOf(AddTaskState.None)
@@ -42,25 +40,17 @@ internal class AddTaskViewModel(
         description: String? = null,
         categoryId: CategoryId?,
         dueDate: LocalDateTime?,
+        alarmDate: LocalDateTime? = null,
         alarmInterval: AlarmInterval = AlarmInterval.NEVER,
         priority: TaskPriority = TaskPriority.NONE,
-        isLongTerm: Boolean = false,
     ) {
         if (title.isBlank()) return
 
         applicationScope.launch {
-            if (isLongTerm) {
-                val existing = loadLongTermTask()
-                if (existing != null) {
-                    state = AddTaskState.LongTermTaskExists
-                    return@launch
-                }
-            } else {
-                val count = countUncompletedTasks()
-                if (count >= MaxTaskCount) {
-                    state = AddTaskState.TaskLimitReached
-                    return@launch
-                }
+            val count = countUncompletedTasks()
+            if (count >= MaxTaskCount) {
+                state = AddTaskState.TaskLimitReached
+                return@launch
             }
 
             val interval = alarmIntervalMapper.toDomain(alarmInterval)
@@ -69,10 +59,10 @@ internal class AddTaskViewModel(
                 title = title,
                 description = description?.takeIf { it.isNotBlank() },
                 dueDate = dueDate,
+                alarmDate = alarmDate,
                 categoryId = categoryId?.value,
                 alarmInterval = interval,
                 priority = taskPriority,
-                isLongTerm = isLongTerm,
             )
             addTaskUseCase.invoke(task)
         }

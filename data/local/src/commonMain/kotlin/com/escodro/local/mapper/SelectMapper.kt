@@ -16,6 +16,7 @@ internal class SelectMapper {
                     task_description = result.task_description,
                     task_category_id = result.task_category_id,
                     task_due_date = result.task_due_date,
+                    task_alarm_date = result.task_alarm_date,
                     task_creation_date = result.task_creation_date,
                     task_completed_date = result.task_completed_date,
                     task_is_repeating = result.task_is_repeating,

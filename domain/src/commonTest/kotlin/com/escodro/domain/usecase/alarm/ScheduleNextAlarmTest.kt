@@ -61,10 +61,10 @@ internal class ScheduleNextAlarmTest {
     }
 
     @Test
-    fun test_if_fails_if_not_repeating_with_valid_due_date() = runTest {
+    fun test_if_fails_if_not_repeating_with_valid_alarm_date() = runTest {
         val task = baseTask.copy(
             isRepeating = false,
-            dueDate = datetimeProvider.getCurrentLocalDateTime(),
+            alarmDate = datetimeProvider.getCurrentLocalDateTime(),
         )
         assertFailsWith<IllegalArgumentException> {
             scheduleNextAlarmUseCase(task)
@@ -72,16 +72,16 @@ internal class ScheduleNextAlarmTest {
     }
 
     @Test
-    fun test_if_fails_if_no_due_date() = runTest {
-        val task = baseTask.copy(dueDate = null)
+    fun test_if_fails_if_no_alarm_date() = runTest {
+        val task = baseTask.copy(alarmDate = null)
         assertFailsWith<IllegalArgumentException> {
             scheduleNextAlarmUseCase(task)
         }
     }
 
     @Test
-    fun test_if_fails_if_no_due_date_but_it_is_repeating() = runTest {
-        val task = baseTask.copy(isRepeating = true, dueDate = null)
+    fun test_if_fails_if_no_alarm_date_but_it_is_repeating() = runTest {
+        val task = baseTask.copy(isRepeating = true, alarmDate = null)
         assertFailsWith<IllegalArgumentException> {
             scheduleNextAlarmUseCase(task)
         }
@@ -89,7 +89,11 @@ internal class ScheduleNextAlarmTest {
 
     @Test
     fun test_if_fails_if_no_alarm_interval() = runTest {
-        val task = baseTask.copy(dueDate = null, alarmInterval = null)
+        val task = baseTask.copy(
+            isRepeating = true,
+            alarmDate = datetimeProvider.getCurrentLocalDateTime(),
+            alarmInterval = null,
+        )
         assertFailsWith<IllegalArgumentException> {
             scheduleNextAlarmUseCase(task)
         }
@@ -99,7 +103,7 @@ internal class ScheduleNextAlarmTest {
     fun test_if_alarm_is_updated_to_next_hour() = runTest {
         val calendar = datetimeProvider.getCurrentLocalDateTime()
         val task = baseTask.copy(
-            dueDate = calendar,
+            alarmDate = calendar,
             isRepeating = true,
             alarmInterval = AlarmInterval.HOURLY,
         )
@@ -114,14 +118,14 @@ internal class ScheduleNextAlarmTest {
             .plus(1.hours)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        assertEquals(expected = assertCalendar, actual = result.dueDate)
+        assertEquals(expected = assertCalendar, actual = result.alarmDate)
     }
 
     @Test
     fun test_if_alarm_is_updated_to_next_day() = runTest {
         val calendar = datetimeProvider.getCurrentLocalDateTime()
         val task = baseTask.copy(
-            dueDate = calendar,
+            alarmDate = calendar,
             isRepeating = true,
             alarmInterval = AlarmInterval.DAILY,
         )
@@ -136,14 +140,14 @@ internal class ScheduleNextAlarmTest {
             .plus(DateTimePeriod(days = 1), TimeZone.currentSystemDefault())
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        assertEquals(expected = assertCalendar, actual = result.dueDate)
+        assertEquals(expected = assertCalendar, actual = result.alarmDate)
     }
 
     @Test
     fun test_if_alarm_is_updated_to_next_week() = runTest {
         val calendar = datetimeProvider.getCurrentLocalDateTime()
         val task = baseTask.copy(
-            dueDate = calendar,
+            alarmDate = calendar,
             isRepeating = true,
             alarmInterval = AlarmInterval.WEEKLY,
         )
@@ -158,14 +162,14 @@ internal class ScheduleNextAlarmTest {
             .plus(DateTimePeriod(days = 7), TimeZone.currentSystemDefault())
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        assertEquals(expected = assertCalendar, actual = result.dueDate)
+        assertEquals(expected = assertCalendar, actual = result.alarmDate)
     }
 
     @Test
     fun test_if_alarm_is_updated_to_next_month() = runTest {
         val calendar = datetimeProvider.getCurrentLocalDateTime()
         val task = baseTask.copy(
-            dueDate = calendar,
+            alarmDate = calendar,
             isRepeating = true,
             alarmInterval = AlarmInterval.MONTHLY,
         )
@@ -180,14 +184,14 @@ internal class ScheduleNextAlarmTest {
             .plus(DateTimePeriod(months = 1), TimeZone.currentSystemDefault())
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        assertEquals(expected = assertCalendar, actual = result.dueDate)
+        assertEquals(expected = assertCalendar, actual = result.alarmDate)
     }
 
     @Test
     fun test_if_alarm_is_updated_to_next_year() = runTest {
         val calendar = datetimeProvider.getCurrentLocalDateTime()
         val task = baseTask.copy(
-            dueDate = calendar,
+            alarmDate = calendar,
             isRepeating = true,
             alarmInterval = AlarmInterval.YEARLY,
         )
@@ -202,14 +206,14 @@ internal class ScheduleNextAlarmTest {
             .plus(DateTimePeriod(years = 1), TimeZone.currentSystemDefault())
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        assertEquals(expected = assertCalendar, actual = result.dueDate)
+        assertEquals(expected = assertCalendar, actual = result.alarmDate)
     }
 
     @Test
     fun test_if_new_alarm_is_scheduled() = runTest {
         val task = baseTask.copy(
             isRepeating = true,
-            dueDate = datetimeProvider.getCurrentLocalDateTime(),
+            alarmDate = datetimeProvider.getCurrentLocalDateTime(),
             alarmInterval = AlarmInterval.DAILY,
         )
 
@@ -227,8 +231,8 @@ internal class ScheduleNextAlarmTest {
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
         val task = baseTask.copy(
-            dueDate = pastCalendar,
-            isCompleted = true,
+            alarmDate = pastCalendar,
+            isCompleted = false,
             isRepeating = true,
             alarmInterval = AlarmInterval.HOURLY,
         )
@@ -244,6 +248,6 @@ internal class ScheduleNextAlarmTest {
             .plus(5.hours)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        assertEquals(expected = assertCalendar, actual = result.dueDate)
+        assertEquals(expected = assertCalendar, actual = result.alarmDate)
     }
 }

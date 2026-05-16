@@ -71,6 +71,13 @@ class NavBackStack<T : Destination>(startDestination: T) {
         val removedKey = topLevelStacks[topLevelKey]?.removeLastOrNull()
         // If the removed key was a top level key, remove the associated top level stack
         topLevelStacks.remove(removedKey)
+
+        // Guard against empty stacks after removal
+        if (topLevelStacks.isEmpty()) {
+            backStack.clear()
+            return
+        }
+
         topLevelKey = topLevelStacks.keys.last()
 
         val previousTopLevelStack: T? = topLevelStacks[topLevelKey]?.lastOrNull()

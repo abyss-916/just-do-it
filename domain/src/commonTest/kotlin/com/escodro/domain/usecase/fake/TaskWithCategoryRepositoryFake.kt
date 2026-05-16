@@ -30,12 +30,16 @@ internal class TaskWithCategoryRepositoryFake(
             emit(tasks)
         }
 
+    override suspend fun findLongTermTask(): TaskWithCategory? {
+        val task = taskRepository.findAllTasks().find { it.isLongTerm } ?: return null
+        val category = findCategory(task.categoryId)
+        return TaskWithCategory(task, category)
+    }
+
     private suspend fun findCategory(categoryId: Long?): Category? {
         if (categoryId == null) {
             return null
         }
         return categoryRepository.findCategoryById(categoryId)
     }
-
-    override suspend fun findLongTermTask(): TaskWithCategory? = null
 }

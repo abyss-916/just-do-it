@@ -35,9 +35,7 @@ internal class UpdateAlarmTest {
         // Given the alarm to be set
         val taskId = 123L
         val alarm = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        val task = TaskFactory.createTask().copy(id = taskId, dueDate = alarm)
-
-        // When the function to set the alarm is called
+        val task = TaskFactory.createTask().copy(id = taskId, alarmDate = alarm)
         updateAlarm(task)
 
         // Then the alarm is set
@@ -49,8 +47,9 @@ internal class UpdateAlarmTest {
     fun `test if alarm is set as repeating`() = runTest {
         // Given the alarm to be set with interval
         val taskId = 123L
+        val alarm = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         val alarmInterval = AlarmInterval.WEEKLY
-        val task = TaskFactory.createTask().copy(id = taskId, alarmInterval = alarmInterval)
+        val task = TaskFactory.createTask().copy(id = taskId, alarmDate = alarm, alarmInterval = alarmInterval)
 
         // When the function to set the alarm interval is called
         updateAlarm(task)
@@ -67,7 +66,7 @@ internal class UpdateAlarmTest {
     fun `test if alarm is removed`() = runTest {
         // Given the alarm to be removed
         val taskId = 123L
-        val task = TaskFactory.createTask().copy(id = taskId, dueDate = null)
+        val task = TaskFactory.createTask().copy(id = taskId, alarmDate = null)
 
         // When the function to cancel the alarm is called
         updateAlarm(task)
@@ -84,7 +83,7 @@ internal class UpdateAlarmTest {
         val alarmInterval = AlarmInterval.WEEKLY
         val task = TaskFactory
             .createTask()
-            .copy(id = taskId, dueDate = alarm, alarmInterval = alarmInterval)
+            .copy(id = taskId, alarmDate = alarm, alarmInterval = alarmInterval)
 
         // When the function to set the alarm and interval is called
         updateAlarm(task)

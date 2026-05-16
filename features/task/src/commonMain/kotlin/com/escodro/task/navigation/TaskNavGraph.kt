@@ -19,6 +19,7 @@ import com.escodro.navigationapi.provider.NavGraph
 import com.escodro.task.presentation.add.AddTaskBottomSheet
 import com.escodro.task.presentation.detail.main.TaskDetailScreen
 import com.escodro.task.presentation.list.TaskListSection
+import com.escodro.task.presentation.longterm.LongTermTaskBottomSheet
 
 internal class TaskNavGraph : NavGraph {
 
@@ -33,6 +34,7 @@ internal class TaskNavGraph : NavGraph {
                     isSinglePane = currentWindowAdaptiveInfo().windowSizeClass.isSinglePane(),
                     onItemClick = { taskId -> navEventController.sendEvent(TaskEvent.OnTaskClick(taskId)) },
                     onFabClick = { navEventController.sendEvent(TaskEvent.OnNewTaskClick) },
+                    onLongTermTaskManage = { navEventController.sendEvent(TaskEvent.OnLongTermTaskManageClick) },
                 )
             }
 
@@ -51,6 +53,12 @@ internal class TaskNavGraph : NavGraph {
             entry<TasksDestination.AddTaskBottomSheet>(metadata = DialogSceneStrategy.dialog()) {
                 AddTaskBottomSheet(
                     onHideBottomSheet = { navEventController.sendEvent(Event.OnBack) },
+                )
+            }
+
+            entry<TasksDestination.LongTermTaskBottomSheet>(metadata = DialogSceneStrategy.dialog()) {
+                LongTermTaskBottomSheet(
+                    onDismiss = { navEventController.sendEvent(Event.OnBack) },
                 )
             }
         }

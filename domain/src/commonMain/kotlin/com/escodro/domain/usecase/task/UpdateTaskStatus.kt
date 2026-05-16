@@ -9,8 +9,6 @@ interface UpdateTaskStatus {
      * Updates the task as completed or uncompleted based on the current state.
      *
      * @param taskId the id from the task to be updated
-     *
-     * @return observable to be subscribe
      */
     suspend operator fun invoke(taskId: Long)
 }

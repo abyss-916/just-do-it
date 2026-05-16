@@ -4,6 +4,7 @@ import com.escodro.domain.model.Category
 import com.escodro.domain.model.Task
 import com.escodro.domain.model.TaskWithCategory
 import com.escodro.domain.usecase.fake.CategoryRepositoryFake
+import com.escodro.domain.usecase.fake.DateTimeProviderFake
 import com.escodro.domain.usecase.fake.TaskRepositoryFake
 import com.escodro.domain.usecase.fake.TaskWithCategoryRepositoryFake
 import com.escodro.domain.usecase.tracker.implementation.LoadCompletedTasksByPeriodImpl
@@ -13,7 +14,6 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 import kotlin.time.ExperimentalTime
 
@@ -24,10 +24,13 @@ internal class LoadCompletedTasksByPeriodTest {
 
     private val categoryRepository = CategoryRepositoryFake()
 
+    private val dateTimeProvider = DateTimeProviderFake()
+
     private val taskWithCategoryRepository =
         TaskWithCategoryRepositoryFake(taskRepository, categoryRepository)
 
-    private val loadTrackerUseCase = LoadCompletedTasksByPeriodImpl(taskWithCategoryRepository)
+    private val loadTrackerUseCase =
+        LoadCompletedTasksByPeriodImpl(taskWithCategoryRepository, dateTimeProvider)
 
     @Test
     fun test_if_completed_tasks_are_returned_in_group() = runTest {
@@ -37,7 +40,7 @@ internal class LoadCompletedTasksByPeriodTest {
         val categoryList = listOf(category1, category2, category3)
         categoryList.forEach { categoryRepository.insertCategory(it) }
 
-        val instant = Clock.System.now()
+        val instant = dateTimeProvider.getCurrentInstant()
         val calendarIn = instant.minus(15.days).toLocalDateTime(TimeZone.currentSystemDefault())
         val calendarOut = instant.minus(90.days).toLocalDateTime(TimeZone.currentSystemDefault())
 
@@ -105,7 +108,7 @@ internal class LoadCompletedTasksByPeriodTest {
         val categoryList = listOf(category1, category2)
         categoryList.forEach { categoryRepository.insertCategory(it) }
 
-        val instant = Clock.System.now()
+        val instant = dateTimeProvider.getCurrentInstant()
         val calendarIn = instant.minus(15.days).toLocalDateTime(TimeZone.currentSystemDefault())
 
         val t1 = Task(
@@ -152,7 +155,7 @@ internal class LoadCompletedTasksByPeriodTest {
 
     @Test
     fun test_if_completed_tasks_without_category_are_considered() = runTest {
-        val instant = Clock.System.now()
+        val instant = dateTimeProvider.getCurrentInstant()
         val calendarIn = instant.minus(10.days).toLocalDateTime(TimeZone.currentSystemDefault())
         val task = Task(id = 3, isCompleted = true, title = "Lonely", completedDate = calendarIn)
         taskRepository.insertTask(task)

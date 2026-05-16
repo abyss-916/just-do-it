@@ -13,6 +13,7 @@ import kotlinx.datetime.LocalDateTime
 data class Task(
     val id: Long,
     val title: String,
-    val dueDate: LocalDateTime?,
+    val dueDate: LocalDateTime? = null,
+    val alarmDate: LocalDateTime? = null,
     val isCompleted: Boolean,
 )

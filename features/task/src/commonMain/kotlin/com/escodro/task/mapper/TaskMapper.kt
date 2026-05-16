@@ -25,6 +25,7 @@ internal class TaskMapper(
             title = domainTask.title,
             description = domainTask.description,
             dueDate = domainTask.dueDate,
+            alarmDate = domainTask.alarmDate,
             categoryId = domainTask.categoryId,
             creationDate = domainTask.creationDate,
             completedDate = domainTask.completedDate,

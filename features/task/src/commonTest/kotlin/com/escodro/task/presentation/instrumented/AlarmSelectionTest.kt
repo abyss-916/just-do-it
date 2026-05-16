@@ -14,8 +14,6 @@ import com.escodro.resources.Res
 import com.escodro.resources.task_alarm_permission_dialog_title
 import com.escodro.resources.task_detail_alarm_no_alarm
 import com.escodro.resources.task_detail_cd_icon_remove_alarm
-import com.escodro.resources.task_detail_cd_icon_repeat_alarm
-import com.escodro.task.model.AlarmInterval
 import com.escodro.task.presentation.detail.alarm.AlarmSelection
 import com.escodro.task.presentation.detail.alarm.interactor.OpenAlarmScheduler
 import com.escodro.task.presentation.detail.alarm.interactor.OpenAlarmSchedulerImpl
@@ -64,7 +62,7 @@ internal class AlarmSelectionTest : AlkaaTest() {
         // Load the alarm section component (with a preset date to test removal)
         val localDateTime =
             LocalDateTime(year = 2021, month = 4, day = 15, hour = 17, minute = 0)
-        loadAlarmSelection(localDateTime, AlarmInterval.NEVER)
+        loadAlarmSelection(localDateTime)
 
         // Click to remove the alarm
         val removeAlarmCd = getString(Res.string.task_detail_cd_icon_remove_alarm)
@@ -73,42 +71,6 @@ internal class AlarmSelectionTest : AlkaaTest() {
         // Assert that the alarm item is not set again
         val noAlarmString = getString(Res.string.task_detail_alarm_no_alarm)
         onNodeWithText(noAlarmString).assertIsDisplayed()
-
-        val repeatIconCd = getString(Res.string.task_detail_cd_icon_repeat_alarm)
-        onNodeWithText(repeatIconCd).assertDoesNotExist()
-    }
-
-    @Test
-    fun test_allAlarmIntervalsCanBeSelected() = runComposeUiTest {
-        // Load the alarm section component with a preset date
-        val localDateTime = LocalDateTime(year = 2021, month = 4, day = 15, hour = 17, minute = 0)
-        loadAlarmSelection(localDateTime, AlarmInterval.NEVER)
-
-        // Assert that when clicking in each option, it is shown as selected
-        val repeatIconCd = getString(Res.string.task_detail_cd_icon_repeat_alarm)
-        AlarmInterval.entries.forEach { interval ->
-            onNodeWithContentDescription(repeatIconCd, useUnmergedTree = true).performClick()
-            val intervalString = getString(interval.title)
-            onAllNodesWithText(intervalString)[0].performClick()
-            onAllNodesWithText(intervalString)[0].assertIsDisplayed()
-        }
-    }
-
-    @Test
-    fun test_alarmAlreadySetLoadsCorrectly() = runComposeUiTest {
-        // Load the alarm section with preset values (2021-04-15 - 17:00:00)
-        val localDateTime = LocalDateTime(year = 2021, month = 4, day = 15, hour = 17, minute = 0)
-        val alarmInterval = AlarmInterval.MONTHLY
-        loadAlarmSelection(localDateTime, alarmInterval)
-
-        val alarmString = getString(alarmInterval.title)
-
-        // Assert that the date is shown in the view
-        onNodeWithText(text = "15", substring = true).assertIsDisplayed()
-        onNodeWithText(text = "2021", substring = true).assertIsDisplayed()
-
-        // Assert that the alarm interval is shown in the view
-        onNodeWithText(alarmString).assertIsDisplayed()
     }
 
     @Test
@@ -134,9 +96,7 @@ internal class AlarmSelectionTest : AlkaaTest() {
                 AlkaaThemePreview {
                     AlarmSelection(
                         calendar = null,
-                        interval = AlarmInterval.NEVER,
                         onAlarmUpdate = {},
-                        onIntervalSelect = {},
                         hasExactAlarmPermission = { hasExactAlarmPermission },
                         openExactAlarmPermissionScreen = {},
                         openAppSettingsScreen = {},
@@ -148,16 +108,13 @@ internal class AlarmSelectionTest : AlkaaTest() {
 
     private fun ComposeUiTest.loadAlarmSelection(
         calendar: LocalDateTime,
-        alarmInterval: AlarmInterval,
     ) {
         setContent {
             KoinApplication(configuration = koinConfiguration { modules(testModule) }) {
                 AlkaaThemePreview {
                     AlarmSelection(
                         calendar = calendar,
-                        interval = alarmInterval,
                         onAlarmUpdate = {},
-                        onIntervalSelect = {},
                         hasExactAlarmPermission = { true },
                         openExactAlarmPermissionScreen = {},
                         openAppSettingsScreen = {},

@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -39,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.escodro.category.presentation.LocalizedCategoryName
 import com.escodro.categoryapi.model.Category
 import com.escodro.categoryapi.presentation.CategoryListViewModel
 import com.escodro.categoryapi.presentation.CategoryState
@@ -48,9 +50,6 @@ import com.escodro.designsystem.components.content.DefaultIconTextContent
 import com.escodro.designsystem.semantics.color
 import com.escodro.resources.Res
 import com.escodro.resources.category_cd_add_category
-import com.escodro.resources.category_default_personal
-import com.escodro.resources.category_default_shopping
-import com.escodro.resources.category_default_work
 import com.escodro.resources.category_icon_cd
 import com.escodro.resources.category_list_cd_empty_list
 import com.escodro.resources.category_list_header_empty
@@ -125,6 +124,11 @@ private fun CategoryListScaffold(
                         onItemClick = onItemClick,
                         modifier = Modifier.padding(padding),
                     )
+
+                    is CategoryState.Error -> CategoryListError(
+                        message = state.message,
+                        modifier = Modifier.padding(padding),
+                    )
                 }
             }
         }
@@ -173,7 +177,7 @@ private fun CategoryItem(
         ) {
             CategoryItemIcon(category.color)
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = localizedCategoryName(category.name))
+            Text(text = LocalizedCategoryName(category.name))
         }
     }
 }
@@ -213,15 +217,12 @@ private fun CategoryListEmpty(modifier: Modifier = Modifier) {
     )
 }
 
-/**
- * Maps English default category names to localized display strings.
- * User-created categories (non-matching names) are returned as-is.
- */
 @Composable
-private fun localizedCategoryName(storedName: String): String =
-    when (storedName) {
-        "Personal" -> stringResource(Res.string.category_default_personal)
-        "Work" -> stringResource(Res.string.category_default_work)
-        "Shopping List" -> stringResource(Res.string.category_default_shopping)
-        else -> storedName
-    }
+private fun CategoryListError(message: String, modifier: Modifier = Modifier) {
+    DefaultIconTextContent(
+        icon = Icons.Outlined.Error,
+        iconContentDescription = "Error",
+        header = message,
+        modifier = modifier,
+    )
+}

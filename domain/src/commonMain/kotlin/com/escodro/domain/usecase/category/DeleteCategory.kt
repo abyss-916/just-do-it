@@ -11,8 +11,6 @@ interface DeleteCategory {
      * Deletes a category.
      *
      * @param category category to be deleted
-     *
-     * @return observable to be subscribe
      */
     suspend operator fun invoke(category: Category)
 }

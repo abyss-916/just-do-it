@@ -10,7 +10,7 @@ interface LoadAllCategories {
     /**
      * Loads all categories.
      *
-     * @return a mutable list of all categories
+     * @return a flow emitting the list of all categories
      */
     operator fun invoke(): Flow<List<Category>>
 }

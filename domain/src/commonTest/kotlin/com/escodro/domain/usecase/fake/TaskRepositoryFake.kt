@@ -2,6 +2,7 @@ package com.escodro.domain.usecase.fake
 
 import com.escodro.domain.model.Task
 import com.escodro.domain.repository.TaskRepository
+import kotlinx.datetime.LocalDateTime
 
 internal class TaskRepositoryFake : TaskRepository {
 
@@ -17,7 +18,7 @@ internal class TaskRepositoryFake : TaskRepository {
             task.id
         }
 
-        taskMap[id] = task
+        taskMap[id] = task.copy(id = id)
         return id
     }
 
@@ -33,11 +34,15 @@ internal class TaskRepositoryFake : TaskRepository {
         taskMap.clear()
     }
 
-    override suspend fun findAllTasksWithDueDate(): List<Task> =
-        taskMap.filter { entry -> entry.value.dueDate != null }.values.toMutableList()
+    override suspend fun findAllTasksWithAlarmDate(): List<Task> =
+        taskMap.filter { entry -> entry.value.alarmDate != null }.values.toMutableList()
 
     override suspend fun findTaskById(taskId: Long): Task? =
         taskMap[taskId]
+
+    override suspend fun resetLongTermTaskIfCompletedBefore(thresholdDate: LocalDateTime) {
+        // No-op in fake
+    }
 
     fun findAllTasks(): List<Task> =
         taskMap.values.toList()

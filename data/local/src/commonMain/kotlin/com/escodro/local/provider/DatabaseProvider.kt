@@ -1,6 +1,5 @@
 package com.escodro.local.provider
 
-import com.escodro.coroutines.AppCoroutineScope
 import com.escodro.local.AlkaaDatabase
 import com.escodro.local.Category
 import com.escodro.local.Task
@@ -13,7 +12,6 @@ import com.escodro.local.converter.taskPriorityAdapter
  */
 internal class DatabaseProvider(
     private val driverFactory: DriverFactory,
-    private val appCoroutineScope: AppCoroutineScope,
 ) {
 
     private var database: AlkaaDatabase? = null
@@ -33,6 +31,7 @@ internal class DatabaseProvider(
             driver = driver,
             TaskAdapter = Task.Adapter(
                 task_due_dateAdapter = dateTimeAdapter,
+                task_alarm_dateAdapter = dateTimeAdapter,
                 task_creation_dateAdapter = dateTimeAdapter,
                 task_completed_dateAdapter = dateTimeAdapter,
                 task_alarm_intervalAdapter = alarmIntervalAdapter,
@@ -46,29 +45,19 @@ internal class DatabaseProvider(
 
     private fun prepopulateDatabase(database: AlkaaDatabase) {
         if (isDatabaseEmpty(database)) {
-            appCoroutineScope.launch {
-                for (category in getPrepopulateData()) {
-                    database.categoryQueries.insert(
-                        category_name = category.category_name,
-                        category_color = category.category_color,
-                    )
-                }
+            for (category in getPrepopulateData()) {
+                database.categoryQueries.insert(
+                    category_name = category.category_name,
+                    category_color = category.category_color,
+                )
             }
         }
     }
 
-    private fun isDatabaseEmpty(database: AlkaaDatabase): Boolean = with(database) {
-        categoryQueries
-            .selectAll()
-            .executeAsList()
-            .isEmpty() &&
-            taskQueries
-                .selectAllTasksWithDueDate()
-                .executeAsList()
-                .isEmpty()
-    }
+    private fun isDatabaseEmpty(database: AlkaaDatabase): Boolean =
+        database.categoryQueries.selectAll().executeAsList().isEmpty()
 
-    private suspend fun getPrepopulateData(): List<Category> =
+    private fun getPrepopulateData(): List<Category> =
         listOf(
             Category(
                 category_id = 0,

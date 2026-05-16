@@ -46,7 +46,7 @@ internal class SearchSectionTest : AlkaaTest() {
             isRepeating = false,
         )
         val item2 = TaskSearchItem(
-            id = 1,
+            id = 2,
             isCompleted = false,
             title = "Send gift",
             categoryColor = Color.Green,

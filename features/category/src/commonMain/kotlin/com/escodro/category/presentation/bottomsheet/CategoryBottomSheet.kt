@@ -36,6 +36,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
+import com.escodro.category.presentation.LocalizedCategoryName
+import com.escodro.category.presentation.toStoredCategoryName
 import com.escodro.categoryapi.model.Category
 import com.escodro.designsystem.components.dialog.AlkaaDialog
 import com.escodro.designsystem.components.dialog.DialogArguments
@@ -44,9 +46,6 @@ import com.escodro.designsystem.components.textfield.AlkaaInputTextField
 import com.escodro.resources.Res
 import com.escodro.resources.category_add_label
 import com.escodro.resources.category_cd_remove_category
-import com.escodro.resources.category_default_personal
-import com.escodro.resources.category_default_shopping
-import com.escodro.resources.category_default_work
 import com.escodro.resources.category_dialog_remove_cancel
 import com.escodro.resources.category_dialog_remove_confirm
 import com.escodro.resources.category_dialog_remove_text
@@ -191,7 +190,7 @@ private fun CategoryBottomSheetContent(
             }
 
             RemoveCategoryDialog(
-                categoryName = localizedCategoryName(category.name),
+                categoryName = LocalizedCategoryName(category.name),
                 isDialogOpen = isDialogOpen,
                 onCloseDialog = { isDialogOpen = false },
                 onActionConfirm = {
@@ -202,7 +201,7 @@ private fun CategoryBottomSheetContent(
 
             AlkaaInputTextField(
                 label = stringResource(Res.string.category_add_label),
-                text = localizedCategoryName(category.name),
+                text = LocalizedCategoryName(category.name),
                 onTextChange = { name ->
                     onCategoryUpdate(category.copy(name = name))
                 },
@@ -296,6 +295,7 @@ private fun rememberCategory(categorySheetState: CategorySheetState): MutableSta
             when (categorySheetState) {
                 CategorySheetState.Empty -> emptyCategory()
                 is CategorySheetState.Loaded -> categorySheetState.category
+                CategorySheetState.Error -> emptyCategory()
             },
         )
     }
@@ -304,28 +304,3 @@ private fun emptyCategory() = Category(
     name = "",
     color = CategoryColors.entries[0].value.toArgb(),
 )
-
-/**
- * Maps English default category names to localized display strings.
- * User-created categories (non-matching names) are returned as-is.
- */
-@Composable
-private fun localizedCategoryName(storedName: String): String =
-    when (storedName) {
-        "Personal" -> stringResource(Res.string.category_default_personal)
-        "Work" -> stringResource(Res.string.category_default_work)
-        "Shopping List" -> stringResource(Res.string.category_default_shopping)
-        else -> storedName
-    }
-
-/**
- * Reverses localized display names back to their English database keys.
- * Custom names that don't match any known localization are returned as-is.
- */
-private fun toStoredCategoryName(displayName: String): String =
-    when (displayName) {
-        "个人", "Personal", "Personnel" -> "Personal"
-        "工作", "Work", "Trabajo", "Travail" -> "Work"
-        "购物清单", "Shopping List", "Lista de compras" -> "Shopping List"
-        else -> displayName
-    }

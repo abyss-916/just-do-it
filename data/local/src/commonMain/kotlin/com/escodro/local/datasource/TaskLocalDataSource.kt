@@ -4,6 +4,7 @@ import com.escodro.local.dao.TaskDao
 import com.escodro.local.mapper.TaskMapper
 import com.escodro.repository.datasource.TaskDataSource
 import com.escodro.repository.model.Task
+import kotlinx.datetime.LocalDateTime
 
 /**
  * Local implementation of [TaskDataSource].
@@ -28,9 +29,13 @@ internal class TaskLocalDataSource(
         taskDao.cleanTable()
     }
 
-    override suspend fun findAllTasksWithDueDate(): List<Task> =
-        taskDao.findAllTasksWithDueDate().map { taskMapper.toRepo(it) }
+    override suspend fun findAllTasksWithAlarmDate(): List<Task> =
+        taskDao.findAllTasksWithAlarmDate().map { taskMapper.toRepo(it) }
 
     override suspend fun findTaskById(taskId: Long): Task? =
         taskDao.getTaskById(taskId)?.let { taskMapper.toRepo(it) }
+
+    override suspend fun resetLongTermTaskIfCompletedBefore(thresholdDate: LocalDateTime) {
+        taskDao.resetLongTermTaskIfCompletedBefore(thresholdDate)
+    }
 }

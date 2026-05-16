@@ -11,7 +11,7 @@ interface LoadUncompletedTasks {
     /**
      * Gets all uncompleted tasks.
      *
-     * @return observable to be subscribe
+     * @param categoryId the category id to filter by, or null for all
      */
     operator fun invoke(categoryId: Long? = null): Flow<List<TaskWithCategory>>
 }

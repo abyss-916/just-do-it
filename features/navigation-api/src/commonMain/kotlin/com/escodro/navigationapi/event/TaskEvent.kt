@@ -12,4 +12,8 @@ object TaskEvent {
     data class OnTaskClick(val id: Long) : Event {
         override fun nextDestination(): Destination = TasksDestination.TaskDetail(taskId = id)
     }
+
+    data object OnLongTermTaskManageClick : Event {
+        override fun nextDestination(): Destination = TasksDestination.LongTermTaskBottomSheet
+    }
 }

@@ -80,8 +80,8 @@ internal class UpdateTaskTest {
 
     @Test
     fun test_when_task_title_is_updated_than_the_notification_was_updated() = runTest {
-        val dueDate = LocalDateTime(year = 2021, month = 10, day = 10, hour = 10, minute = 10)
-        val task = Task(id = 15, title = "flora card", dueDate = dueDate)
+        val alarmDate = LocalDateTime(year = 2021, month = 10, day = 10, hour = 10, minute = 10)
+        val task = Task(id = 15, title = "flora card", alarmDate = alarmDate)
         addTaskUseCase(task)
 
         val newTitle = "float card"
@@ -91,7 +91,7 @@ internal class UpdateTaskTest {
     }
 
     @Test
-    fun test_when_task_title_is_updated_without_due_date_than_the_notification_was_not_updated() =
+    fun test_when_task_title_is_updated_without_alarm_date_than_the_notification_was_not_updated() =
         runTest {
             val task = Task(id = 15, title = "miss rat", dueDate = null)
             addTaskUseCase(task)

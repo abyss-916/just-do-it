@@ -1,10 +1,10 @@
 package com.escodro.domain.usecase.task.implementation
 
-import com.escodro.domain.usecase.taskwithcategory.LoadLongTermTask
 import com.escodro.domain.usecase.task.LoadTask
 import com.escodro.domain.usecase.task.SetAsLongTerm
 import com.escodro.domain.usecase.task.UnsetAsLongTerm
 import com.escodro.domain.usecase.task.UpdateTask
+import com.escodro.domain.usecase.taskwithcategory.LoadLongTermTask
 
 internal class SetAsLongTermImpl(
     private val loadTask: LoadTask,

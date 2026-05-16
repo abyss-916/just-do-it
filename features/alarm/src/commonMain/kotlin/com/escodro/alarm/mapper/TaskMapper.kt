@@ -20,6 +20,7 @@ internal class TaskMapper {
             id = domainTask.id,
             title = domainTask.title,
             dueDate = domainTask.dueDate,
+            alarmDate = domainTask.alarmDate,
             isCompleted = domainTask.isCompleted,
         )
 }

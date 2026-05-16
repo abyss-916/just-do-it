@@ -10,7 +10,7 @@ interface AlarmInteractor {
     /**
      * Schedules a new alarm.
      *
-     * @param task the alarm id
+     * @param task the task to schedule the alarm for
      * @param timeInMillis the time to the alarm be scheduled
      */
     fun schedule(task: Task, timeInMillis: Long)

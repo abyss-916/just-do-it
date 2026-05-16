@@ -4,6 +4,7 @@ import com.escodro.domain.model.Task
 import com.escodro.domain.repository.TaskRepository
 import com.escodro.repository.datasource.TaskDataSource
 import com.escodro.repository.mapper.TaskMapper
+import kotlinx.datetime.LocalDateTime
 
 internal class TaskRepositoryImpl(
     private val taskDataSource: TaskDataSource,
@@ -24,9 +25,13 @@ internal class TaskRepositoryImpl(
         taskDataSource.cleanTable()
     }
 
-    override suspend fun findAllTasksWithDueDate(): List<Task> =
-        taskDataSource.findAllTasksWithDueDate().map { taskMapper.toDomain(it) }
+    override suspend fun findAllTasksWithAlarmDate(): List<Task> =
+        taskDataSource.findAllTasksWithAlarmDate().map { taskMapper.toDomain(it) }
 
     override suspend fun findTaskById(taskId: Long): Task? =
         taskDataSource.findTaskById(taskId)?.let { taskMapper.toDomain(it) }
+
+    override suspend fun resetLongTermTaskIfCompletedBefore(thresholdDate: LocalDateTime) {
+        taskDataSource.resetLongTermTaskIfCompletedBefore(thresholdDate)
+    }
 }

@@ -19,8 +19,6 @@ class DeleteTask(
      * Deletes a task.
      *
      * @param task the task to be deleted
-     *
-     * @return observable to be subscribe
      */
     suspend operator fun invoke(task: Task) {
         logger.debug { "Deleting task ${task.title}" }

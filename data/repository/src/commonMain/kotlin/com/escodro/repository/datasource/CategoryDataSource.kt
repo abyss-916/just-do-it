@@ -25,7 +25,7 @@ interface CategoryDataSource {
     /**
      * Deletes a category.
      *
-     * @param category task to be deleted
+     * @param category category to be deleted
      */
     suspend fun deleteCategory(category: Category)
 

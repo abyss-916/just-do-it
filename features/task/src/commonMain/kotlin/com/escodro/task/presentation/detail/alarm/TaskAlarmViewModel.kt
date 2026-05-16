@@ -19,7 +19,7 @@ internal class TaskAlarmViewModel(
 
     fun updateAlarm(taskId: TaskId, alarm: LocalDateTime?) = applicationScope.launch {
         val task = loadTask(taskId.value) ?: return@launch
-        val updatedTask = task.copy(dueDate = alarm)
+        val updatedTask = task.copy(alarmDate = alarm)
         updateAlarm(updatedTask)
     }
 

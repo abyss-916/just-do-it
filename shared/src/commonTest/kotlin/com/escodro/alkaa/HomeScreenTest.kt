@@ -120,10 +120,13 @@ internal class HomeScreenTest : AlkaaTest(), KoinTest {
                         task_description = null,
                         task_category_id = null,
                         task_due_date = null,
+                        task_alarm_date = null,
                         task_creation_date = null,
                         task_completed_date = null,
                         task_is_repeating = false,
                         task_alarm_interval = null,
+                        task_priority = null,
+                        task_is_long_term = false,
                     ),
                 )
             }

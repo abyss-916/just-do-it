@@ -14,19 +14,19 @@ internal class AlarmInteractorImpl(
     private val logger = KotlinLogging.logger {}
 
     override fun schedule(task: Task, timeInMillis: Long) {
-        logger.debug { "schedule - alarmId = $task" }
+        logger.debug { "schedule - taskId = ${task.id}" }
         val alarmTask = mapper.fromDomain(task)
         notificationScheduler.scheduleTaskNotification(alarmTask, timeInMillis)
     }
 
     override fun cancel(task: Task) {
-        logger.debug { "cancel - alarmId = $task" }
+        logger.debug { "cancel - taskId = ${task.id}" }
         val alarmTask = mapper.fromDomain(task)
         notificationScheduler.cancelTaskNotification(alarmTask)
     }
 
     override fun update(task: Task) {
-        logger.debug { "update - alarmId = $task" }
+        logger.debug { "update - taskId = ${task.id}" }
         val alarmTask = mapper.fromDomain(task)
         notificationScheduler.updateTaskNotification(alarmTask)
     }

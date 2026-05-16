@@ -20,8 +20,6 @@ class CompleteTask(
      * Completes the given task.
      *
      * @param taskId the task id
-     *
-     * @return observable to be subscribe
      */
     suspend operator fun invoke(taskId: Long) {
         val task = taskRepository.findTaskById(taskId) ?: return
@@ -32,14 +30,12 @@ class CompleteTask(
      * Completes the given task.
      *
      * @param task the task to be updated
-     *
-     * @return observable to be subscribe
      */
     suspend operator fun invoke(task: Task) {
         val updatedTask = updateTaskAsCompleted(task)
         taskRepository.updateTask(updatedTask)
-        alarmInteractor.cancel(task)
-        notificationInteractor.dismiss(task)
+        alarmInteractor.cancel(updatedTask)
+        notificationInteractor.dismiss(updatedTask)
     }
 
     private fun updateTaskAsCompleted(task: Task) =

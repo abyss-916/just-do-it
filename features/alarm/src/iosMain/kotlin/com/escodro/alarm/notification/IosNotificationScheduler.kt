@@ -85,13 +85,13 @@ internal class IosNotificationScheduler : NotificationScheduler {
     }
 
     override fun cancelTaskNotification(task: Task) {
-        NSLog("Canceling notification with id '${task.title}'")
+        NSLog("Canceling notification with id '${task.id}'")
         notificationCenter.removePendingNotificationRequestsWithIdentifiers(listOf(task.id.toString()))
     }
 
     override fun updateTaskNotification(task: Task) {
-        NSLog("Updating notification with id '${task.title}'")
-        val time = task.dueDate
+        NSLog("Updating notification with id '${task.id}'")
+        val time = task.alarmDate
             ?.toInstant(
                 TimeZone.currentSystemDefault(),
             )

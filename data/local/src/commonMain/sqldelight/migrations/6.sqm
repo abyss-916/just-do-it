@@ -1,0 +1,2 @@
+ALTER TABLE Task ADD COLUMN task_alarm_date INTEGER AS LocalDateTime;
+UPDATE Task SET task_alarm_date = task_due_date WHERE task_due_date IS NOT NULL;

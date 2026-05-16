@@ -13,8 +13,8 @@ internal class UpdateAlarmImpl(
 ) : UpdateAlarm {
 
     override suspend fun invoke(task: Task) {
-        if (task.dueDate != null) {
-            scheduleAlarmUseCase(task.id, task.dueDate)
+        if (task.alarmDate != null) {
+            scheduleAlarmUseCase(task.id, task.alarmDate)
 
             if (task.alarmInterval != null) {
                 updateTaskAsRepeatingUseCase(task.id, task.alarmInterval)

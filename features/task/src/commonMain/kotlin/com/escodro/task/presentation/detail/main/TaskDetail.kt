@@ -4,7 +4,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -19,7 +18,6 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -49,7 +47,6 @@ import com.escodro.resources.task_detail_cd_icon_category
 import com.escodro.resources.task_detail_cd_icon_description
 import com.escodro.resources.task_detail_cd_icon_priority
 import com.escodro.resources.task_detail_header_error
-import com.escodro.resources.task_long_term_set_as
 import com.escodro.task.model.Task
 import com.escodro.task.model.TaskPriority
 import com.escodro.task.presentation.category.CategorySelection
@@ -57,6 +54,7 @@ import com.escodro.task.presentation.detail.TaskDetailActions
 import com.escodro.task.presentation.detail.TaskDetailSectionContent
 import com.escodro.task.presentation.detail.alarm.AlarmSelection
 import com.escodro.task.presentation.detail.alarm.TaskAlarmViewModel
+import com.escodro.task.presentation.detail.duedate.DueDateSelection
 import com.escodro.task.presentation.detail.priority.PrioritySelection
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -89,9 +87,8 @@ internal fun TaskDetailScreen(
         onDescriptionChange = { desc -> detailViewModel.updateDescription(id, desc) },
         onCategoryChange = { categoryId -> detailViewModel.updateCategory(id, categoryId) },
         onPriorityChange = { priority -> detailViewModel.updatePriority(id, priority) },
-        onLongTermToggle = { isLongTerm -> detailViewModel.toggleLongTerm(id, isLongTerm) },
+        onDueDateChange = { dueDate -> detailViewModel.updateDueDate(id, dueDate) },
         onAlarmChange = { calendar -> alarmViewModel.updateAlarm(id, calendar) },
-        onIntervalChange = { interval -> alarmViewModel.setRepeating(id, interval) },
         hasExactAlarmPermission = { alarmPermission.hasExactAlarmPermission() },
         openExactAlarmPermissionScreen = { alarmPermission.openExactAlarmPermissionScreen() },
         openAppSettingsScreen = { alarmPermission.openAppSettings() },
@@ -174,36 +171,17 @@ private fun TaskDetailContent(
                     contentPadding = PaddingValues(horizontal = 8.dp),
                 )
             }
-            TaskDetailSectionContent(
-                imageVector = Icons.Outlined.Bookmark,
-                contentDescription = stringResource(Res.string.task_long_term_set_as),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = stringResource(Res.string.task_long_term_set_as),
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-                    Switch(
-                        checked = task.isLongTerm,
-                        onCheckedChange = actions.onLongTermToggle,
-                    )
-                }
-            }
             TaskDescriptionTextField(
                 text = task.description,
                 onDescriptionChange = actions.onDescriptionChange,
             )
+            DueDateSelection(
+                dueDate = task.dueDate,
+                onDueDateUpdate = actions.onDueDateChange,
+            )
             AlarmSelection(
-                calendar = task.dueDate,
-                interval = task.alarmInterval,
+                calendar = task.alarmDate,
                 onAlarmUpdate = actions.onAlarmChange,
-                onIntervalSelect = actions.onIntervalChange,
                 hasExactAlarmPermission = actions.hasExactAlarmPermission,
                 openExactAlarmPermissionScreen = actions.openExactAlarmPermissionScreen,
                 openAppSettingsScreen = actions.openAppSettingsScreen,
@@ -223,7 +201,7 @@ private fun TaskDetailError() {
 
 @Composable
 private fun TaskTitleTextField(text: String, onTitleChange: (String) -> Unit) {
-    val textState = remember { mutableStateOf(TextFieldValue(text)) }
+    val textState = remember(text) { mutableStateOf(TextFieldValue(text)) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     TextField(
@@ -247,7 +225,7 @@ private fun TaskTitleTextField(text: String, onTitleChange: (String) -> Unit) {
 
 @Composable
 private fun TaskDescriptionTextField(text: String?, onDescriptionChange: (String) -> Unit) {
-    val textState = remember { mutableStateOf(TextFieldValue(text.orEmpty())) }
+    val textState = remember(text) { mutableStateOf(TextFieldValue(text.orEmpty())) }
 
     TextField(
         modifier = Modifier.fillMaxWidth(),

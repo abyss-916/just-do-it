@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ExitToApp
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -195,6 +196,8 @@ internal fun SearchScaffold(
                         taskList = state.taskList,
                         onItemClick = onItemClick,
                     )
+
+                    is SearchViewState.Error -> SearchErrorContent(state.message)
                 }
             }
         }
@@ -233,6 +236,15 @@ private fun SearchEmptyContent() {
 }
 
 @Composable
+private fun SearchErrorContent(message: String) {
+    DefaultIconTextContent(
+        icon = Icons.Outlined.Error,
+        iconContentDescription = "Error",
+        header = message,
+    )
+}
+
+@Composable
 private fun SearchListContent(
     taskList: ImmutableList<TaskSearchItem>,
     onItemClick: (Long) -> Unit,
@@ -240,6 +252,7 @@ private fun SearchListContent(
     LazyColumn {
         items(
             items = taskList,
+            key = { it.id },
             itemContent = { task -> SearchItem(task = task, onItemClick = onItemClick) },
         )
     }

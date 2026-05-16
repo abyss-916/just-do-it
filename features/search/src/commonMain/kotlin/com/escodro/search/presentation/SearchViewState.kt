@@ -22,4 +22,9 @@ internal sealed class SearchViewState {
      * Represents the state where there are no tasks matching the query.
      */
     internal data object Empty : SearchViewState()
+
+    /**
+     * Represents the state where an error occurred.
+     */
+    internal data class Error(val message: String) : SearchViewState()
 }

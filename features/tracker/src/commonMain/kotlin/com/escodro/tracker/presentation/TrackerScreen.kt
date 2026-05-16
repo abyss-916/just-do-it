@@ -165,7 +165,7 @@ private fun TrackerLoadedContentPreview() {
         categoryInfoList = List(5) { index ->
             Tracker.CategoryInfo(
                 name = "Category $index",
-                color = Color.Red.value.toInt(),
+                color = 0xFFFF0000.toInt(), // Red in ARGB
                 taskCount = (index + 1) * 2,
                 percentage = ((index + 1) * 10).toFloat(),
             )

@@ -20,7 +20,7 @@ internal class UpdateTaskTitleImpl(
         glanceInteractor?.onTaskListUpdated()
 
         // Each platform deals with notifications in a different way - iOS gets the Task info AOT
-        if (task.dueDate != null) {
+        if (task.alarmDate != null) {
             alarmInteractor.update(updatedTask)
         }
     }

@@ -7,11 +7,15 @@ internal class NotificationInteractorFake : NotificationInteractor {
 
     private val notificationMap: MutableMap<Long, Boolean> = mutableMapOf()
 
+    var lastDismissedTask: Task? = null
+        private set
+
     override fun show(task: Task) {
         notificationMap[task.id] = true
     }
 
     override fun dismiss(task: Task) {
+        lastDismissedTask = task
         notificationMap[task.id] = false
     }
 
@@ -20,5 +24,6 @@ internal class NotificationInteractorFake : NotificationInteractor {
 
     fun clear() {
         notificationMap.clear()
+        lastDismissedTask = null
     }
 }

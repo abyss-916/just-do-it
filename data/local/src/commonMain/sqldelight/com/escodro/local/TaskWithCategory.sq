@@ -28,6 +28,7 @@ SELECT * FROM Task task
 LEFT JOIN Category category
 ON task_category_id = category_id
 WHERE task_title LIKE :query
+  AND task_is_long_term = 0
 ORDER BY task.task_priority DESC,
     CASE WHEN task_due_date IS NULL THEN 1 ELSE 0 END,
     task_due_date ASC,

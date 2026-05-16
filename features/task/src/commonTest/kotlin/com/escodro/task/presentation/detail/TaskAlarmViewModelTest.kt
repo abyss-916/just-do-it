@@ -47,7 +47,7 @@ internal class TaskAlarmViewModelTest : CoroutinesTestDispatcher by CoroutinesTe
         viewModel.updateAlarm(TaskId(taskId), alarm)
 
         // Then the alarm is set
-        assertEquals(expected = alarm, actual = updateAlarm.getScheduledTask(taskId)!!.dueDate)
+        assertEquals(expected = alarm, actual = updateAlarm.getScheduledTask(taskId)!!.alarmDate)
     }
 
     @Test
@@ -73,14 +73,14 @@ internal class TaskAlarmViewModelTest : CoroutinesTestDispatcher by CoroutinesTe
     fun `test if alarm is removed`() = runTest {
         // Given the alarm to be removed
         val taskId = 123L
-        val dueDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        val task = TaskFactory.createTask(id = taskId, dueDate = dueDate)
+        val alarmDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        val task = TaskFactory.createTask(id = taskId, dueDate = null).copy(alarmDate = alarmDate)
         loadTask.taskToBeReturned = task
 
         // When the function to cancel the alarm is called
         viewModel.updateAlarm(TaskId(taskId), null)
 
         // Then the alarm is removed
-        assertNull(updateAlarm.getScheduledTask(taskId)!!.dueDate)
+        assertNull(updateAlarm.getScheduledTask(taskId)!!.alarmDate)
     }
 }

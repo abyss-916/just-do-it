@@ -8,9 +8,9 @@ import androidx.compose.ui.test.runComposeUiTest
 import com.escodro.designsystem.theme.AlkaaThemePreview
 import com.escodro.task.model.Task
 import com.escodro.task.model.TaskWithCategory
-import com.escodro.task.presentation.fake.RelativeDateTimeProviderFake
+import com.escodro.task.presentation.fake.RelativeDateProviderFake
 import com.escodro.task.presentation.list.TaskItem
-import com.escodro.task.provider.RelativeDateTimeProvider
+import com.escodro.task.provider.RelativeDateProvider
 import com.escodro.test.AlkaaTest
 import kotlinx.datetime.LocalDateTime
 import org.koin.compose.KoinApplication
@@ -24,7 +24,7 @@ import kotlin.test.Test
 internal class TaskItemTest : AlkaaTest() {
 
     private val testModule = module {
-        factory<RelativeDateTimeProvider> { RelativeDateTimeProviderFake() }
+        factory<RelativeDateProvider> { RelativeDateProviderFake() }
     }
 
     @AfterTest
@@ -57,13 +57,8 @@ internal class TaskItemTest : AlkaaTest() {
         // When the view is loaded
         loadItemView(taskWithCategory) {}
 
-        // Assert that the due date time is shown
-        val hour = dueDate.hour.toString()
-        val minute = dueDate.minute.toString()
-        onNodeWithText(text = hour, substring = true, useUnmergedTree = true)
-            .assertExists()
-        onNodeWithText(text = minute, substring = true, useUnmergedTree = true)
-            .assertExists()
+        // Assert that the date (date only, no time) is shown
+        onNodeWithText(text = "1993-04-15", useUnmergedTree = true).assertExists()
     }
 
     private fun ComposeUiTest.loadItemView(item: TaskWithCategory, onItemClick: (Long) -> Unit) {

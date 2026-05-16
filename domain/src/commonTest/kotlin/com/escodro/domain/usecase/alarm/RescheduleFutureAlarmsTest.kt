@@ -57,11 +57,11 @@ internal class RescheduleFutureAlarmsTest {
             .plus(15.days)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        val task1 = Task(id = 1, title = "Task 1", dueDate = futureCalendar)
+        val task1 = Task(id = 1, title = "Task 1", alarmDate = futureCalendar)
         val task2 = Task(id = 2, title = "Task 2")
-        val task3 = Task(id = 3, title = "Task 3", dueDate = futureCalendar)
+        val task3 = Task(id = 3, title = "Task 3", alarmDate = futureCalendar)
         val task4 = Task(id = 4, title = "Task 4")
-        val task5 = Task(id = 5, title = "Task 5", dueDate = futureCalendar)
+        val task5 = Task(id = 5, title = "Task 5", alarmDate = futureCalendar)
         val repoList = listOf(task1, task2, task3, task4, task5)
         repoList.forEach { task -> addTaskUseCase(task) }
 
@@ -81,11 +81,11 @@ internal class RescheduleFutureAlarmsTest {
             .plus(15.days)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        val task1 = Task(id = 1, isCompleted = true, title = "Task 1", dueDate = futureCalendar)
-        val task2 = Task(id = 2, isCompleted = true, title = "Task 2", dueDate = futureCalendar)
-        val task3 = Task(id = 3, isCompleted = true, title = "Task 3", dueDate = futureCalendar)
-        val task4 = Task(id = 4, isCompleted = false, title = "Task 4", dueDate = futureCalendar)
-        val task5 = Task(id = 5, isCompleted = false, title = "Task 5", dueDate = futureCalendar)
+        val task1 = Task(id = 1, isCompleted = true, title = "Task 1", alarmDate = futureCalendar)
+        val task2 = Task(id = 2, isCompleted = true, title = "Task 2", alarmDate = futureCalendar)
+        val task3 = Task(id = 3, isCompleted = true, title = "Task 3", alarmDate = futureCalendar)
+        val task4 = Task(id = 4, isCompleted = false, title = "Task 4", alarmDate = futureCalendar)
+        val task5 = Task(id = 5, isCompleted = false, title = "Task 5", alarmDate = futureCalendar)
         val repoList = listOf(task1, task2, task3, task4, task5)
         repoList.forEach { task -> addTaskUseCase(task) }
 
@@ -110,11 +110,11 @@ internal class RescheduleFutureAlarmsTest {
             .plus(15.days)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        val task1 = Task(id = 1, title = "Title", dueDate = pastCalendar)
-        val task2 = Task(id = 2, title = "Title", dueDate = pastCalendar)
-        val task3 = Task(id = 3, title = "Title", dueDate = pastCalendar)
-        val task4 = Task(id = 4, title = "Title", dueDate = pastCalendar)
-        val task5 = Task(id = 5, title = "Title", dueDate = futureCalendar)
+        val task1 = Task(id = 1, title = "Title", alarmDate = pastCalendar)
+        val task2 = Task(id = 2, title = "Title", alarmDate = pastCalendar)
+        val task3 = Task(id = 3, title = "Title", alarmDate = pastCalendar)
+        val task4 = Task(id = 4, title = "Title", alarmDate = pastCalendar)
+        val task5 = Task(id = 5, title = "Title", alarmDate = futureCalendar)
         val repoList = listOf(task1, task2, task3, task4, task5)
         repoList.forEach { task -> addTaskUseCase(task) }
 
@@ -137,7 +137,7 @@ internal class RescheduleFutureAlarmsTest {
         val task = Task(
             id = 1,
             title = "lost",
-            dueDate = pastCalendar,
+            alarmDate = pastCalendar,
             isRepeating = true,
             alarmInterval = AlarmInterval.DAILY,
         )

@@ -15,9 +15,9 @@ internal class UpdateTaskStatusImpl(
 
     override suspend operator fun invoke(taskId: Long) {
         val task = taskRepository.findTaskById(taskId) ?: return
-        when (task.isCompleted.not()) {
-            true -> completeTask(task)
-            false -> uncompleteTask(task)
+        when (task.isCompleted) {
+            true -> uncompleteTask(task)
+            false -> completeTask(task)
         }
         glanceInteractor?.onTaskListUpdated()
     }

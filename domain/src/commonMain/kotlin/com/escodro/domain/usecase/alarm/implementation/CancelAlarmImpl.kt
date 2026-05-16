@@ -12,7 +12,7 @@ internal class CancelAlarmImpl(
     override suspend operator fun invoke(taskId: Long) {
         val task = taskRepository.findTaskById(taskId) ?: return
 
-        val updatedTask = task.copy(dueDate = null)
+        val updatedTask = task.copy(alarmDate = null, isRepeating = false)
 
         alarmInteractor.cancel(task)
         taskRepository.updateTask(updatedTask)

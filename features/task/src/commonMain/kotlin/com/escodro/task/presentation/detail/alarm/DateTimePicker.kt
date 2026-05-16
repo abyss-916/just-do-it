@@ -1,16 +1,15 @@
 package com.escodro.task.presentation.detail.alarm
 
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -44,39 +43,64 @@ fun DateTimerPicker(
     onCloseDialog: () -> Unit,
     onDateChange: (LocalDateTime) -> Unit,
 ) {
-    val now: Instant = Clock.System.now()
-    val displayTime: LocalDateTime = initialDateTime ?: now
-        .plus(duration = 1.days)
-        .toLocalDateTime(TimeZone.currentSystemDefault())
+    if (!isDialogOpen) return
 
-    val initialSelectedDate = initialDateTime?.toInstant(TimeZone.currentSystemDefault()) ?: now
+    key(initialDateTime) {
+        DateTimerPickerContent(
+            initialDateTime = initialDateTime,
+            onCloseDialog = onCloseDialog,
+            onDateChange = onDateChange,
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class)
+@Composable
+private fun DateTimerPickerContent(
+    initialDateTime: LocalDateTime?,
+    onCloseDialog: () -> Unit,
+    onDateChange: (LocalDateTime) -> Unit,
+) {
+    val displayTime: LocalDateTime = remember {
+        initialDateTime ?: Clock.System.now()
+            .plus(duration = 1.days)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .let { tomorrow ->
+                LocalDateTime(
+                    year = tomorrow.year,
+                    month = tomorrow.month,
+                    day = tomorrow.day,
+                    hour = 23,
+                    minute = 59,
+                )
+            }
+    }
+
+    val initialSelectedDate = remember {
+        initialDateTime?.toInstant(TimeZone.currentSystemDefault()) ?: Clock.System.now()
+    }
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = initialSelectedDate.toEpochMilliseconds(),
     )
-    val timePickerState = rememberTimePickerState(
-        initialHour = displayTime.hour,
-        initialMinute = displayTime.minute,
-    )
-    var dialogState by remember(isDialogOpen) { mutableStateOf(DateTimePickerState.DATE) }
+    var dialogState by remember { mutableStateOf<DateTimePickerState>(DateTimePickerState.DATE) }
 
-    if (!isDialogOpen) {
-        return
-    }
+    LaunchedEffect(dialogState) {
+        if (dialogState is DateTimePickerState.DONE) {
+            val doneState = dialogState as DateTimePickerState.DONE
+            val date = Instant
+                .fromEpochMilliseconds(datePickerState.selectedDateMillis ?: 0)
+                .toLocalDateTime(TimeZone.currentSystemDefault())
 
-    if (dialogState == DateTimePickerState.DONE) {
-        val date = Instant
-            .fromEpochMilliseconds(datePickerState.selectedDateMillis ?: 0)
-            .toLocalDateTime(TimeZone.UTC) // Don't apply timezone in the date picked by the user
-
-        val localDateTime = LocalDateTime(
-            year = date.year,
-            month = date.month,
-            day = date.day,
-            hour = timePickerState.hour,
-            minute = timePickerState.minute,
-        )
-        onDateChange(localDateTime)
-        onCloseDialog()
+            val localDateTime = LocalDateTime(
+                year = date.year,
+                month = date.month,
+                day = date.day,
+                hour = doneState.hour,
+                minute = doneState.minute,
+            )
+            onDateChange(localDateTime)
+            onCloseDialog()
+        }
     }
 
     if (dialogState == DateTimePickerState.DATE) {
@@ -95,39 +119,35 @@ fun DateTimerPicker(
     }
 
     if (dialogState == DateTimePickerState.TIME) {
-        AlertDialog(
-            onDismissRequest = onCloseDialog,
-            confirmButton = {
-                Button(onClick = {
-                    dialogState = DateTimePickerState.DONE
-                }) {
-                    Text(text = stringResource(Res.string.dialog_picker_confirm))
-                }
+        PlatformTimePickerDialog(
+            initialDateTime = initialDateTime,
+            onDismiss = {
+                dialogState = DateTimePickerState.DATE
             },
-            text = {
-                TimePicker(state = timePickerState)
+            onConfirm = { hour, minute ->
+                dialogState = DateTimePickerState.DONE(hour = hour, minute = minute)
             },
         )
     }
 }
 
 /**
- * Enum class to represent the state of the [DateTimerPicker].
+ * Sealed class to represent the state of the [DateTimerPicker].
  */
-private enum class DateTimePickerState {
+private sealed class DateTimePickerState {
 
     /**
      * Date picker dialog should be shown.
      */
-    DATE,
+    object DATE : DateTimePickerState()
 
     /**
      * Time picker dialog should be shown.
      */
-    TIME,
+    object TIME : DateTimePickerState()
 
     /**
      * Selected date and time should be returned.
      */
-    DONE,
+    data class DONE(val hour: Int, val minute: Int) : DateTimePickerState()
 }

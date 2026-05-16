@@ -7,6 +7,7 @@ import com.escodro.coroutines.AppCoroutineScope
 import com.escodro.domain.usecase.category.DeleteCategory
 import com.escodro.domain.usecase.category.LoadCategory
 import com.escodro.domain.usecase.category.UpdateCategory
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 internal class CategoryEditViewModel(
@@ -26,6 +27,7 @@ internal class CategoryEditViewModel(
             emit(CategorySheetState.Empty)
         }
     }
+        .catch { emit(CategorySheetState.Error) }
 
     fun updateCategory(category: Category) {
         if (category.name.isEmpty()) return

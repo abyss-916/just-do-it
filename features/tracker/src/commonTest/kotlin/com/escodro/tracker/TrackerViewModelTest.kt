@@ -51,14 +51,14 @@ internal class TrackerViewModelTest : CoroutinesTestDispatcher by CoroutinesTest
 
     @Test
     fun `check if error state was called`() = runTest {
-        // Given the use case returns an empty list with completed tasks by period
+        // Given the use case throws an error
         loadCompletedTasksByPeriod.isErrorThrown = true
         val flow = viewModel.loadTracker()
 
         // When the latest event is collected
         val state = flow.first()
 
-        // Then the state is empty
+        // Then the state is error
         assertTrue(state is TrackerViewState.Error)
     }
 }

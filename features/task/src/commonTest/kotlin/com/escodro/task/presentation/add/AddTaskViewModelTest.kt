@@ -21,18 +21,20 @@ internal class AddTaskViewModelTest : CoroutinesTestDispatcher by CoroutinesTest
 
     private val alarmIntervalMapper = AlarmIntervalMapper()
 
+    private var taskCount: Int = 0
+
     private val viewModel = AddTaskViewModel(
         addTaskUseCase = addTask,
         alarmIntervalMapper = alarmIntervalMapper,
         taskPriorityMapper = TaskPriorityMapper(),
         applicationScope = AppCoroutineScope(context = testDispatcher()),
-        countUncompletedTasks = { 0 },
-        loadLongTermTask = { null },
+        countUncompletedTasks = { taskCount },
     )
 
     @BeforeTest
     fun setup() {
         addTask.clear()
+        taskCount = 0
     }
 
     @Test
@@ -95,5 +97,20 @@ internal class AddTaskViewModelTest : CoroutinesTestDispatcher by CoroutinesTest
 
         assertEquals(expected = taskTitle, actual = addTask.createdTask?.title)
         assertEquals(expected = assertAlarmInterval, actual = addTask.createdTask?.alarmInterval)
+    }
+
+    @Test
+    fun `test if task is not created when limit is reached`() {
+        taskCount = AddTaskViewModel.MaxTaskCount
+
+        viewModel.addTask(
+            title = "Should not be created",
+            categoryId = CategoryId(null),
+            dueDate = null,
+            alarmInterval = AlarmInterval.NEVER,
+        )
+
+        assertNull(addTask.createdTask)
+        assertEquals(AddTaskState.TaskLimitReached, viewModel.state)
     }
 }

@@ -32,8 +32,13 @@ internal class TaskNotificationReceiver : BroadcastReceiver(), KoinComponent {
     override fun onReceive(context: Context?, intent: Intent?) {
         logcat { "onReceive() - intent ${intent?.action}" }
 
+        val pendingResult = goAsync()
         appScope.launch {
-            handleIntent(intent)
+            try {
+                handleIntent(intent)
+            } finally {
+                pendingResult.finish()
+            }
         }
     }
 

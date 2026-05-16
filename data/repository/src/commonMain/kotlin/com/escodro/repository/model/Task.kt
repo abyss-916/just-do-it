@@ -24,6 +24,7 @@ data class Task(
     val description: String?,
     val categoryId: Long? = null,
     val dueDate: LocalDateTime? = null,
+    val alarmDate: LocalDateTime? = null,
     val creationDate: LocalDateTime? = null,
     val completedDate: LocalDateTime? = null,
     val isRepeating: Boolean = false,

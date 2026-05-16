@@ -48,7 +48,7 @@ internal class ScheduleAlarmTest {
 
         scheduleAlarmUseCase(task.id, alarm)
         val result = getTaskUseCase(task.id)
-        val assertTask = task.copy(dueDate = alarm)
+        val assertTask = task.copy(alarmDate = alarm)
 
         assertEquals(expected = assertTask, actual = result)
     }

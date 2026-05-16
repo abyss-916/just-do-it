@@ -27,8 +27,8 @@ internal class AddTaskImpl(
         val taskId = taskRepository.insertTask(taskToInsert)
         val insertedTask = taskRepository.findTaskById(taskId)
 
-        if (insertedTask?.dueDate != null) {
-            logger.debug { "Adding alarm for task ${task.id}" }
+        if (insertedTask?.alarmDate != null) {
+            logger.debug { "Adding alarm for task ${insertedTask.id}" }
             updateAlarm(insertedTask)
         }
 

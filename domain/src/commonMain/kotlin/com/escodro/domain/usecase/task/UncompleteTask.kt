@@ -9,15 +9,13 @@ import com.escodro.domain.repository.TaskRepository
 class UncompleteTask(private val taskRepository: TaskRepository) {
 
     /**
-     * Completes the given task.
+     * Sets the given task as uncompleted.
      *
      * @param task the task to be updated
-     *
-     * @return observable to be subscribe
      */
     suspend operator fun invoke(task: Task) {
         val updatedTask = updateTaskAsUncompleted(task)
-        return taskRepository.updateTask(updatedTask)
+        taskRepository.updateTask(updatedTask)
     }
 
     private fun updateTaskAsUncompleted(task: Task) =

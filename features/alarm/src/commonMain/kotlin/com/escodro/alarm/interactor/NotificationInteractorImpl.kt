@@ -23,7 +23,7 @@ internal class NotificationInteractorImpl(
     }
 
     override fun dismiss(task: Task) {
-        logger.debug { "dismiss - alarmId = $task" }
+        logger.debug { "dismiss - taskId = ${task.id}" }
         taskNotification.dismiss(task.id)
     }
 }

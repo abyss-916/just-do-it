@@ -1,6 +1,7 @@
 package com.escodro.domain.repository
 
 import com.escodro.domain.model.Task
+import kotlinx.datetime.LocalDateTime
 
 /**
  * Interface to represent the implementation of Task repository.
@@ -34,11 +35,11 @@ interface TaskRepository {
     suspend fun cleanTable()
 
     /**
-     * Get all inserted tasks with due date.
+     * Get all inserted tasks with alarm date.
      *
-     * @return all inserted tasks with due date
+     * @return all inserted tasks with alarm date
      */
-    suspend fun findAllTasksWithDueDate(): List<Task>
+    suspend fun findAllTasksWithAlarmDate(): List<Task>
 
     /**
      * Get task by id.
@@ -48,4 +49,11 @@ interface TaskRepository {
      * @return selected task
      */
     suspend fun findTaskById(taskId: Long): Task?
+
+    /**
+     * Resets the long-term task if it was completed before the given date.
+     *
+     * @param thresholdDate the threshold date to compare against
+     */
+    suspend fun resetLongTermTaskIfCompletedBefore(thresholdDate: LocalDateTime)
 }

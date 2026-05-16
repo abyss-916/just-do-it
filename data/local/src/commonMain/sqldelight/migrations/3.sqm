@@ -1,3 +1,5 @@
+BEGIN TRANSACTION;
+
 ALTER TABLE Category RENAME TO Category_temp;
 
 CREATE TABLE IF NOT EXISTS Category (
@@ -11,3 +13,5 @@ SELECT category_id, category_name, category_color
 FROM Category_temp;
 
 DROP TABLE Category_temp;
+
+COMMIT;

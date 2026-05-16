@@ -38,17 +38,18 @@ class ScheduleNextAlarm(
      */
     suspend operator fun invoke(task: Task) {
         require(task.isRepeating) { "Task is not repeating" }
-        requireNotNull(task.dueDate) { "Task has no due date" }
+        require(!task.isCompleted) { "Task is completed" }
+        requireNotNull(task.alarmDate) { "Task has no alarm date" }
         requireNotNull(task.alarmInterval) { "Task has no alarm interval" }
 
         val currentTime = dateTimeProvider.getCurrentInstant()
-        var taskTime = task.dueDate.toInstant(TimeZone.currentSystemDefault())
+        var taskTime = task.alarmDate.toInstant(TimeZone.currentSystemDefault())
         do {
             taskTime = updatedAlarmTime(taskTime, task.alarmInterval)
         } while (currentTime > taskTime)
 
         val updatedTask =
-            task.copy(dueDate = taskTime.toLocalDateTime(TimeZone.currentSystemDefault()))
+            task.copy(alarmDate = taskTime.toLocalDateTime(TimeZone.currentSystemDefault()))
 
         taskRepository.updateTask(updatedTask)
         alarmInteractor.schedule(updatedTask, taskTime.toEpochMilliseconds())

@@ -27,10 +27,9 @@ val dateTimeAdapter = object : ColumnAdapter<LocalDateTime, Long> {
 /**
  * Converts between [AlarmInterval] and [Long] to be stored in the database.
  */
-@Suppress("UnsafeCallOnNullableType")
 val alarmIntervalAdapter = object : ColumnAdapter<AlarmInterval, Long> {
     override fun decode(databaseValue: Long): AlarmInterval =
-        AlarmInterval.entries.find { it.id == databaseValue.toInt() }!!
+        AlarmInterval.entries.find { it.id == databaseValue.toInt() } ?: AlarmInterval.DAILY
 
     override fun encode(value: AlarmInterval): Long =
         value.id.toLong()
@@ -39,10 +38,9 @@ val alarmIntervalAdapter = object : ColumnAdapter<AlarmInterval, Long> {
 /**
  * Converts between [TaskPriority] and [Long] to be stored in the database.
  */
-@Suppress("UnsafeCallOnNullableType")
 val taskPriorityAdapter = object : ColumnAdapter<TaskPriority, Long> {
     override fun decode(databaseValue: Long): TaskPriority =
-        TaskPriority.entries.find { it.id == databaseValue.toInt() }!!
+        TaskPriority.entries.find { it.id == databaseValue.toInt() } ?: TaskPriority.NONE
 
     override fun encode(value: TaskPriority): Long =
         value.id.toLong()

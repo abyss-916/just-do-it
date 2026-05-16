@@ -22,6 +22,8 @@ internal class TaskWithCategoryDaoFake : TaskWithCategoryDao {
         return flow { }
     }
 
+    override fun findLongTermTask(): Flow<TaskWithCategory?> = flow { emit(null) }
+
     fun clear() {
         searchQuery = null
     }

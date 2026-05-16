@@ -36,11 +36,11 @@ interface TaskDao {
     suspend fun cleanTable()
 
     /**
-     * Get all inserted tasks with due date.
+     * Get all inserted tasks with alarm date.
      *
-     * @return all inserted tasks with due date
+     * @return all inserted tasks with alarm date
      */
-    suspend fun findAllTasksWithDueDate(): List<Task>
+    suspend fun findAllTasksWithAlarmDate(): List<Task>
 
     /**
      * Get task by id.
@@ -57,4 +57,11 @@ interface TaskDao {
      * @return the long-term task or null
      */
     suspend fun findLongTermTask(): Task?
+
+    /**
+     * Resets the long-term task if it was completed before the given date.
+     *
+     * @param thresholdDate the threshold date to compare against
+     */
+    suspend fun resetLongTermTaskIfCompletedBefore(thresholdDate: kotlinx.datetime.LocalDateTime)
 }

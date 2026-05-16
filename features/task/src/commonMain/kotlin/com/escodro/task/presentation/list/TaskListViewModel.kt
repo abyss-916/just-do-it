@@ -47,6 +47,7 @@ internal class TaskListViewModel(
         }
         emit(result)
     }
+        .catch { emit(null) }
 
     fun updateTaskStatus(item: TaskWithCategory) = applicationScope.launch {
         updateTaskStatusUseCase(item.task.id)

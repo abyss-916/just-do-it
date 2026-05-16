@@ -31,8 +31,11 @@ class ShowAlarm(
             notificationInteractor.show(task)
         }
 
-        if (task.isRepeating) {
+        if (task.isRepeating && task.alarmInterval != null) {
             scheduleNextAlarm(task)
+        } else if (task.isRepeating) {
+            logger.warn { "Repeating task '${task.title}' has no alarmInterval. Cancelling alarm." }
+            taskRepository.updateTask(task.copy(isRepeating = false))
         }
     }
 }

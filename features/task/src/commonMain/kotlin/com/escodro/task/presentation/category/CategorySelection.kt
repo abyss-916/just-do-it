@@ -60,6 +60,8 @@ internal fun CategorySelection(
             )
 
             CategoryState.Empty -> EmptyCategoryList()
+
+            is CategoryState.Error -> EmptyCategoryList()
         }
     }
 }

@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.escodro.permission.api.PermissionController
-import com.escodro.task.model.AlarmInterval
 import kotlinx.datetime.LocalDateTime
 
 /**
@@ -14,7 +13,6 @@ import kotlinx.datetime.LocalDateTime
  */
 class AlarmSelectionState(
     calendar: LocalDateTime?,
-    alarmInterval: AlarmInterval?,
     permissionsController: PermissionController,
 ) {
 
@@ -27,11 +25,6 @@ class AlarmSelectionState(
      * The alarm date, if set.
      */
     var date by mutableStateOf(calendar)
-
-    /**
-     * The alarm data, if set.
-     */
-    var alarmInterval by mutableStateOf(alarmInterval)
 
     /**
      * The Exact Alarm permission dialog visibility state.
@@ -57,13 +50,11 @@ class AlarmSelectionState(
 @Composable
 internal fun rememberAlarmSelectionState(
     calendar: LocalDateTime?,
-    alarmInterval: AlarmInterval?,
     permissionsController: PermissionController,
 ): AlarmSelectionState =
-    remember {
+    remember(calendar, permissionsController) {
         AlarmSelectionState(
             calendar = calendar,
-            alarmInterval = alarmInterval,
             permissionsController = permissionsController,
         )
     }

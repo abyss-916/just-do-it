@@ -9,11 +9,15 @@ internal class AlarmInteractorFake : AlarmInteractor {
 
     var updatedTask: Task? = null
 
+    var lastCancelledTask: Task? = null
+        private set
+
     override fun schedule(task: Task, timeInMillis: Long) {
         alarmMap[task.id] = timeInMillis
     }
 
     override fun cancel(task: Task) {
+        lastCancelledTask = task
         alarmMap.remove(task.id)
     }
 
@@ -30,5 +34,6 @@ internal class AlarmInteractorFake : AlarmInteractor {
     fun clear() {
         alarmMap.clear()
         updatedTask = null
+        lastCancelledTask = null
     }
 }

@@ -12,8 +12,6 @@ class LoadCompletedTasks(private val repository: TaskWithCategoryRepository) {
 
     /**
      * Gets all completed tasks.
-     *
-     * @return observable to be subscribe
      */
     operator fun invoke(): Flow<List<TaskWithCategory>> =
         repository
