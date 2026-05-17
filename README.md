@@ -1,18 +1,16 @@
-![Build](https://github.com/igorescodro/alkaa/actions/workflows/build.yml/badge.svg)
-![Tests](https://github.com/igorescodro/alkaa/actions/workflows/tests.yml/badge.svg)
-![Release](https://github.com/igorescodro/alkaa/actions/workflows/release.yml/badge.svg)
-[![CodeFactor](https://www.codefactor.io/repository/github/igorescodro/alkaa/badge/main)](https://www.codefactor.io/repository/github/igorescodro/alkaa/overview/main)
+![构建](https://github.com/abyss-916/just-do-it/actions/workflows/build.yml/badge.svg)
+![测试](https://github.com/abyss-916/just-do-it/actions/workflows/tests.yml/badge.svg)
+![发布](https://github.com/abyss-916/just-do-it/actions/workflows/release.yml/badge.svg)
+[![CodeFactor](https://www.codefactor.io/repository/github/abyss-916/just-do-it/badge/main)](https://www.codefactor.io/repository/github/abyss-916/just-do-it/overview/main)
 <a href="https://ktlint.github.io/"><img src="https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg" alt="ktlint"></a>
 
-<img src="desktop-app/src/desktopMain/resources/ic_launcher.png" width="256" alt="Alkaa logo">
+<img src="desktop-app/src/desktopMain/resources/ic_launcher.png" width="256" alt="Just Do It 图标">
 
-# Alkaa - Multiplatform
+# Just Do It - 多平台
 
-Alkaa (_begin_, _start_ in Finnish) is a to-do application to study the latest components,
-architecture, and tools for multiplatform development. The project is
-available on Google Play, App Store, and for Desktop! ❤️
+Just Do It 是一款任务管理应用，用于学习和实践最新的多平台开发组件、架构和工具。项目支持 Android、iOS 和桌面端！❤️
 
-The current version of Alkaa was completely migrated to **Kotlin and Compose Multiplatform**!
+整个应用已完全使用 **Kotlin 和 Compose Multiplatform** 构建！
 
 ## Android
 | <img src="https://play-lh.googleusercontent.com/W76J3O4OvtqiBvGePEL2Czt_Jl52SIcm38SK2m7Jzbq83RdzvDStd1Qn5NoAp3ffEibn=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/CRRgxRGMLXykBlehra9LNOmCedbAhRjAEbU5QFx0hTXpE6m4P6YXoRv78rd5T22-LEA=w5120-h2880-rw"> | <img src="https://play-lh.googleusercontent.com/XYlsapSwCTNFPNZmFRI9-e5Joc9h5ZprpU8X_eA8Gpcwm2E2ZLOWc7kNi028UoZR0N8=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/XBjXPeuFkG_lhrbH392LD_wACYpPx69aRP4W2h2oxlvmDYwXDK2ZSEQXGl6pyo-jTfaX=w5120-h2880-rw"> |
@@ -22,7 +20,7 @@ The current version of Alkaa was completely migrated to **Kotlin and Compose Mul
 | <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/e6/6e/e4/e66ee445-cbaa-17c3-6f63-fef2b62ca0e0/87c54b1b-49d4-4555-8071-60a39f15dbb0_01.png/460x0w.webp"> | <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/a2/82/5f/a2825f13-1da8-aedc-f708-517c2cc2913b/3733dbf1-1844-408f-a947-9250267c608b_02.png/460x0w.png">  | <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/cd/cd/b2/cdcdb2fa-8835-0f21-310b-c59e21fbbfbe/d16b3c35-5885-4f00-b7e6-045b09bb3809_03.png/460x0w.webp"> | <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/79/6b/3f/796b3f9b-2141-bdd8-0583-c0df856c3b26/dc6cf806-a9cc-4b5d-9643-711e2f88da65_04.png/460x0w.png"> |
 | ------------- | ------------- | ------------- | ------------- |
 
-## 📦 Download
+## 📦 下载
 
 
 <table style="width:100%">
@@ -33,33 +31,33 @@ The current version of Alkaa was completely migrated to **Kotlin and Compose Mul
 </table>
 
 
-## 📚 Tech stack
+## 📚 技术栈
 
-One of the main goals of Alkaa is to use all the latest libraries and tools available.
+Just Do It 的目标是使用所有最新的库和工具。
 
-### 🧑🏻‍💻 Multiplatform development
+### 🧑🏻‍💻 多平台开发
 
-- Application entirely written in [Kotlin](https://kotlinlang.org)
-- UI developed in [Compose Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/)
-- UI Tests with [Compose Multiplatform UI Testing](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html)
-- Following the [Material You](https://m3.material.io/) guidelines and dynamic color (Android only).
-  Check out our [Design System](https://htmlpreview.github.io/?https://github.com/igorescodro/alkaa/blob/main/assets/designsystem/alkaa-ds.html) for more details.
-- Adaptive layouts with [Compose Adaptive](https://developer.android.com/develop/ui/compose/layouts/adaptive)
-- Navigation using [Navigation3](https://developer.android.com/jetpack/compose/navigation)
-- Asynchronous processing using [Coroutines](https://kotlin.github.io/kotlinx.coroutines/)
-- Widgets using [Jetpack Glance](https://developer.android.com/jetpack/androidx/releases/glance)
-- Dependency injection with [Koin](https://insert-koin.io)
-- Database using [SQLDelight](https://github.com/cashapp/sqldelight)
-- Local storage with [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
-- License management with [AboutLibraries](https://github.com/mikepenz/AboutLibraries)
+- 应用完全使用 [Kotlin](https://kotlinlang.org) 编写
+- UI 使用 [Compose Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/) 开发
+- UI 测试使用 [Compose Multiplatform UI Testing](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html)
+- 遵循 [Material You](https://m3.material.io/) 设计规范，支持动态颜色（仅 Android）
+  查看我们的[设计系统](https://htmlpreview.github.io/?https://github.com/abyss-916/just-do-it/blob/main/assets/designsystem/alkaa-ds.html)了解更多详情
+- 使用 [Compose Adaptive](https://developer.android.com/develop/ui/compose/layouts/adaptive) 实现自适应布局
+- 使用 [Navigation3](https://developer.android.com/jetpack/compose/navigation) 进行导航管理
+- 使用 [Coroutines](https://kotlin.github.io/kotlinx.coroutines/) 进行异步处理
+- 使用 [Jetpack Glance](https://developer.android.com/jetpack/androidx/releases/glance) 开发桌面小组件
+- 使用 [Koin](https://insert-koin.io) 进行依赖注入
+- 使用 [SQLDelight](https://github.com/cashapp/sqldelight) 作为数据库
+- 使用 [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) 进行本地存储
+- 使用 [AboutLibraries](https://github.com/mikepenz/AboutLibraries) 管理开源许可证
 
-For more dependencies used in project, please access the
-[Dependency File](https://github.com/igorescodro/alkaa/blob/main/gradle/libs.versions.toml)
+有关项目使用的所有依赖，请访问
+[依赖文件](https://github.com/abyss-916/just-do-it/blob/main/gradle/libs.versions.toml)
 
-If you want to check the previous version of Alkaa, please take a look at
-the latest [V1](https://github.com/igorescodro/alkaa/tree/v1.7.0) or [V2](https://github.com/igorescodro/alkaa/tree/v2.3.0) releases.
+如果想查看之前的版本，请参阅
+[V1](https://github.com/abyss-916/just-do-it/tree/v1.7.0) 或 [V2](https://github.com/abyss-916/just-do-it/tree/v2.3.0) 历史版本。
 
-### 🧪 Quality
+### 🧪 代码质量
 
 - [ktlint](https://github.com/pinterest/ktlint)
 - [detekt](https://github.com/arturbosch/detekt)
@@ -67,34 +65,27 @@ the latest [V1](https://github.com/igorescodro/alkaa/tree/v1.7.0) or [V2](https:
 - [lint](https://developer.android.com/studio/write/lint)
 - [CodeFactor](https://www.codefactor.io/)
 
-## 🏛 Architecture
+## 🏛 架构
 
-Alkaa architecture is strongly based on the [Hexagonal Architecture](https://alistair.cockburn.us/hexagonal-architecture/)
-by Alistair Cockburn. The application also relies heavily on modularization for better separation of
-concerns and encapsulation.
+Just Do It 的架构基于 [六边形架构](https://alistair.cockburn.us/hexagonal-architecture/)
+由 Alistair Cockburn 提出。应用还大量使用了模块化设计以更好地分离关注点和封装。
 
-Let's take a look at each major module of the application:
+以下是应用各主要模块的说明：
 
-* **app**, **ios-app**, and **desktop-app** - The platform-specific app modules. They contain the
-  initialization logic for each platform.
-* **shared** - The module containing the code shared between all platforms.
-* **features** - The modules containing the features (visual or not) of the application.
-* **domain** - The modules containing the business logic. These modules depend only on themselves,
-  and all interaction is done via _dependency inversion_.
-* **data** - The modules containing the data logic (local, repository, etc.).
-* **libraries** - The modules with useful small libraries for the project, such as design system,
-  navigation, testing, etc.
+* **app**、**ios-app** 和 **desktop-app** — 平台特定的入口模块，包含各平台的初始化逻辑
+* **shared** — 所有平台共享代码的模块
+* **features** — 包含应用各功能（视觉或非视觉）的模块
+* **domain** — 包含业务逻辑的模块，这些模块只依赖自身，所有交互通过依赖倒置完成
+* **data** — 包含数据逻辑（本地存储、仓库等）的模块
+* **libraries** — 包含小型工具库的模块，如设计系统、导航、测试等
 
-This type of architecture protects the most important modules in the app. To achieve this, all
-dependencies point to the center. The modules are organized so that _the more a module is in the
-center, the more important it is_.
+这种架构保护了应用中最重要的模块。为此，所有依赖都指向中心，模块组织方式遵循 **越靠近中心的模块越重要** 的原则。
 
-To better represent the idea behind the modules, here is an architecture image representing the flow
-of dependency:
+以下是架构图，展示了依赖的流向：
 
-![Alkaa Architecture](assets/alkaa-arch-3-0.png)
+![Just Do It 架构](assets/alkaa-arch-3-0.png)
 
-## 📃 License
+## 📃 许可证
 
 ```
 Copyright 2018 Igor Escodro

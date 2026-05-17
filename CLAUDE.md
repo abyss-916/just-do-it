@@ -1,134 +1,135 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+本文件为 Claude Code (claude.ai/code) 提供在此仓库中工作的指导信息。
 
-This is a Kotlin Multiplatform (KMP) task management app targeting Android, iOS, and Desktop, built entirely in Kotlin using Compose Multiplatform.
+这是一款使用 Kotlin 和 Compose Multiplatform 构建的 Kotlin Multiplatform (KMP) 任务管理应用，支持 Android、iOS 和桌面端。
 
-Repository: https://github.com/igorescodro/alkaa
+仓库地址: https://github.com/abyss-916/just-do-it
 
-## Build & Development Commands
+## 构建与开发命令
 
 ```bash
-# Build
-./gradlew :desktop-app:assemble       # Desktop (fastest)
+# 构建
+./gradlew :desktop-app:assemble       # 桌面端（最快）
 ./gradlew :app:assembleDebug          # Android debug APK
 
-# Test
-./gradlew desktopTest                 # Desktop unit tests (fastest for iteration)
-./gradlew :features:task:desktopTest  # Single module test
-./gradlew :domain:test                # Domain layer tests
+# 测试
+./gradlew desktopTest                 # 桌面端单元测试（迭代最快）
+./gradlew :features:task:desktopTest  # 单个模块测试
+./gradlew :domain:test                # 领域层测试
 
-# Code quality
-./gradlew ktlintFormat                # Auto-fix lint
-./gradlew :desktop-app:ktlint         # Lint check
-./gradlew :desktop-app:detekt         # Static analysis
+# 代码质量
+./gradlew ktlintFormat                # 自动修复 lint 问题
+./gradlew :desktop-app:ktlint         # Lint 检查
+./gradlew :desktop-app:detekt         # 静态分析
 ./gradlew :desktop-app:check          # ktlint + detekt
 ```
 
-## Architecture
+## 架构
 
-Hexagonal architecture with inward-pointing dependencies:
+采用依赖向内指向的六边形架构：
 
 ```
 Platform Apps (app, ios-app, desktop-app)
-  └─ shared (entry point, Koin init, AlkaaMultiplatformApp)
-      └─ features (UI/presentation, ViewModels, navigation)
-          └─ domain (use cases, models, repository interfaces)
-              └─ data (repository impl, local/SQLDelight, datastore)
-                  └─ libraries (designsystem, coroutines, permission, etc.)
+  └─ shared (入口点, Koin 初始化, AlkaaMultiplatformApp)
+      └─ features (UI/展示层, ViewModels, 导航)
+          └─ domain (用例, 模型, 仓库接口)
+              └─ data (仓库实现, 本地/SQLDelight, 数据存储)
+                  └─ libraries (designsystem, coroutines, permission 等)
 ```
 
-**Feature modules use API/impl split**: e.g. `features:task-api` exposes interfaces, `features:task` provides implementations bound via Koin. Other features depend only on API modules.
+**功能模块采用 API/impl 分离模式**：例如 `features:task-api` 暴露接口，`features:task` 提供通过 Koin 绑定的具体实现。其他功能模块仅依赖 API 模块。
 
-**Data layer has three sub-layers**:
-1. `data/local/` — SQLDelight database with DAOs, local data sources, mappers
-2. `data/datastore/` — Protobuf-based preferences via DataStore
-3. `data/repository/` — Repository implementations combining local + datastore sources
+**数据层包含三个子层**：
+1. `data/local/` — SQLDelight 数据库，包含 DAO、本地数据源、映射器
+2. `data/datastore/` — 基于 DataStore 和 Protobuf 的偏好设置
+3. `data/repository/` — 组合本地 + 数据存储来源的仓库实现
 
-**Model flow**: Domain models → Repository models → Local models (each layer has its own model class + mapper).
+**模型流向**：领域模型 → 仓库模型 → 本地模型（每层都有自己的模型类和映射器）。
 
-## Module Structure
+## 模块结构
 
-- `app/`, `desktop-app/`, `ios-app/` — Platform entry points; wire the multiplatform app into each target
-- `shared/` — Multiplatform app root; Koin initialization via `KoinHelper.kt`, hosts `AlkaaMultiplatformApp`
-- `features/` — All feature modules; each feature has an API module (shared interfaces) and an impl module (Koin-bound implementations). Features: task, category, alarm, search, preference, tracker, home, navigation, glance
-- `domain/` — Use cases, domain models, and repository interfaces; no framework dependencies
-- `data/repository/` — Repository implementations with mappers bridging domain and local models
-- `data/local/` — SQLDelight database schema, DAOs, and local data sources
-- `data/datastore/` — User preferences stored via DataStore (`alkaa_settings.preferences_pb`)
-- `libraries/` — Shared utilities used across features: designsystem (Kuvio), coroutines, navigation, test, parcelable, permission, appstate
-- `plugins/` — Gradle convention plugins (`com.escodro.multiplatform`, `com.escodro.kotlin-quality`, `com.escodro.kotlin-parcelable`) that standardize build configuration across modules
-- `resources/` — Compose Multiplatform shared resources (strings, drawables) for all platforms
+- `app/`, `desktop-app/`, `ios-app/` — 平台入口点，将多平台应用接入各平台
+- `shared/` — 多平台应用根模块；通过 `KoinHelper.kt` 进行 Koin 初始化，包含 `AlkaaMultiplatformApp`
+- `features/` — 所有功能模块；每个功能有 API 模块（共享接口）和 impl 模块（Koin 绑定的实现）
+  功能包括：task, category, alarm, search, preference, tracker, home, navigation, glance
+- `domain/` — 用例、领域模型和仓库接口；无框架依赖
+- `data/repository/` — 仓库实现，通过映射器桥接领域和本地模型
+- `data/local/` — SQLDelight 数据库 schema、DAO 和本地数据源
+- `data/datastore/` — 用户偏好设置通过 DataStore 存储（`alkaa_settings.preferences_pb`）
+- `libraries/` — 跨功能使用的共享工具库：designsystem (Kuvio), coroutines, navigation, test, parcelable, permission, appstate
+- `plugins/` — Gradle 约定插件（`com.escodro.multiplatform`, `com.escodro.kotlin-quality`, `com.escodro.kotlin-parcelable`），统一各模块的构建配置
+- `resources/` — Compose Multiplatform 共享资源（字符串、drawable），供所有平台使用
 
-### Feature Module Structure
+### 功能模块结构
 
-Each feature follows this pattern:
-- `*-api/` module: Exposes interfaces, models, ViewModels that other features depend on
-- Impl module: Contains DI module, ViewModels, UI composables, mappers, models, navigation
-- Platform-specific source sets (`androidMain`, `desktopMain`, `iosMain`) when needed
-- Common tests in `commonTest`
+每个功能模块遵循以下模式：
+- `*-api/` 模块：暴露接口、模型、ViewModel 供其他功能依赖
+- Impl 模块：包含 DI 模块、ViewModel、UI Composable、映射器、模型、导航
+- 平台特定的源集（`androidMain`, `desktopMain`, `iosMain`）按需使用
+- 公共测试位于 `commonTest`
 
-### Key Feature Modules
+### 核心功能模块
 
-- **home** — Main scaffold with navigation suite (`HomeScreen`)
-- **task** — Task CRUD: `TaskListViewModel`, `TaskDetailViewModel`, `AddTaskViewModel`, `TaskAlarmViewModel`
-- **category** — Category management: `CategoryListViewModel`
-- **alarm** — Alarm/notification scheduling: `AlarmInteractorImpl`, `NotificationInteractorImpl`, `NotificationScheduler`
-- **search** — Task search: `SearchScreen`, `SearchViewModel`
-- **preference** — Settings: `PreferenceScreen`, `PreferenceViewModel`, About, Open Source licenses
-- **tracker** — Task completion tracking: `TrackerScreen`, `TaskGraph` chart component
-- **navigation** — Navigation3 wrapper: `Navigation` composable, `NavEventControllerImpl`
-- **glance** — Android-only Jetpack Glance home widgets
+- **home** — 主框架与导航套件（`HomeScreen`）
+- **task** — 任务增删改查：`TaskListViewModel`, `TaskDetailViewModel`, `AddTaskViewModel`, `TaskAlarmViewModel`
+- **category** — 分类管理：`CategoryListViewModel`
+- **alarm** — 闹钟/通知调度：`AlarmInteractorImpl`, `NotificationInteractorImpl`, `NotificationScheduler`
+- **search** — 任务搜索：`SearchScreen`, `SearchViewModel`
+- **preference** — 设置页：`PreferenceScreen`, `PreferenceViewModel`, 关于、开源许可证
+- **tracker** — 任务完成统计：`TrackerScreen`, `TaskGraph` 图表组件
+- **navigation** — Navigation3 封装：`Navigation` composable, `NavEventControllerImpl`
+- **glance** — 仅 Android 的 Jetpack Glance 桌面小组件
 
-## Koin Dependency Injection
+## Koin 依赖注入
 
-- Koin initialization in `shared/src/commonMain/kotlin/com/escodro/shared/di/KoinHelper.kt`
-- Module list defined in `SharedModule.kt`: `sharedModule`, `taskModule`, `alarmModule`, `categoryModule`, `searchModule`, `preferenceModule`, `domainModule`, `repositoryModule`, `localModule`, `dataStoreModule`, `coroutinesModule`, `designSystemModule`, `navigationModule`, `permissionModule`, `trackerModule`
-- Platform-specific DI modules in each feature's platform source sets (e.g., `androidMain`, `desktopMain`, `iosMain`)
+- Koin 初始化位于 `shared/src/commonMain/kotlin/com/escodro/shared/di/KoinHelper.kt`
+- 模块列表定义在 `SharedModule.kt`：`sharedModule`, `taskModule`, `alarmModule`, `categoryModule`, `searchModule`, `preferenceModule`, `domainModule`, `repositoryModule`, `localModule`, `dataStoreModule`, `coroutinesModule`, `designSystemModule`, `navigationModule`, `permissionModule`, `trackerModule`
+- 各功能模块的平台特定 DI 模块位于对应的平台源集（如 `androidMain`, `desktopMain`, `iosMain`）
 
-## Navigation
+## 导航
 
-Uses **Navigation3** (navigation3-runtime, navigation3-ui) with a custom wrapper:
+使用 **Navigation3**（navigation3-runtime, navigation3-ui）配合自定义封装：
 
-- `Destination` sealed interface with `Back`, `TopLevel` markers
-- `HomeDestination`: TaskList, Search, CategoryList, Preferences (all TopLevel)
-- `NavBackStack<Destination>` manages back stack
-- `NavEventController` sends navigation events
-- `NavGraph` interface for feature registration
-- `Navigation` composable wraps `NavDisplay` with `DialogSceneStrategy` for dialogs
-- Markers: `TopLevel`, `TopAppBarVisible`
+- `Destination` 密封接口，带有 `Back`, `TopLevel` 标记
+- `HomeDestination`: TaskList, Search, CategoryList, Preferences（均为 TopLevel）
+- `NavBackStack<Destination>` 管理回退栈
+- `NavEventController` 发送导航事件
+- `NavGraph` 接口用于功能注册
+- `Navigation` composable 封装 `NavDisplay`，配合 `DialogSceneStrategy` 用于对话框
+- 标记：`TopLevel`, `TopAppBarVisible`
 
-## Database Schema (SQLDelight)
+## 数据库 Schema (SQLDelight)
 
-**Task table**: task_id (PK), task_is_completed, task_title, task_description, task_category_id (FK → Category), task_due_date, task_creation_date, task_completed_date, task_is_repeating, task_alarm_interval
+**Task 表**: task_id (主键), task_is_completed, task_title, task_description, task_category_id (外键 → Category), task_due_date, task_creation_date, task_completed_date, task_is_repeating, task_alarm_interval
 
-**Category table**: category_id (PK), category_name, category_color
+**Category 表**: category_id (主键), category_name, category_color
 
-**TaskWithCategory**: JOIN query between Task and Category
+**TaskWithCategory**: Task 和 Category 的 JOIN 查询
 
-SQLDelight schemas at `data/local/src/commonMain/sqldelight/com/escodro/local/`: `Task.sq`, `Category.sq`, `TaskWithCategory.sq`
+SQLDelight schema 位于 `data/local/src/commonMain/sqldelight/com/escodro/local/`：`Task.sq`, `Category.sq`, `TaskWithCategory.sq`
 
-## KMP Conventions
+## KMP 约定
 
-**Dependencies — Version Catalog**: All dependencies are declared in `gradle/libs.versions.toml` and referenced as `alias(libs.plugins.*)` or `implementation(libs.*)` in build files. Never use raw coordinate strings.
+**依赖 — 版本目录**：所有依赖声明在 `gradle/libs.versions.toml` 中，构建文件中引用为 `alias(libs.plugins.*)` 或 `implementation(libs.*)`。不使用原始坐标字符串。
 
-**Build config — Convention Plugins**: Apply the appropriate plugin instead of writing raw build boilerplate. Common plugins:
-- `alias(libs.plugins.escodro.multiplatform)` — standard KMP module setup
-- `alias(libs.plugins.escodro.kotlin.parcelable)` — adds `@CommonParcelize` support
+**构建配置 — 约定插件**：应用适当的插件而非手写构建模板。常用插件：
+- `alias(libs.plugins.escodro.multiplatform)` — 标准 KMP 模块设置
+- `alias(libs.plugins.escodro.kotlin.parcelable)` — 添加 `@CommonParcelize` 支持
 - `alias(libs.plugins.compose)` + `alias(libs.plugins.compose.compiler)` — Compose Multiplatform
 
-**Platform-specific code — `expect`/`actual`**: Use `expect` declarations in `commonMain` and `actual` implementations in platform source sets (`androidMain`, `iosMain`, `jvmMain`). Never use platform-specific APIs directly in `commonMain`.
+**平台特定代码 — `expect`/`actual`**：在 `commonMain` 中使用 `expect` 声明，在平台源集（`androidMain`, `iosMain`, `jvmMain`）中提供 `actual` 实现。绝不在 `commonMain` 中直接使用平台特定 API。
 
-**Gradle properties**: JVM args `-Xmx6144m`, parallel builds enabled, config cache enabled, caching enabled, iOS experimental UIKit enabled.
+**Gradle 属性**：JVM 参数 `-Xmx6144m`，启用并行构建，启用配置缓存，启用缓存，启用 iOS 实验性 UIKit。
 
-## Testing Approach
+## 测试方案
 
-- **Unit tests**: `commonTest` in domain, task, local, shared modules
-- **E2E/Instrumented tests**: `shared/src/commonTest/` has `HomeScreenTest`, `CategoryFlowTest`, `TaskFlowTest`, `SearchFlowTest`, `PreferenceFlowTest`, `TrackerFlowTest`
-- **UI tests**: `features/task/src/commonTest/` has instrumented tests for alarm, category, task detail, task list flows
-- **Fakes**: Extensive use of fake implementations for testing (RepositoryFakes, SchedulerFakes, etc.)
+- **单元测试**：domain, task, local, shared 模块的 `commonTest`
+- **E2E/仪器化测试**：`shared/src/commonTest/` 包含 `HomeScreenTest`, `CategoryFlowTest`, `TaskFlowTest`, `SearchFlowTest`, `PreferenceFlowTest`, `TrackerFlowTest`
+- **UI 测试**：`features/task/src/commonTest/` 包含闹钟、分类、任务详情、任务列表流程的仪器化测试
+- **Fake 实现**：大量使用 Fake 实现进行测试（RepositoryFakes, SchedulerFakes 等）
 
-## Key Dependencies
+## 核心依赖
 
 - **Kotlin**: 2.3.21
 - **Compose Compiler**: 1.10.3
