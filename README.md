@@ -1,9 +1,3 @@
-![构建](https://github.com/abyss-916/just-do-it/actions/workflows/build.yml/badge.svg)
-![测试](https://github.com/abyss-916/just-do-it/actions/workflows/tests.yml/badge.svg)
-![发布](https://github.com/abyss-916/just-do-it/actions/workflows/release.yml/badge.svg)
-[![CodeFactor](https://www.codefactor.io/repository/github/abyss-916/just-do-it/badge/main)](https://www.codefactor.io/repository/github/abyss-916/just-do-it/overview/main)
-<a href="https://ktlint.github.io/"><img src="https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg" alt="ktlint"></a>
-
 <img src="desktop-app/src/desktopMain/resources/ic_launcher.png" width="256" alt="Just Do It 图标">
 
 # Just Do It - 多平台
@@ -11,6 +5,10 @@
 Just Do It 是一款任务管理应用，用于学习和实践最新的多平台开发组件、架构和工具。项目支持 Android 和桌面端！❤️
 
 整个应用已完全使用 **Kotlin 和 Compose Multiplatform** 构建！
+
+## Android
+| <img src="https://play-lh.googleusercontent.com/W76J3O4OvtqiBvGePEL2Czt_Jl52SIcm38SK2m7Jzbq83RdzvDStd1Qn5NoAp3ffEibn=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/CRRgxRGMLXykBlehra9LNOmCedbAhRjAEbU5QFx0hTXpE6m4P6YXoRv78rd5T22-LEA=w5120-h2880-rw"> | <img src="https://play-lh.googleusercontent.com/XYlsapSwCTNFPNZmFRI9-e5Joc9h5ZprpU8X_eA8Gpcwm2E2ZLOWc7kNi028UoZR0N8=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/XBjXPeuFkG_lhrbH392LD_wACYpPx69aRP4W2h2oxlvmDYwXDK2ZSEQXGl6pyo-jTfaX=w5120-h2880-rw"> |
+| ------------- | ------------- | ------------- | ------------- |
 
 ## 📚 技术栈
 
