@@ -18,7 +18,7 @@ android {
         targetSdk = Integer.parseInt(libs.versions.android.sdk.target.get())
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        base.archivesName.set("${parent?.name}-$versionName")
+        base.archivesName.set("just-do-it-$versionName")
     }
 
     val properties = readProperties(file("../config/signing/signing.properties"))

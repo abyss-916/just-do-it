@@ -39,7 +39,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.escodro.alkaa"
+            packageName = "just-do-it"
             packageVersion = libs.versions.version.name.get()
             modules("java.sql")
 
