@@ -8,7 +8,7 @@
 
 # Just Do It - 多平台
 
-Just Do It 是一款任务管理应用，用于学习和实践最新的多平台开发组件、架构和工具。项目支持 Android、iOS 和桌面端！❤️
+Just Do It 是一款任务管理应用，用于学习和实践最新的多平台开发组件、架构和工具。项目支持 Android 和 Windows 桌面端！❤️
 
 整个应用已完全使用 **Kotlin 和 Compose Multiplatform** 构建！
 
@@ -16,8 +16,8 @@ Just Do It 是一款任务管理应用，用于学习和实践最新的多平台
 | <img src="https://play-lh.googleusercontent.com/W76J3O4OvtqiBvGePEL2Czt_Jl52SIcm38SK2m7Jzbq83RdzvDStd1Qn5NoAp3ffEibn=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/CRRgxRGMLXykBlehra9LNOmCedbAhRjAEbU5QFx0hTXpE6m4P6YXoRv78rd5T22-LEA=w5120-h2880-rw"> | <img src="https://play-lh.googleusercontent.com/XYlsapSwCTNFPNZmFRI9-e5Joc9h5ZprpU8X_eA8Gpcwm2E2ZLOWc7kNi028UoZR0N8=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/XBjXPeuFkG_lhrbH392LD_wACYpPx69aRP4W2h2oxlvmDYwXDK2ZSEQXGl6pyo-jTfaX=w5120-h2880-rw"> |
 | ------------- | ------------- | ------------- | ------------- |
 
-## iOS
-| <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/e6/6e/e4/e66ee445-cbaa-17c3-6f63-fef2b62ca0e0/87c54b1b-49d4-4555-8071-60a39f15dbb0_01.png/460x0w.webp"> | <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/a2/82/5f/a2825f13-1da8-aedc-f708-517c2cc2913b/3733dbf1-1844-408f-a947-9250267c608b_02.png/460x0w.png">  | <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/cd/cd/b2/cdcdb2fa-8835-0f21-310b-c59e21fbbfbe/d16b3c35-5885-4f00-b7e6-045b09bb3809_03.png/460x0w.webp"> | <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/79/6b/3f/796b3f9b-2141-bdd8-0583-c0df856c3b26/dc6cf806-a9cc-4b5d-9643-711e2f88da65_04.png/460x0w.png"> |
+## Windows
+| <img src="https://play-lh.googleusercontent.com/W76J3O4OvtqiBvGePEL2Czt_Jl52SIcm38SK2m7Jzbq83RdzvDStd1Qn5NoAp3ffEibn=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/CRRgxRGMLXykBlehra9LNOmCedbAhRjAEbU5QFx0hTXpE6m4P6YXoRv78rd5T22-LEA=w5120-h2880-rw"> | <img src="https://play-lh.googleusercontent.com/XYlsapSwCTNFPNZmFRI9-e5Joc9h5ZprpU8X_eA8Gpcwm2E2ZLOWc7kNi028UoZR0N8=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/XBjXPeuFkG_lhrbH392LD_wACYpPx69aRP4W2h2oxlvmDYwXDK2ZSEQXGl6pyo-jTfaX=w5120-h2880-rw"> |
 | ------------- | ------------- | ------------- | ------------- |
 
 ## 📦 下载
@@ -26,7 +26,7 @@ Just Do It 是一款任务管理应用，用于学习和实践最新的多平台
 <table style="width:100%">
   <tr>
     <td><a href='https://play.google.com/store/apps/details?id=com.escodro.alkaa'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width=240/></a>
-    <td><a href='https://apps.apple.com/ca/app/alkaa/id6476208968'><img alt='Download in the App Store' src='https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg' width=180/></a>
+    <td><img alt='Windows MSI' src='https://img.shields.io/badge/Windows-MSI-0078D6?style=for-the-badge&logo=windows&logoColor=white' width=240/>
   </tr>
 </table>
 
@@ -72,7 +72,7 @@ Just Do It 的架构基于 [六边形架构](https://alistair.cockburn.us/hexago
 
 以下是应用各主要模块的说明：
 
-* **app**、**ios-app** 和 **desktop-app** — 平台特定的入口模块，包含各平台的初始化逻辑
+* **app** 和 **desktop-app** — 平台特定的入口模块，包含各平台的初始化逻辑
 * **shared** — 所有平台共享代码的模块
 * **features** — 包含应用各功能（视觉或非视觉）的模块
 * **domain** — 包含业务逻辑的模块，这些模块只依赖自身，所有交互通过依赖倒置完成
@@ -84,21 +84,3 @@ Just Do It 的架构基于 [六边形架构](https://alistair.cockburn.us/hexago
 以下是架构图，展示了依赖的流向：
 
 ![Just Do It 架构](assets/alkaa-arch-3-0.png)
-
-## 📃 许可证
-
-```
-Copyright 2018 Igor Escodro
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
