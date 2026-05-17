@@ -12,10 +12,6 @@ Just Do It 是一款任务管理应用，用于学习和实践最新的多平台
 
 整个应用已完全使用 **Kotlin 和 Compose Multiplatform** 构建！
 
-## Android
-| <img src="https://play-lh.googleusercontent.com/W76J3O4OvtqiBvGePEL2Czt_Jl52SIcm38SK2m7Jzbq83RdzvDStd1Qn5NoAp3ffEibn=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/CRRgxRGMLXykBlehra9LNOmCedbAhRjAEbU5QFx0hTXpE6m4P6YXoRv78rd5T22-LEA=w5120-h2880-rw"> | <img src="https://play-lh.googleusercontent.com/XYlsapSwCTNFPNZmFRI9-e5Joc9h5ZprpU8X_eA8Gpcwm2E2ZLOWc7kNi028UoZR0N8=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/XBjXPeuFkG_lhrbH392LD_wACYpPx69aRP4W2h2oxlvmDYwXDK2ZSEQXGl6pyo-jTfaX=w5120-h2880-rw"> |
-| ------------- | ------------- | ------------- | ------------- |
-
 ## 📚 技术栈
 
 Just Do It 的目标是使用所有最新的库和工具。
@@ -26,7 +22,6 @@ Just Do It 的目标是使用所有最新的库和工具。
 - UI 使用 [Compose Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/) 开发
 - UI 测试使用 [Compose Multiplatform UI Testing](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html)
 - 遵循 [Material You](https://m3.material.io/) 设计规范，支持动态颜色（仅 Android）
-  查看我们的[设计系统](https://htmlpreview.github.io/?https://github.com/abyss-916/just-do-it/blob/main/assets/designsystem/alkaa-ds.html)了解更多详情
 - 使用 [Compose Adaptive](https://developer.android.com/develop/ui/compose/layouts/adaptive) 实现自适应布局
 - 使用 [Navigation3](https://developer.android.com/jetpack/compose/navigation) 进行导航管理
 - 使用 [Coroutines](https://kotlin.github.io/kotlinx.coroutines/) 进行异步处理
@@ -65,7 +60,3 @@ Just Do It 的架构基于 [六边形架构](https://alistair.cockburn.us/hexago
 * **libraries** — 包含小型工具库的模块，如设计系统、导航、测试等
 
 这种架构保护了应用中最重要的模块。为此，所有依赖都指向中心，模块组织方式遵循 **越靠近中心的模块越重要** 的原则。
-
-以下是架构图，展示了依赖的流向：
-
-![Just Do It 架构](assets/alkaa-arch-3-0.png)
