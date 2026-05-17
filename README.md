@@ -16,15 +16,6 @@ Just Do It 是一款任务管理应用，用于学习和实践最新的多平台
 | <img src="https://play-lh.googleusercontent.com/W76J3O4OvtqiBvGePEL2Czt_Jl52SIcm38SK2m7Jzbq83RdzvDStd1Qn5NoAp3ffEibn=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/CRRgxRGMLXykBlehra9LNOmCedbAhRjAEbU5QFx0hTXpE6m4P6YXoRv78rd5T22-LEA=w5120-h2880-rw"> | <img src="https://play-lh.googleusercontent.com/XYlsapSwCTNFPNZmFRI9-e5Joc9h5ZprpU8X_eA8Gpcwm2E2ZLOWc7kNi028UoZR0N8=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/XBjXPeuFkG_lhrbH392LD_wACYpPx69aRP4W2h2oxlvmDYwXDK2ZSEQXGl6pyo-jTfaX=w5120-h2880-rw"> |
 | ------------- | ------------- | ------------- | ------------- |
 
-## 📦 下载
-
-<table style="width:100%">
-  <tr>
-    <td><a href='https://play.google.com/store/apps/details?id=com.escodro.alkaa'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width=240/></a></td>
-  </tr>
-</table>
-
-
 ## 📚 技术栈
 
 Just Do It 的目标是使用所有最新的库和工具。
