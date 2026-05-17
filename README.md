@@ -6,6 +6,18 @@ Just Do It 是一款任务管理应用，用于学习和实践最新的多平台
 
 整个应用已完全使用 **Kotlin 和 Compose Multiplatform** 构建！
 
+## 📦 安装包
+
+| 平台 | 安装包 | 说明 |
+|------|--------|------|
+| 🤖 Android | `app/build/outputs/apk/debug/just-do-it-1.0.0-debug.apk` | Android 调试安装包，支持 Android 5.0+ |
+| 💻 Windows | `desktop-app/build/compose/binaries/main/msi/just-do-it-1.0.0.msi` | Windows 桌面安装包，双击即可安装 |
+
+### 构建命令
+
+- **Android APK**: `./gradlew :app:assembleDebug`
+- **Windows MSI**: `./gradlew desktop-app:packageMsi`
+
 ## Android
 | <img src="https://play-lh.googleusercontent.com/W76J3O4OvtqiBvGePEL2Czt_Jl52SIcm38SK2m7Jzbq83RdzvDStd1Qn5NoAp3ffEibn=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/CRRgxRGMLXykBlehra9LNOmCedbAhRjAEbU5QFx0hTXpE6m4P6YXoRv78rd5T22-LEA=w5120-h2880-rw"> | <img src="https://play-lh.googleusercontent.com/XYlsapSwCTNFPNZmFRI9-e5Joc9h5ZprpU8X_eA8Gpcwm2E2ZLOWc7kNi028UoZR0N8=w5120-h2880-rw">  | <img src="https://play-lh.googleusercontent.com/XBjXPeuFkG_lhrbH392LD_wACYpPx69aRP4W2h2oxlvmDYwXDK2ZSEQXGl6pyo-jTfaX=w5120-h2880-rw"> |
 | ------------- | ------------- | ------------- | ------------- |
